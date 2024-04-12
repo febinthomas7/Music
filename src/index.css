@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.wide {
+  width: calc(100% - 300px);
+}
+
+.comma:nth-of-type(n + 2):not(:last-child) {
+  &::before {
+    content: ", ";
+  }
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.HideScrollbar::-webkit-scrollbar {
+  display: none;
+}
