@@ -94,7 +94,7 @@ const PlaylistItems = ({ items = [], loading }) => {
     console.log(divProgress);
   };
   return (
-    <div className="flex flex-col gap-3 bg-black p-4">
+    <div className="flex flex-col  gap-3 bg-black p-4">
       <div className="fixed bg-black w-full top-0 left-0 p-4 bg-gradient-to-b from-[#ee3050] from-10% via-[#881327] via-40% to-black to-90% ">
         <audio
           className="hidden"
@@ -104,9 +104,9 @@ const PlaylistItems = ({ items = [], loading }) => {
           onTimeUpdate={onPlaying}
         ></audio>
 
-        <div className="flex items-baseline gap-6 p-7">
+        <div className="flex  items-center flex-row sm:items-baseline gap-6 sm:p-7">
           <div className="flex flex-col gap-6">
-            <div className="w-[250px] h-[250px]">
+            <div className="w-[100px] sm:w-[250px] sm:h-[250px]">
               {loading ? (
                 <div className="flex flex-col  animate-pulse w-full h-full gap-4  ">
                   <div
@@ -151,7 +151,7 @@ const PlaylistItems = ({ items = [], loading }) => {
                     <FaBackward />
                   </div>
                   <div
-                    className={`w-[70px] h-[70px] text-${
+                    className={`w-[50px] h-[50px] sm:w-[70px] sm:h-[70px] text-${
                       isPlaying ? "black" : "white"
                     }   bg-[${
                       isPlaying ? "#fbfbfb" : "#7f7171"
@@ -211,7 +211,7 @@ const PlaylistItems = ({ items = [], loading }) => {
             )}
           </div>
         </div>
-        <div className="w-full">
+        <div className="w-full mt-5 sm:mt-0">
           {!loading && (
             <div className="text-white flex justify-between">
               <h1>
@@ -244,9 +244,9 @@ const PlaylistItems = ({ items = [], loading }) => {
         </div>
       </div>
 
-      <div className="mt-[464px]">
+      <div className="mt-[230px] sm:mt-[464px]">
         {loading && <PlaylistLoader />}
-        <div className="flex items-center  w-full h-full  text-white  p-[12px]">
+        <div className="md:flex items-center hidden  w-full h-full  text-white  p-[12px]">
           <div className="  flex-[1/2] p-4 ">
             <h1>#</h1>
           </div>
@@ -282,7 +282,7 @@ const PlaylistItems = ({ items = [], loading }) => {
             // console.log("days" + days);
 
             return (
-              <div className="w-full h-full" key={index}>
+              <div className="w-full h-full " key={index}>
                 <div className="w-full ">
                   <div>
                     {item.track.preview_url === null ? (
@@ -309,13 +309,13 @@ const PlaylistItems = ({ items = [], loading }) => {
                           </div>
                         </div>
 
-                        <div className="flex-1">
+                        <div className="flex-1 hidden sm:flex">
                           <h1 className="text-white">{item.track.name}</h1>
                         </div>
-                        <div className="flex-1 ">
+                        <div className="flex-1 hidden sm:flex">
                           <h1 className="text-white ml-[50%]">{`${hour}:${min}:${sec}`}</h1>
                         </div>
-                        <div className="flex-1 ">
+                        <div className="flex-1 hidden sm:flex">
                           <h1 className="text-white ml-[75%]">
                             {Math.floor(
                               (item.track.duration_ms % (1000 * 60 * 60)) /
@@ -366,15 +366,15 @@ const PlaylistItems = ({ items = [], loading }) => {
                           </div>
                         </div>
 
-                        <div className="flex-1">
+                        <div className="flex-1 hidden sm:flex">
                           <h1 className="text-white">{item.track.name}</h1>
                         </div>
-                        <div className="flex-1 ">
+                        <div className="flex-1 hidden sm:flex">
                           <h1 className="text-white ml-[50%]">
                             {`${hour}:${min}:${sec}`}
                           </h1>
                         </div>
-                        <div className="flex-1">
+                        <div className="flex-1 hidden sm:flex">
                           <h1 className="text-white ml-[75%]">
                             {Math.floor(
                               (item.track.duration_ms % (1000 * 60 * 60)) /
