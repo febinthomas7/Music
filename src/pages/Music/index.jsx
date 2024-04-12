@@ -29,7 +29,7 @@ const Music = () => {
     setPlaylist(data);
     setLoader(false);
 
-    console.log(data);
+    // console.log(data);
   };
   useEffect(() => {
     _getPlaylist();

@@ -6,15 +6,15 @@ const Playlist = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
 
-  console.log(location.state?.data);
+  // console.log(location.state?.data);
   const [token, setToken] = useState({
     token: location.state?.token,
   });
-  console.log(token.token.token);
+  // console.log(token.token.token);
   const [id, setiid] = useState({
     id: location.state?.data.id,
   });
-  console.log(id.id);
+  // console.log(id.id);
   const [playlist, setPlaylist] = useState();
 
   const track = async () => {

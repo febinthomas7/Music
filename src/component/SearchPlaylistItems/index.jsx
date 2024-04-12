@@ -4,13 +4,12 @@ import { FaForward, FaBackward, FaPlay } from "react-icons/fa";
 import { FaPause } from "react-icons/fa6";
 import PlaylistLoader from "../PlaylistLoader";
 import { MdAccessTime } from "react-icons/md";
-
-const PlaylistItems = ({ items = [], loading }) => {
+const SearchPlayListItems = ({ items = [], loading }) => {
   const [like, setLike] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   let [selectSong, setSelectSong] = useState(0);
   let [currentSong, setCurrentSong] = useState({
-    ...items[selectSong]?.track?.preview_url,
+    ...items[selectSong]?.preview_url,
     progress: 0,
     Length: 0,
     currentDuration: 0,
@@ -44,7 +43,7 @@ const PlaylistItems = ({ items = [], loading }) => {
 
     const currentDuration = audioElem.current.currentTime;
     setCurrentSong({
-      ...items[selectSong]?.track?.preview_url,
+      ...items[selectSong]?.preview_url,
       progress: (currentDuration / duration) * 100,
       Length: duration,
       currentDuration: currentDuration,
@@ -53,12 +52,12 @@ const PlaylistItems = ({ items = [], loading }) => {
 
   const nextSong = () => {
     setCurrentSong({
-      ...items[selectSong]?.track.preview_url,
+      ...items[selectSong]?.preview_url,
       progress: 0,
       Length: 0,
       currentDuration: 0,
     });
-    if (items[selectSong]?.track.preview_url === null) {
+    if (items[selectSong]?.preview_url === null) {
       setIsPlaying(false);
     }
     return selectSong === items.length - 1
@@ -67,12 +66,12 @@ const PlaylistItems = ({ items = [], loading }) => {
   };
   const prevSong = () => {
     setCurrentSong({
-      ...items[selectSong]?.track.preview_url,
+      ...items[selectSong]?.preview_url,
       progress: 0,
       Length: 0,
       currentDuration: 0,
     });
-    if (items[selectSong]?.track.preview_url === null) {
+    if (items[selectSong]?.preview_url === null) {
       setIsPlaying(false);
     }
 
@@ -80,6 +79,10 @@ const PlaylistItems = ({ items = [], loading }) => {
       ? (selectSong = items.length - 1)
       : (selectSong -= 1);
   };
+  let d = new Date("2024-03-01T03:00:00Z");
+  // console.log("hours" + d.getUTCHours());
+  // console.log("min" + d.getUTCMinutes());
+  // console.log("sec" + d.getUTCSeconds());
 
   const checkWidth = (e) => {
     let width = clickRef.current.clientWidth;
@@ -87,7 +90,7 @@ const PlaylistItems = ({ items = [], loading }) => {
 
     const divProgress = (offset / width) * 100;
     audioElem.current.currentTime = (divProgress / 100) * currentSong.Length;
-    console.log(divProgress);
+    // console.log(divProgress);
   };
   return (
     <div className="flex flex-col  gap-3 bg-black p-4">
@@ -95,7 +98,7 @@ const PlaylistItems = ({ items = [], loading }) => {
         <audio
           className="hidden"
           controls
-          src={items[selectSong]?.track?.preview_url}
+          src={items[selectSong]?.preview_url}
           ref={audioElem}
           onTimeUpdate={onPlaying}
         ></audio>
@@ -107,7 +110,7 @@ const PlaylistItems = ({ items = [], loading }) => {
                 <div className="flex flex-col  animate-pulse w-full h-full gap-4  ">
                   <div
                     className="w-full h-full rounded-full
-                 bg-slate-700 "
+                   bg-slate-700 "
                   ></div>
                 </div>
               ) : (
@@ -115,7 +118,7 @@ const PlaylistItems = ({ items = [], loading }) => {
                   className={`h-full w-full object-cover rounded-full shadow-[#1a1a1a] shadow-2xl ${
                     isPlaying ? "animate-spin-slow" : "animate-none"
                   } `}
-                  src={items[selectSong]?.track?.album?.images[1]?.url}
+                  src={items[selectSong]?.album?.images[1]?.url}
                   alt=""
                 />
               )}
@@ -126,15 +129,15 @@ const PlaylistItems = ({ items = [], loading }) => {
                 <div className="flex justify-center items-center  animate-pulse  gap-4  ">
                   <div
                     className=" rounded-full w-[50px] h-[50px]
-                 bg-slate-700 "
+                   bg-slate-700 "
                   ></div>
                   <div
                     className=" rounded-full w-[70px] h-[70px]
-                 bg-slate-700 "
+                   bg-slate-700 "
                   ></div>
                   <div
                     className=" rounded-full w-[50px] h-[50px]
-                 bg-slate-700 "
+                   bg-slate-700 "
                   ></div>
                 </div>
               ) : (
@@ -179,10 +182,10 @@ const PlaylistItems = ({ items = [], loading }) => {
             ) : (
               <>
                 <h1 className="text-yellow-200 text-[20px] md:text-[30px]">
-                  {items[selectSong]?.track?.name}
+                  {items[selectSong]?.name}
                 </h1>
                 <div className="flex flex-wrap comma">
-                  {items[selectSong]?.track?.artists.map((e, index) => {
+                  {items[selectSong]?.artists.map((e, index) => {
                     return (
                       <h1 className="text-white comma" key={index}>
                         {e.name}
@@ -264,12 +267,8 @@ const PlaylistItems = ({ items = [], loading }) => {
 
         {!loading &&
           items?.map((item, index) => {
-            let d = new Date(item.added_at);
-            let hour = d.getUTCHours();
-            let min = d.getUTCMinutes();
-            let sec = d.getUTCSeconds();
-            let days = d.getUTCDay();
-            let month = d.getMonth();
+            let d = new Date(item.album.release_date);
+
             let year = d.getFullYear();
             // console.log("year: " + year);
             // console.log("hours" + d.getUTCHours()); // Hours
@@ -281,7 +280,7 @@ const PlaylistItems = ({ items = [], loading }) => {
               <div className="w-full h-full " key={index}>
                 <div className="w-full ">
                   <div>
-                    {item.track?.preview_url === null ? (
+                    {item.preview_url === null ? (
                       <div
                         className={`flex items-center p-3 cursor-pointer hover:bg-[#292929] rounded-md ${
                           index === selectSong ? "bg-[#323232] " : null
@@ -292,7 +291,7 @@ const PlaylistItems = ({ items = [], loading }) => {
                         </div>
                         <div className="flex-[2] flex gap-[26px] items-center">
                           <img
-                            src={item?.track.album.images[2]?.url}
+                            src={item?.album.images[2]?.url}
                             alt=""
                             className=" h-[50px] w-[50px]"
                             loading="lazy"
@@ -306,7 +305,7 @@ const PlaylistItems = ({ items = [], loading }) => {
                         </div>
 
                         <div className="flex-1 hidden sm:flex">
-                          <h1 className="text-white">{item.track.name}</h1>
+                          <h1 className="text-white">{item.name}</h1>
                         </div>
                         <div className="flex-1 hidden sm:flex">
                           <h1 className="text-white ml-[50%]">{`${hour}:${min}:${sec}`}</h1>
@@ -314,13 +313,12 @@ const PlaylistItems = ({ items = [], loading }) => {
                         <div className="flex-1 hidden sm:flex">
                           <h1 className="text-white ml-[75%]">
                             {Math.floor(
-                              (item.track.duration_ms % (1000 * 60 * 60)) /
+                              (item.duration_ms % (1000 * 60 * 60)) /
                                 (1000 * 60)
                             )}
                             :
                             {Math.floor(
-                              (item.track.duration_ms % (1000 * 60)) /
-                                (1000 * 60)
+                              (item.duration_ms % (1000 * 60)) / (1000 * 60)
                             )}
                           </h1>
                         </div>
@@ -340,18 +338,16 @@ const PlaylistItems = ({ items = [], loading }) => {
                         </div>
                         <div className="flex-[2] flex gap-[26px] items-center">
                           <img
-                            src={item?.track?.album.images[2]?.url}
+                            src={item?.album.images[2]?.url}
                             alt=""
                             className=" h-[50px] w-[50px]"
                             loading="lazy"
                             onError={fallbackImage}
                           />
                           <div className="w-full flex flex-col gap-2">
-                            <h1 className="text-yellow-200">
-                              {item.track?.name}
-                            </h1>
+                            <h1 className="text-yellow-200">{item.name}</h1>
                             <div className="flex flex-wrap ">
-                              {item.track?.artists.map((e, index) => {
+                              {item.artists.map((e, index) => {
                                 return (
                                   <h1 className="text-white comma" key={index}>
                                     {e.name}
@@ -363,23 +359,20 @@ const PlaylistItems = ({ items = [], loading }) => {
                         </div>
 
                         <div className="flex-1 hidden sm:flex">
-                          <h1 className="text-white">{item.track?.name}</h1>
+                          <h1 className="text-white">{item.name}</h1>
                         </div>
                         <div className="flex-1 hidden sm:flex">
-                          <h1 className="text-white ml-[50%]">
-                            {`${hour}:${min}:${sec}`}
-                          </h1>
+                          <h1 className="text-white ml-[50%]">{`${year}`}</h1>
                         </div>
                         <div className="flex-1 hidden sm:flex">
                           <h1 className="text-white ml-[75%]">
                             {Math.floor(
-                              (item.track?.duration_ms % (1000 * 60 * 60)) /
+                              (item.duration_ms % (1000 * 60 * 60)) /
                                 (1000 * 60)
                             )}
                             :
                             {Math.floor(
-                              (item.track?.duration_ms % (1000 * 60)) /
-                                (1000 * 60)
+                              (item.duration_ms % (1000 * 60)) / (1000 * 60)
                             )}
                           </h1>
                         </div>
@@ -395,4 +388,4 @@ const PlaylistItems = ({ items = [], loading }) => {
   );
 };
 
-export default PlaylistItems;
+export default SearchPlayListItems;

@@ -3,7 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "../pages/DashboardPage";
 import Music from "../pages/Music";
 import Playlist from "../pages/Playlist";
-import SearchBoard from "../component/SearchBoard";
+import Search from "../pages/Search";
 const routes = createBrowserRouter([
   { path: "/", element: <Dashboard /> },
   {
@@ -15,8 +15,8 @@ const routes = createBrowserRouter([
     element: <Playlist />,
   },
   {
-    path: "/search/:id",
-    element: <SearchBoard />,
+    path: "/search",
+    element: <Search />,
   },
 ]);
 export default routes;

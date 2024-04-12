@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../Navbar";
 import { Link } from "react-router-dom";
 import Loader from "../Loader";
-import SearchBoard from "../SearchBoard";
-import { token } from "../../Token";
+import Debouncing from "../../assets/Hooks/Debouncing";
 const DashboardComponent = () => {
   const [genreId, setGenreId] = useState();
   const [loader, setLoader] = useState(true);
   const [_token, _setToken] = useState();
   const [search, setSearch] = useState([]);
-  // const { albums, tracks, artists, shows, episodes } = search;
-  // console.log(albums);
 
   const clientId = "5c09b41300224c0392112b2df26e0e35";
   const clientSecret = "e6ecbab94c6d48389f8a3dcaae020e8d";
+
+  const [songs, setSongs] = useState("");
   const getToken = async () => {
     const result = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
@@ -27,15 +25,31 @@ const DashboardComponent = () => {
     const data = await result.json();
     _setToken(data.access_token);
     _getGenres(data.access_token);
-    Search(data.access_token);
-    test(data.access_token);
-    console.log(data);
   };
 
-  console.log(token());
   useEffect(() => {
     getToken();
   }, []);
+
+  const debounceSearch = Debouncing(songs, 500);
+
+  useEffect(() => {
+    const Search = async () => {
+      const result = await fetch(
+        `https://api.spotify.com/v1/search?q=${debounceSearch}&type=album%2Ctrack%2Cartist%2Cshow%2Cepisode`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + _token,
+          },
+        }
+      );
+      const data = await result.json();
+      setSearch(data);
+    };
+
+    if (debounceSearch) Search();
+  }, [debounceSearch]);
   const _getGenres = async (token) => {
     const result = await fetch(
       "https://api.spotify.com/v1/browse/categories?limit=50",
@@ -51,42 +65,51 @@ const DashboardComponent = () => {
     setLoader(false);
   };
 
-  const Search = async (token) => {
-    const result = await fetch(
-      "https://api.spotify.com/v1/search?q=beyonce&type=album%2Ctrack%2Cartist%2Cshow%2Cepisode",
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-    const data = await result.json();
-    console.log(data);
-    setSearch(data);
-  };
-  const test = async (token) => {
-    const result = await fetch(
-      `https://api.spotify.com/v1/artists/0TnOYISbd1XYRBk9myaseg/top-tracks`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-    const data = await result.json();
-    console.log(data);
-  };
-
   return (
     <div className="w-full md:wide bg-black ">
-      <div className="mt-28 p-5"></div>
-      <div className="p-4 px-11">
-        <h1 className="text-[40px]">Browse all</h1>
+      <div className="mt-5 py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center">
+        <h1 className="text-[30px] md:text-[40px]">GanaBajao</h1>
+        <input
+          type="text"
+          onChange={(e) => setSongs(e.target.value)}
+          value={songs}
+          placeholder="Browse"
+          className="h-[40px] w-full sm:w-[70%]  rounded-lg  outline-blue-900 text-black   p-2"
+        />
       </div>
 
       <div className="flex flex-wrap gap-5 justify-center py-7  items-center">
+        <div className="flex flex-col overflow-hidden">
+          <div className="flex  gap-4 overflow-scroll HideScrollbar my-10 ">
+            {search.albums?.items.map((e, index) => {
+              return (
+                <>
+                  {e.images.length <= 0 ? null : (
+                    <Link
+                      to="/search"
+                      state={{ data: search?.tracks }}
+                      key={index}
+                    >
+                      <div
+                        className="flex flex-col items-center justify-center min-w-[250px] min-h-[250px] "
+                        key={index}
+                      >
+                        <img
+                          className=" rounded-full w-[200px] h-[200px]"
+                          src={e?.images[1]?.url}
+                          alt="avatar"
+                        />
+                        <div className="flex flex-col items-center justify-center">
+                          <h1 className="text-2xl font-bold">{e?.name}</h1>
+                        </div>
+                      </div>
+                    </Link>
+                  )}
+                </>
+              );
+            })}
+          </div>
+        </div>
         {loader ? (
           <Loader />
         ) : (
@@ -105,7 +128,6 @@ const DashboardComponent = () => {
             );
           })
         )}
-        {/* <SearchBoard search={search} /> */}
       </div>
     </div>
   );
