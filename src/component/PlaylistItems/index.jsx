@@ -4,6 +4,7 @@ import { FaForward, FaBackward, FaPlay } from "react-icons/fa";
 import { FaPause } from "react-icons/fa6";
 import PlaylistLoader from "../PlaylistLoader";
 import { MdAccessTime } from "react-icons/md";
+import Downloader from "../DownloadBtn";
 
 const PlaylistItems = ({ items = [], loading }) => {
   const [like, setLike] = useState(false);
@@ -94,6 +95,7 @@ const PlaylistItems = ({ items = [], loading }) => {
       <div className="fixed bg-black w-full top-0 left-0 p-4 bg-gradient-to-b from-[#ee3050] from-10% via-[#881327] via-40% to-black to-90% ">
         <audio
           className="hidden"
+          controlsList="nodownload"
           controls
           src={items[selectSong]?.track?.preview_url}
           ref={audioElem}
@@ -104,9 +106,9 @@ const PlaylistItems = ({ items = [], loading }) => {
           <div className="flex flex-col gap-6">
             <div className="w-[100px] sm:w-[250px] sm:h-[250px]">
               {loading ? (
-                <div className="flex flex-col  animate-pulse w-full h-full gap-4  ">
+                <div className="flex flex-col  animate-pulse sm:w-full h-full gap-4  ">
                   <div
-                    className="w-full h-full rounded-full
+                    className="w-[100px] h-[100px] sm:w-full sm:h-full rounded-full
                  bg-slate-700 "
                   ></div>
                 </div>
@@ -172,25 +174,25 @@ const PlaylistItems = ({ items = [], loading }) => {
           <div className="flex flex-col gap-4">
             {loading ? (
               <div className="flex flex-col  animate-pulse w-full min-w-[300px] max-w-[500px] gap-4  ">
-                <div className="w-full h-[40px] bg-slate-700 rounded-md"></div>
-                <div className="w-full h-[30px] bg-slate-700 rounded-md"></div>
+                <div className="w-[100px] sm:w-full h-[40px] bg-slate-700 rounded-md"></div>
+                <div className="w-[100px] sm:w-full h-[30px] bg-slate-700 rounded-md"></div>
                 <div className="w-[30px] h-[30px] bg-slate-700 rounded-md"></div>
               </div>
             ) : (
               <>
-                <h1 className="text-yellow-200 text-[20px] md:text-[30px]">
+                <h1 className="text-yellow-200 text-[20px] md:text-[30px] line-clamp-1">
                   {items[selectSong]?.track?.name}
                 </h1>
                 <div className="flex flex-wrap comma">
                   {items[selectSong]?.track?.artists.map((e, index) => {
                     return (
-                      <h1 className="text-white comma" key={index}>
+                      <h1 className="text-white comma line-clamp-1" key={index}>
                         {e.name}
                       </h1>
                     );
                   })}
                 </div>
-                <div className="text-white text-[20px]  ">
+                <div className="text-white text-[20px] flex flex-col sm:flex-row  justify-start sm:items-center gap-3 ">
                   {like ? (
                     <GoHeartFill
                       className="text-red-800 cursor-pointer"
@@ -202,12 +204,16 @@ const PlaylistItems = ({ items = [], loading }) => {
                       onClick={() => setLike(!like)}
                     />
                   )}
+                  <Downloader
+                    fileInput={items[selectSong]?.track?.preview_url}
+                    fileName={items[selectSong]?.track?.name}
+                  />
                 </div>
               </>
             )}
           </div>
         </div>
-        <div className="w-full mt-5 sm:mt-0">
+        <div className="w-full mt-[6px] sm:mt-0">
           {!loading && (
             <div className="text-white flex justify-between">
               <h1>

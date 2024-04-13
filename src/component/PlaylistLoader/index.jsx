@@ -6,7 +6,7 @@ const PlaylistLoader = () => {
     <div className="flex flex-col gap-4">
       {arr.map((e, index) => {
         return (
-          <div className=" shadow  p-1 " key={index}>
+          <div className=" shadow  sm:p-1 " key={index}>
             <div className="flex animate-pulse w-full gap-4  h-[60px] px-5">
               <div className="flex-[1/2]  bg-slate-700 w-4 rounded-md"></div>
               <div className="flex flex-[2] gap-3 ">
@@ -16,9 +16,9 @@ const PlaylistLoader = () => {
                   <div className="bg-slate-700 w-full h-[50px] rounded-md"></div>
                 </div>
               </div>
-              <div className="flex-1 bg-slate-700 rounded-md "></div>
-              <div className="flex-1 bg-slate-700 rounded-md "></div>
-              <div className="flex-1 bg-slate-700 rounded-md"></div>
+              <div className="hidden md:flex-1 bg-slate-700 rounded-md "></div>
+              <div className="hidden md:flex-1 bg-slate-700 rounded-md "></div>
+              <div className="hidden md:flex-1 bg-slate-700 rounded-md"></div>
             </div>
           </div>
         );

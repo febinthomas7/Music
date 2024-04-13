@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../Loader";
-import Debouncing from "../../assets/Hooks/Debouncing";
+import Debouncing from "../../Hooks/Debouncing";
 const DashboardComponent = () => {
   const [genreId, setGenreId] = useState();
   const [loader, setLoader] = useState(true);
@@ -66,50 +66,67 @@ const DashboardComponent = () => {
   };
 
   return (
-    <div className="w-full md:wide bg-black ">
+    <div className="w-full sm:w-[80%] sm:ml-[20%] md:wide bg-[#101010] ">
       <div className="mt-5 py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center">
-        <h1 className="text-[30px] md:text-[40px]">GanaBajao</h1>
-        <input
-          type="text"
-          onChange={(e) => setSongs(e.target.value)}
-          value={songs}
-          placeholder="Browse"
-          className="h-[40px] w-full sm:w-[70%]  rounded-lg  outline-blue-900 text-black   p-2"
-        />
-      </div>
-
-      <div className="flex flex-wrap gap-5 justify-center py-7  items-center">
-        <div className="flex flex-col overflow-hidden">
-          <div className="flex  gap-4 overflow-scroll HideScrollbar my-10 ">
-            {search.albums?.items.map((e, index) => {
-              return (
-                <>
-                  {e.images.length <= 0 ? null : (
-                    <Link
-                      to="/search"
-                      state={{ data: search?.tracks }}
-                      key={index}
-                    >
-                      <div
-                        className="flex flex-col items-center justify-center min-w-[250px] min-h-[250px] "
-                        key={index}
-                      >
-                        <img
-                          className=" rounded-full w-[200px] h-[200px]"
-                          src={e?.images[1]?.url}
-                          alt="avatar"
-                        />
-                        <div className="flex flex-col items-center justify-center">
-                          <h1 className="text-2xl font-bold">{e?.name}</h1>
-                        </div>
-                      </div>
-                    </Link>
-                  )}
-                </>
-              );
-            })}
+        <div className="flex items-center sm:hidden justify-center gap-2 p-4">
+          <img src="/logo.png" alt="logo" className="w-[40px] sm:w-[60px]" />
+          <h1 className="text-[30px] md:text-[30px]">GanaBajao</h1>
+        </div>
+        <div className="flex justify-between items-center w-full gap-4 flex-row-reverse sm:flex-row">
+          <input
+            type="text"
+            onChange={(e) => setSongs(e.target.value)}
+            value={songs}
+            placeholder="Browse"
+            className="h-[40px] w-full sm:w-[70%] bg-black rounded-lg outline-none border-2 focus:border-blue-900 focus:text-white text-black   p-2"
+          />
+          <div className="flex items-center justify-center gap-2">
+            <Link to="/profile">
+              <img
+                src=""
+                alt=""
+                className="w-[45px] h-[45px] sm:w-[60px] sm:h-[60px] bg-black rounded-full ring-white ring-2 object-cover cursor-pointer"
+              />
+            </Link>
           </div>
         </div>
+      </div>
+
+      {debounceSearch && (
+        <div className="flex  gap-4 overflow-scroll HideScrollbar  sm:my-10 ">
+          {search.albums?.items.map((e, index) => {
+            return (
+              <>
+                {e.images.length <= 0 ? null : (
+                  <Link
+                    to="/search"
+                    state={{ data: search?.tracks }}
+                    key={index}
+                  >
+                    <div
+                      className="flex flex-col gap-2 items-center justify-center w-[200px] sm:w-[250px] h-[250px] "
+                      key={index}
+                    >
+                      <img
+                        className=" rounded-full h-[140px] w-[140px] sm:w-[200px] sm:h-[200px]"
+                        src={e?.images[1]?.url}
+                        alt="avatar"
+                      />
+                      <div className="flex flex-col items-center justify-center">
+                        <h1 className="text-[15px] sm:text-[20px]  line-clamp-1 text-center">
+                          {e?.name}
+                        </h1>
+                      </div>
+                    </div>
+                  </Link>
+                )}
+              </>
+            );
+          })}
+        </div>
+      )}
+
+      <div className="flex flex-wrap gap-2 sm:gap-5 justify-center py-7  items-center">
         {loader ? (
           <Loader />
         ) : (
@@ -120,7 +137,7 @@ const DashboardComponent = () => {
                 state={{ data: e.id, token: _token }}
                 key={index}
               >
-                <div key={index} className="max-w-[250px]">
+                <div key={index} className="w-[140px] sm:w-[250px]">
                   <img loading="lazy" src={e.icons[0].url} alt="" />
                   <h1>{e.name}</h1>
                 </div>

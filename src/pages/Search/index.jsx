@@ -6,7 +6,6 @@ const Search = () => {
   const [data, SetData] = useState(location.state?.data);
   const [loading, setLoading] = useState(false);
 
-  console.log(data.items);
   return (
     <div>
       <SearchPlayListItems items={data?.items} loading={loading} />

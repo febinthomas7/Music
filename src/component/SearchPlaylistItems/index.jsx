@@ -4,6 +4,7 @@ import { FaForward, FaBackward, FaPlay } from "react-icons/fa";
 import { FaPause } from "react-icons/fa6";
 import PlaylistLoader from "../PlaylistLoader";
 import { MdAccessTime } from "react-icons/md";
+import Downloader from "../DownloadBtn";
 const SearchPlayListItems = ({ items = [], loading }) => {
   const [like, setLike] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -79,10 +80,6 @@ const SearchPlayListItems = ({ items = [], loading }) => {
       ? (selectSong = items.length - 1)
       : (selectSong -= 1);
   };
-  let d = new Date("2024-03-01T03:00:00Z");
-  // console.log("hours" + d.getUTCHours());
-  // console.log("min" + d.getUTCMinutes());
-  // console.log("sec" + d.getUTCSeconds());
 
   const checkWidth = (e) => {
     let width = clickRef.current.clientWidth;
@@ -90,7 +87,6 @@ const SearchPlayListItems = ({ items = [], loading }) => {
 
     const divProgress = (offset / width) * 100;
     audioElem.current.currentTime = (divProgress / 100) * currentSong.Length;
-    // console.log(divProgress);
   };
   return (
     <div className="flex flex-col  gap-3 bg-black p-4">
@@ -109,7 +105,7 @@ const SearchPlayListItems = ({ items = [], loading }) => {
               {loading ? (
                 <div className="flex flex-col  animate-pulse w-full h-full gap-4  ">
                   <div
-                    className="w-full h-full rounded-full
+                    className="w-[100px] h-[100px] sm:w-full sm:h-full rounded-full
                    bg-slate-700 "
                   ></div>
                 </div>
@@ -175,13 +171,13 @@ const SearchPlayListItems = ({ items = [], loading }) => {
           <div className="flex flex-col gap-4">
             {loading ? (
               <div className="flex flex-col  animate-pulse w-full min-w-[300px] max-w-[500px] gap-4  ">
-                <div className="w-full h-[40px] bg-slate-700 rounded-md"></div>
-                <div className="w-full h-[30px] bg-slate-700 rounded-md"></div>
+                <div className="w-[100px] sm:w-full h-[40px] bg-slate-700 rounded-md"></div>
+                <div className="w-[100px] sm:w-full h-[30px] bg-slate-700 rounded-md"></div>
                 <div className="w-[30px] h-[30px] bg-slate-700 rounded-md"></div>
               </div>
             ) : (
               <>
-                <h1 className="text-yellow-200 text-[20px] md:text-[30px]">
+                <h1 className="text-yellow-200 text-[20px] md:text-[30px] line-clamp-1">
                   {items[selectSong]?.name}
                 </h1>
                 <div className="flex flex-wrap comma">
@@ -193,7 +189,7 @@ const SearchPlayListItems = ({ items = [], loading }) => {
                     );
                   })}
                 </div>
-                <div className="text-white text-[20px]  ">
+                <div className="text-white text-[20px] flex flex-col sm:flex-row   sm:items-center gap-3 ">
                   {like ? (
                     <GoHeartFill
                       className="text-red-800 cursor-pointer"
@@ -205,12 +201,18 @@ const SearchPlayListItems = ({ items = [], loading }) => {
                       onClick={() => setLike(!like)}
                     />
                   )}
+
+                  <Downloader
+                    fileInput={items[selectSong]?.preview_url}
+                    fileN
+                    ame={items[selectSong]?.name}
+                  />
                 </div>
               </>
             )}
           </div>
         </div>
-        <div className="w-full mt-5 sm:mt-0">
+        <div className="w-full mt-[6px] sm:mt-0">
           {!loading && (
             <div className="text-white flex justify-between">
               <h1>
@@ -270,11 +272,6 @@ const SearchPlayListItems = ({ items = [], loading }) => {
             let d = new Date(item.album.release_date);
 
             let year = d.getFullYear();
-            // console.log("year: " + year);
-            // console.log("hours" + d.getUTCHours()); // Hours
-            // console.log("min" + d.getUTCMinutes());
-            // console.log("sec" + d.getUTCSeconds());
-            // console.log("days" + days);
 
             return (
               <div className="w-full h-full " key={index}>
@@ -308,7 +305,7 @@ const SearchPlayListItems = ({ items = [], loading }) => {
                           <h1 className="text-white">{item.name}</h1>
                         </div>
                         <div className="flex-1 hidden sm:flex">
-                          <h1 className="text-white ml-[50%]">{`${hour}:${min}:${sec}`}</h1>
+                          <h1 className="text-white ml-[50%]">{`${year}`}</h1>
                         </div>
                         <div className="flex-1 hidden sm:flex">
                           <h1 className="text-white ml-[75%]">

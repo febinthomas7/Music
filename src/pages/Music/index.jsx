@@ -36,12 +36,21 @@ const Music = () => {
   }, []);
 
   return (
-    <div>
-      <h1>{playlist?.message}</h1>
-
-      <div className="flex flex-wrap gap-5 justify-center py-7 items-center">
+    <div className="fixed h-screen w-full bg-slate-950">
+      <Link
+        to="/"
+        className="rounded-md bg-slate-800 text-white p-2 fixed mt-4 ml-4"
+      >
+        Back
+      </Link>
+      <div className="flex flex-wrap gap-5 justify-center pb-4  h-screen  overflow-y-auto">
+        <h1 className="text-[25px] w-full text-white text-center py-4">
+          {playlist?.message}
+        </h1>
         {loader ? (
           <Loader />
+        ) : playlist?.playlists.items.length <= 0 ? (
+          <h1 className="text-white text-[20px]">Not Found</h1>
         ) : (
           playlist?.playlists.items.map((item, index) => {
             return (
@@ -51,7 +60,7 @@ const Music = () => {
                 key={index}
               >
                 <img
-                  className="aspect-square w-[300px]"
+                  className="w-[140px] sm:w-[200px] sm:h-[200px]"
                   src={item?.images[0].url}
                   alt=""
                 />

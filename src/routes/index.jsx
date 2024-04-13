@@ -4,6 +4,10 @@ import Dashboard from "../pages/DashboardPage";
 import Music from "../pages/Music";
 import Playlist from "../pages/Playlist";
 import Search from "../pages/Search";
+import SignUp from "../pages/SignUp";
+import SignIn from "../pages/SignIn";
+import Profile from "../pages/ProfilePage";
+import Edit from "../pages/Editpage";
 const routes = createBrowserRouter([
   { path: "/", element: <Dashboard /> },
   {
@@ -17,6 +21,22 @@ const routes = createBrowserRouter([
   {
     path: "/search",
     element: <Search />,
+  },
+  {
+    path: "/signup",
+    element: <SignUp />,
+  },
+  {
+    path: "/signin",
+    element: <SignIn />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
+  },
+  {
+    path: "/edit",
+    element: <Edit />,
   },
 ]);
 export default routes;

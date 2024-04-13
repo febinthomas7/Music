@@ -36,11 +36,8 @@ const Playlist = () => {
     track();
   }, []);
 
-  console.log(playlist);
   return (
     <div>
-      {/* <h1>{location.state?.data.name}</h1>
-      <p>{location.state?.data.description}</p> */}
       <PlaylistItems items={playlist?.items} loading={loading} />
     </div>
   );
