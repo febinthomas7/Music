@@ -76,27 +76,27 @@ const DashboardComponent = () => {
     setLoader(false);
   };
 
-  const docRef = doc(db, "UserDetails", userid);
-  const get = async () => {
-    const docSnap = await getDoc(docRef);
+  // const docRef = doc(db, "UserDetails", userid);
+  // const get = async () => {
+  //   const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      let data = docSnap.data();
-      // console.log(data);
-      if (active == "true") {
-        setUserImage(data.avatar);
-      }
+  //   if (docSnap.exists()) {
+  //     let data = docSnap.data();
+  //     // console.log(data);
+  //     if (active == "true") {
+  //       setUserImage(data.avatar);
+  //     }
 
-      if (data.name == "") {
-        console.log("No such document!");
-      }
-    }
-    useEffect(() => {
-      setTimeout(() => {
-        get();
-      }, 500);
-    });
-  };
+  //     if (data.name == "") {
+  //       console.log("No such document!");
+  //     }
+  //   }
+  //   useEffect(() => {
+  //     setTimeout(() => {
+  //       get();
+  //     }, 500);
+  //   });
+  // };
 
   const userSignOut = () => {
     signOut(auth)
