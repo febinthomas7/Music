@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import {
   getAuth,
   signInWithEmailAndPassword,
-  signOut,
   onAuthStateChanged,
 } from "firebase/auth";
 import { app } from "../../Database/firebase";
@@ -22,16 +21,6 @@ const SignIn = () => {
     signInWithEmailAndPassword(auth, email, password).then((e) => {
       window.location.href = "/";
     });
-  };
-
-  const userSignOut = () => {
-    signOut(auth)
-      .then((e) => {
-        console.log(e, "out");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   const [open, setOpen] = useState(true);
@@ -135,8 +124,6 @@ const SignIn = () => {
                 </Link>
               </p>
             </form>
-
-            <div onClick={userSignOut}>signOut</div>
           </div>
         </div>
       </div>

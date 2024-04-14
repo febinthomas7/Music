@@ -5,8 +5,8 @@ import Debouncing from "../../Hooks/Debouncing";
 import { app } from "../../Database/firebase";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 const db = getFirestore(app);
-import { signOut } from "firebase/auth";
-
+import { signOut, getAuth } from "firebase/auth";
+const auth = getAuth(app);
 const DashboardComponent = () => {
   const [genreId, setGenreId] = useState();
   const [loader, setLoader] = useState(true);
@@ -38,6 +38,8 @@ const DashboardComponent = () => {
 
   useEffect(() => {
     getToken();
+    setUserid(localStorage.getItem("userId"));
+    setActive(localStorage.getItem("user"));
   }, []);
 
   const debounceSearch = Debouncing(songs, 500);
@@ -74,18 +76,13 @@ const DashboardComponent = () => {
     setLoader(false);
   };
 
-  useEffect(() => {
-    setUserid(localStorage.getItem("userId"));
-    setActive(localStorage.getItem("user"));
-  }, []);
-
   const docRef = doc(db, "UserDetails", userid);
   const get = async () => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
       let data = docSnap.data();
-      console.log(data);
+      // console.log(data);
       if (active == "true") {
         setUserImage(data.avatar);
       }
@@ -94,12 +91,12 @@ const DashboardComponent = () => {
         console.log("No such document!");
       }
     }
+    useEffect(() => {
+      setTimeout(() => {
+        get();
+      }, 500);
+    });
   };
-  useEffect(() => {
-    setTimeout(() => {
-      get();
-    }, 500);
-  });
 
   const userSignOut = () => {
     signOut(auth)
