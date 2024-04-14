@@ -85,7 +85,7 @@ const DashboardComponent = () => {
 
   return (
     <div className="w-full sm:w-[80%] sm:ml-[20%] md:wide bg-[#101010] ">
-      <div className="mt-5 py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center relative">
+      <div className="mt-5 w-full py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center ">
         <div className="flex items-center sm:hidden justify-start  gap-2 p-4 w-full">
           <img src="/logo.png" alt="logo" className="w-[40px] sm:w-[60px]" />
           <h1 className="text-[30px] md:text-[30px]">GanaBajao</h1>
@@ -115,13 +115,11 @@ const DashboardComponent = () => {
               </Link>
             )}
           </div>
-          <div className="flex items-center justify-center gap-2 text-[30px] ">
-            {active == "true" ? (
-              <Link to="/profile">
-                <CiSettings />
-              </Link>
-            ) : null}
-          </div>
+          {active == "true" ? (
+            <Link to="/profile">
+              <CiSettings className="text-[30px]" />
+            </Link>
+          ) : null}
         </div>
       </div>
 
