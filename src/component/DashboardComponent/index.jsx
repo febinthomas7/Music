@@ -7,7 +7,6 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 const db = getFirestore(app);
 import { signOut } from "firebase/auth";
 
-import { CLIENT_ID, CLIENT_SECRET } from "../config";
 const DashboardComponent = () => {
   const [genreId, setGenreId] = useState();
   const [loader, setLoader] = useState(true);
@@ -18,8 +17,8 @@ const DashboardComponent = () => {
 
   const [userImage, setUserImage] = useState("");
 
-  const clientId = CLIENT_ID;
-  const clientSecret = CLIENT_SECRET;
+  const clientId = "5c09b41300224c0392112b2df26e0e35";
+  const clientSecret = "e6ecbab94c6d48389f8a3dcaae020e8d";
 
   const [songs, setSongs] = useState("");
   const getToken = async () => {
@@ -33,8 +32,8 @@ const DashboardComponent = () => {
     });
 
     const data = await result.json();
-    _setToken(data.access_token);
-    _getGenres(data.access_token);
+    _setToken(data?.access_token);
+    _getGenres(data?.access_token);
   };
 
   useEffect(() => {
@@ -71,7 +70,7 @@ const DashboardComponent = () => {
       }
     );
     const data = await result.json();
-    setGenreId(data.categories.items);
+    setGenreId(data?.categories.items);
     setLoader(false);
   };
 
