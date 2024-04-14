@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import app from "../../Database/firebase";
+import { app } from "../../Database/firebase";
 import { Link } from "react-router-dom";
 const auth = getAuth(app);
 const SignUp = () => {

@@ -1,21 +1,14 @@
-import React, { useState } from "react";
-// import { getAuth, onAuthStateChanged } from "firebase/auth";
-import app from "../../Database/firebase";
-// const auth = getAuth(app);
-
+import React, { useEffect, useState } from "react";
 const Downloader = ({ fileInput, fileName }) => {
-  // const [file, setFile] = useState(false);
+  const [downloading, setDownloading] = useState(null);
+  useEffect(() => {
+    setDownloading(localStorage.getItem("user"));
+  }, []);
 
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) {
-  //     setFile(false);
-  //   }
-  // });
-
-  console.log("h");
-  const download = (e) => {
+  let download = (e) => {
     e.preventDefault();
-    fetchFile(fileInput);
+
+    if (downloading == "true") fetchFile(fileInput);
   };
 
   const fetchFile = (url) => {
@@ -33,13 +26,23 @@ const Downloader = ({ fileInput, fileName }) => {
   };
 
   return (
-    <button
-      onClick={download}
-      className="shadow-[#6b2828] py-[2px] px-4 bg-black text-white rounded-md shadow-lg sm:shadow-[#6b2828] sm:shadow-2xl"
-    >
-      {/* {file ? "Download" : "sign in"} */}
-      Download
-    </button>
+    <>
+      {downloading == "true" ? (
+        <button
+          onClick={download}
+          className="shadow-[#6b2828] py-[2px] px-4 bg-black text-white rounded-md shadow-lg sm:shadow-[#6b2828] sm:shadow-2xl"
+        >
+          Download
+        </button>
+      ) : (
+        <a
+          className="shadow-[#6b2828] py-[2px] px-4 bg-black text-white rounded-md shadow-lg sm:shadow-[#6b2828] sm:shadow-2xl"
+          href="/signin"
+        >
+          sign in
+        </a>
+      )}
+    </>
   );
 };
 

@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getStorage } from "firebase/storage";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCtjkpkL1oXUl9tEooe7jDQLbVJY_Vwcmw",
@@ -12,6 +14,16 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 
-export default app;
+const auth = getAuth(app);
+export const ImageDataBase = getStorage(app);
+export const TextDataBase = getFirestore(app);
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    localStorage.setItem("user", "true");
+  } else {
+    localStorage.setItem("user", "false");
+  }
+});

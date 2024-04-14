@@ -9,10 +9,10 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import app from "../../Database/firebase";
+import { app } from "../../Database/firebase";
 const auth = getAuth(app);
 onAuthStateChanged(auth, (user) => {
-  console.log(user);
+  if (user) localStorage.setItem("userId", JSON.stringify(user.uid));
 });
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +20,8 @@ const SignIn = () => {
   const signUp = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password).then(
-      (e) => (window.location.href = "/")
+      (e) => {}
+      // (window.location.href = "/")
     );
   };
 

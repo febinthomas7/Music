@@ -2,14 +2,23 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../Loader";
 import Debouncing from "../../Hooks/Debouncing";
+import { app } from "../../Database/firebase";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
+const db = getFirestore(app);
+
+import { CLIENT_ID, CLIENT_SECRET } from "../config";
 const DashboardComponent = () => {
   const [genreId, setGenreId] = useState();
   const [loader, setLoader] = useState(true);
   const [_token, _setToken] = useState();
   const [search, setSearch] = useState([]);
+  const [userid, setUserid] = useState("0UJRMeU6npgYZVEKnOT");
+  const [active, setActive] = useState(null);
 
-  const clientId = "5c09b41300224c0392112b2df26e0e35";
-  const clientSecret = "e6ecbab94c6d48389f8a3dcaae020e8d";
+  const [userImage, setUserImage] = useState("");
+
+  const clientId = CLIENT_ID;
+  const clientSecret = CLIENT_SECRET;
 
   const [songs, setSongs] = useState("");
   const getToken = async () => {
@@ -65,6 +74,33 @@ const DashboardComponent = () => {
     setLoader(false);
   };
 
+  useEffect(() => {
+    setUserid(localStorage.getItem("userId"));
+    setActive(localStorage.getItem("user"));
+  }, []);
+
+  const docRef = doc(db, "UserDetails", userid);
+  const get = async () => {
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      let data = docSnap.data();
+      console.log(data);
+      if (active == "true") {
+        setUserImage(data.avatar);
+      }
+
+      if (data.name == "") {
+        console.log("No such document!");
+      }
+    }
+  };
+  useEffect(() => {
+    setTimeout(() => {
+      get();
+    }, 500);
+  });
+
   return (
     <div className="w-full sm:w-[80%] sm:ml-[20%] md:wide bg-[#101010] ">
       <div className="mt-5 py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center">
@@ -80,12 +116,18 @@ const DashboardComponent = () => {
             placeholder="Browse"
             className="h-[40px] w-full sm:w-[70%] bg-black rounded-lg outline-none border-2 focus:border-blue-900 focus:text-white text-black   p-2"
           />
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center gap-2  w-[45px] h-[45px] sm:w-[60px] sm:h-[60px]">
             <Link to="/profile">
               <img
-                src=""
+                src={
+                  active == "true"
+                    ? userImage == ""
+                      ? "/avatar.webp"
+                      : userImage
+                    : "/avatar.webp"
+                }
                 alt=""
-                className="w-[45px] h-[45px] sm:w-[60px] sm:h-[60px] bg-black rounded-full ring-white ring-2 object-cover cursor-pointer"
+                className="w-[40px] h-[40px] sm:w-[60px] sm:h-[60px] bg-black rounded-full ring-white ring-2 object-cover cursor-pointer"
               />
             </Link>
           </div>
