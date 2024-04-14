@@ -7,15 +7,13 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 const db = getFirestore(app);
 import { signOut, getAuth } from "firebase/auth";
 const auth = getAuth(app);
+import { CiSettings } from "react-icons/ci";
 const DashboardComponent = () => {
   const [genreId, setGenreId] = useState();
   const [loader, setLoader] = useState(true);
   const [_token, _setToken] = useState();
   const [search, setSearch] = useState([]);
-  const [userid, setUserid] = useState("0UJRMeU6npgYZVEKnOT");
   const [active, setActive] = useState(null);
-
-  const [userImage, setUserImage] = useState("");
 
   const clientId = "5c09b41300224c0392112b2df26e0e35";
   const clientSecret = "e6ecbab94c6d48389f8a3dcaae020e8d";
@@ -38,7 +36,6 @@ const DashboardComponent = () => {
 
   useEffect(() => {
     getToken();
-    setUserid(localStorage.getItem("userId"));
     setActive(localStorage.getItem("user"));
   }, []);
 
@@ -76,32 +73,10 @@ const DashboardComponent = () => {
     setLoader(false);
   };
 
-  // const docRef = doc(db, "UserDetails", userid);
-  // const get = async () => {
-  //   const docSnap = await getDoc(docRef);
-
-  //   if (docSnap.exists()) {
-  //     let data = docSnap.data();
-  //     // console.log(data);
-  //     if (active == "true") {
-  //       setUserImage(data.avatar);
-  //     }
-
-  //     if (data.name == "") {
-  //       console.log("No such document!");
-  //     }
-  //   }
-  //   useEffect(() => {
-  //     setTimeout(() => {
-  //       get();
-  //     }, 500);
-  //   });
-  // };
-
   const userSignOut = () => {
     signOut(auth)
       .then((e) => {
-        console.log(e, "out");
+        setActive(false);
       })
       .catch((error) => {
         console.log(error);
@@ -110,8 +85,8 @@ const DashboardComponent = () => {
 
   return (
     <div className="w-full sm:w-[80%] sm:ml-[20%] md:wide bg-[#101010] ">
-      <div className="mt-5 py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center">
-        <div className="flex items-center sm:hidden justify-center gap-2 p-4">
+      <div className="mt-5 py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center relative">
+        <div className="flex items-center sm:hidden justify-start  gap-2 p-4 w-full">
           <img src="/logo.png" alt="logo" className="w-[40px] sm:w-[60px]" />
           <h1 className="text-[30px] md:text-[30px]">GanaBajao</h1>
         </div>
@@ -124,7 +99,7 @@ const DashboardComponent = () => {
             className="h-[40px] w-full sm:w-[70%] bg-black rounded-lg outline-none border-2 focus:border-blue-900 focus:text-white text-black   p-2"
           />
 
-          <div className="absolute sm:static top-[-110px] right-[-10px] sm:flex rounded-full sm:rounded-xl overflow-hidden">
+          <div className="absolute sm:static top-[-85px] right-[-10px] sm:flex rounded-full sm:rounded-xl overflow-hidden">
             {active == "true" ? (
               <div
                 onClick={userSignOut}
@@ -140,20 +115,12 @@ const DashboardComponent = () => {
               </Link>
             )}
           </div>
-          <div className="flex items-center justify-center gap-2  w-[45px] h-[45px] sm:w-[60px] sm:h-[60px]">
-            <Link to="/profile">
-              <img
-                src={
-                  active == "true"
-                    ? userImage == ""
-                      ? "/avatar.webp"
-                      : userImage
-                    : "/avatar.webp"
-                }
-                alt=""
-                className="w-[40px] h-[40px] sm:w-[60px] sm:h-[60px] bg-black rounded-full ring-white ring-2 object-cover cursor-pointer"
-              />
-            </Link>
+          <div className="flex items-center justify-center gap-2 text-[30px] ">
+            {active == "true" ? (
+              <Link to="/profile">
+                <CiSettings />
+              </Link>
+            ) : null}
           </div>
         </div>
       </div>

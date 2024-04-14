@@ -23,7 +23,7 @@ const Profile = () => {
 
     if (docSnap.exists()) {
       let data = docSnap.data();
-      console.log(data);
+      console.log(data, "data");
       if (active == "true") {
         setUsername(data.name);
         setUserImage(data.avatar);
