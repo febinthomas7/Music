@@ -127,7 +127,7 @@ const DashboardComponent = () => {
             className="h-[40px] w-full sm:w-[70%] bg-black rounded-lg outline-none border-2 focus:border-blue-900 focus:text-white text-black   p-2"
           />
 
-          <div className="absolute top-[-110px] right-[-10px] sm:flex rounded-full sm:rounded-xl overflow-hidden">
+          <div className="absolute sm:static top-[-110px] right-[-10px] sm:flex rounded-full sm:rounded-xl overflow-hidden">
             {active == "true" ? (
               <div
                 onClick={userSignOut}
