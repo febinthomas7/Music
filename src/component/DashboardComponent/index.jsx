@@ -5,6 +5,7 @@ import Debouncing from "../../Hooks/Debouncing";
 import { app } from "../../Database/firebase";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 const db = getFirestore(app);
+import { signOut } from "firebase/auth";
 
 import { CLIENT_ID, CLIENT_SECRET } from "../config";
 const DashboardComponent = () => {
@@ -101,6 +102,16 @@ const DashboardComponent = () => {
     }, 500);
   });
 
+  const userSignOut = () => {
+    signOut(auth)
+      .then((e) => {
+        console.log(e, "out");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="w-full sm:w-[80%] sm:ml-[20%] md:wide bg-[#101010] ">
       <div className="mt-5 py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center">
@@ -108,7 +119,7 @@ const DashboardComponent = () => {
           <img src="/logo.png" alt="logo" className="w-[40px] sm:w-[60px]" />
           <h1 className="text-[30px] md:text-[30px]">GanaBajao</h1>
         </div>
-        <div className="flex justify-between items-center w-full gap-4 flex-row-reverse sm:flex-row">
+        <div className="flex justify-between items-center w-full gap-4 flex-row-reverse sm:flex-row relative">
           <input
             type="text"
             onChange={(e) => setSongs(e.target.value)}
@@ -116,6 +127,23 @@ const DashboardComponent = () => {
             placeholder="Browse"
             className="h-[40px] w-full sm:w-[70%] bg-black rounded-lg outline-none border-2 focus:border-blue-900 focus:text-white text-black   p-2"
           />
+
+          <div className="absolute top-[-110px] right-[-10px] sm:flex rounded-full sm:rounded-xl overflow-hidden">
+            {active == "true" ? (
+              <div
+                onClick={userSignOut}
+                className="bg-blue-950 text-white p-4 rounded-xl text-[15px] cursor-pointer"
+              >
+                signOut
+              </div>
+            ) : (
+              <Link to="/signin">
+                <div className="bg-blue-950 text-white p-4 rounded-xl text-[15px]">
+                  SignIn
+                </div>
+              </Link>
+            )}
+          </div>
           <div className="flex items-center justify-center gap-2  w-[45px] h-[45px] sm:w-[60px] sm:h-[60px]">
             <Link to="/profile">
               <img
