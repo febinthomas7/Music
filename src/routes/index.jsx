@@ -8,6 +8,7 @@ import SignUp from "../pages/SignUp";
 import SignIn from "../pages/SignIn";
 import Profile from "../pages/ProfilePage";
 import Edit from "../pages/Editpage";
+import LikedSongs from "../pages/LikedSongs";
 const routes = createBrowserRouter([
   { path: "/", element: <Dashboard /> },
   {
@@ -33,6 +34,10 @@ const routes = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
+  },
+  {
+    path: "/likedsongs",
+    element: <LikedSongs />,
   },
   {
     path: "/edit",

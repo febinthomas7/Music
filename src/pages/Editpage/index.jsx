@@ -90,9 +90,6 @@ const Edit = () => {
         {" "}
         Save
       </button>
-
-      {/* <input type="file" name="file" id="file" />
-      <label htmlFor="file">Choose a file (Click me)</label> */}
     </div>
   );
 };

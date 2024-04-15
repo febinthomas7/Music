@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import Loader from "../Loader";
 import Debouncing from "../../Hooks/Debouncing";
 import { app } from "../../Database/firebase";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
-const db = getFirestore(app);
 import { signOut, getAuth } from "firebase/auth";
 const auth = getAuth(app);
 import { CiSettings } from "react-icons/ci";
@@ -116,7 +114,7 @@ const DashboardComponent = () => {
             )}
           </div>
           {active == "true" ? (
-            <Link to="/profile">
+            <Link to="/profile" state={{ token: _token }}>
               <CiSettings className="text-[30px]" />
             </Link>
           ) : null}

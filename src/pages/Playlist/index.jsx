@@ -16,6 +16,7 @@ const Playlist = () => {
   });
   // console.log(id.id);
   const [playlist, setPlaylist] = useState();
+  console.log(playlist);
 
   const track = async () => {
     const result = await fetch(

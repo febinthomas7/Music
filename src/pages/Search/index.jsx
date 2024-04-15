@@ -5,6 +5,7 @@ const Search = () => {
   const location = useLocation();
   const [data, SetData] = useState(location.state?.data);
   const [loading, setLoading] = useState(false);
+  console.log(data);
 
   return (
     <div>

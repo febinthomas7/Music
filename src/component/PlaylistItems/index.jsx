@@ -5,9 +5,16 @@ import { FaPause } from "react-icons/fa6";
 import PlaylistLoader from "../PlaylistLoader";
 import { MdAccessTime } from "react-icons/md";
 import Downloader from "../DownloadBtn";
+import { app } from "../../Database/firebase";
+import { doc, getDoc, setDoc, getFirestore } from "firebase/firestore";
+
+const db = getFirestore(app);
 
 const PlaylistItems = ({ items = [], loading }) => {
   const [like, setLike] = useState(false);
+  const [userid, setUserid] = useState("0UJRMeU6npgYZVEKnOT");
+  const [active, setActive] = useState(null);
+
   const [isPlaying, setIsPlaying] = useState(false);
   let [selectSong, setSelectSong] = useState(0);
   let [currentSong, setCurrentSong] = useState({
@@ -16,10 +23,30 @@ const PlaylistItems = ({ items = [], loading }) => {
     Length: 0,
     currentDuration: 0,
   });
+  const docRef = doc(db, "userLikedDetails", userid);
+  const getUserLiked = async () => {
+    const docSnap = await getDoc(docRef);
+
+    let data = docSnap.data();
+
+    setArtistId(data?.artistId);
+
+    // if (docSnap.exists()) {
+
+    //   if (data.name == "") {
+    //     console.log("No such document!");
+    //   }
+    // }
+  };
+
+  useEffect(() => {
+    getUserLiked();
+  }, []);
   const fallbackImage = (e) => {
     e.src =
       "https://imgs.search.brave.com/iyRPT1-Ryk4AK_UqBbU4AQPJbJBvDcw-gQ98m622OYM/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9yZXMu/Y2xvdWRpbmFyeS5j/b20vcHJhY3RpY2Fs/ZGV2L2ltYWdlL2Zl/dGNoL3MtLUpRSkhq/N0c0LS0vY19saW1p/dCxmX2F1dG8sZmxf/cHJvZ3Jlc3NpdmUs/cV9hdXRvLHdfODAw/L2h0dHBzOi8vZGV2/LXRvLXVwbG9hZHMu/czMuYW1hem9uYXdz/LmNvbS91cGxvYWRz/L2FydGljbGVzLzdj/eHRxZTdyNWJ4aWs4/cHk1czd0LnBuZw";
   };
+  const [artistId, setArtistId] = useState([]);
 
   const audioElem = useRef();
   const clickRef = useRef();
@@ -39,6 +66,11 @@ const PlaylistItems = ({ items = [], loading }) => {
       null;
     }
   }, [currentSong.progress]);
+
+  useEffect(() => {
+    setUserid(localStorage.getItem("userId"));
+    setActive(localStorage.getItem("user"));
+  }, []);
 
   const onPlaying = () => {
     const duration = audioElem.current.duration;
@@ -90,6 +122,19 @@ const PlaylistItems = ({ items = [], loading }) => {
     audioElem.current.currentTime = (divProgress / 100) * currentSong.Length;
     console.log(divProgress);
   };
+
+  const add = async () => {
+    await setDoc(doc(db, "userLikedDetails", userid), {
+      artistId: [items[selectSong]?.track?.id, ...artistId],
+    });
+  };
+
+  const likedSongs = () => {
+    setArtistId(items[selectSong]?.track?.id);
+    setLike(true);
+    add();
+  };
+
   return (
     <div className="flex flex-col  gap-3 bg-black p-4">
       <div className="fixed bg-black w-full top-0 left-0 p-4 bg-gradient-to-b from-[#ee3050] from-10% via-[#881327] via-40% to-black to-90% ">
@@ -193,16 +238,17 @@ const PlaylistItems = ({ items = [], loading }) => {
                   })}
                 </div>
                 <div className="text-white text-[20px] flex flex-col sm:flex-row  justify-start sm:items-center gap-3 ">
-                  {like ? (
+                  {like ||
+                  items[selectSong]?.track?.id ==
+                    artistId?.filter(
+                      (e) => items[selectSong]?.track?.id == e
+                    ) ? (
                     <GoHeartFill
                       className="text-red-800 cursor-pointer"
-                      onClick={() => setLike(!like)}
+                      onClick={() => setLike(false)}
                     />
                   ) : (
-                    <GoHeart
-                      className="cursor-pointer"
-                      onClick={() => setLike(!like)}
-                    />
+                    <GoHeart className="cursor-pointer" onClick={likedSongs} />
                   )}
                   <Downloader
                     fileInput={items[selectSong]?.track?.preview_url}
