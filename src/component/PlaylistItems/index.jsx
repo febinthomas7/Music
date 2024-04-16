@@ -6,7 +6,14 @@ import PlaylistLoader from "../PlaylistLoader";
 import { MdAccessTime } from "react-icons/md";
 import Downloader from "../DownloadBtn";
 import { app } from "../../Database/firebase";
-import { doc, getDoc, setDoc, getFirestore } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  onSnapshot,
+  setDoc,
+  getFirestore,
+  collection,
+} from "firebase/firestore";
 
 const db = getFirestore(app);
 
@@ -14,7 +21,7 @@ const PlaylistItems = ({ items = [], loading }) => {
   const [like, setLike] = useState(false);
   const [userid, setUserid] = useState("0UJRMeU6npgYZVEKnOT");
   const [active, setActive] = useState(null);
-
+  const [artistId, setArtistId] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   let [selectSong, setSelectSong] = useState(0);
   let [currentSong, setCurrentSong] = useState({
@@ -23,30 +30,6 @@ const PlaylistItems = ({ items = [], loading }) => {
     Length: 0,
     currentDuration: 0,
   });
-  const docRef = doc(db, "userLikedDetails", userid);
-  const getUserLiked = async () => {
-    const docSnap = await getDoc(docRef);
-
-    let data = docSnap.data();
-
-    setArtistId(data?.artistId);
-
-    // if (docSnap.exists()) {
-
-    //   if (data.name == "") {
-    //     console.log("No such document!");
-    //   }
-    // }
-  };
-
-  useEffect(() => {
-    getUserLiked();
-  }, []);
-  const fallbackImage = (e) => {
-    e.src =
-      "https://imgs.search.brave.com/iyRPT1-Ryk4AK_UqBbU4AQPJbJBvDcw-gQ98m622OYM/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9yZXMu/Y2xvdWRpbmFyeS5j/b20vcHJhY3RpY2Fs/ZGV2L2ltYWdlL2Zl/dGNoL3MtLUpRSkhq/N0c0LS0vY19saW1p/dCxmX2F1dG8sZmxf/cHJvZ3Jlc3NpdmUs/cV9hdXRvLHdfODAw/L2h0dHBzOi8vZGV2/LXRvLXVwbG9hZHMu/czMuYW1hem9uYXdz/LmNvbS91cGxvYWRz/L2FydGljbGVzLzdj/eHRxZTdyNWJ4aWs4/cHk1czd0LnBuZw";
-  };
-  const [artistId, setArtistId] = useState([]);
 
   const audioElem = useRef();
   const clickRef = useRef();
@@ -122,6 +105,18 @@ const PlaylistItems = ({ items = [], loading }) => {
     audioElem.current.currentTime = (divProgress / 100) * currentSong.Length;
     console.log(divProgress);
   };
+  const getUserLiked = () => {
+    onSnapshot(doc(db, "userLikedDetails", userid), (doc) => {
+      if (active == "true") {
+        setArtistId(doc.data()?.artistId);
+      }
+      console.log(doc);
+    });
+  };
+
+  useEffect(() => {
+    getUserLiked();
+  }, []);
 
   const add = async () => {
     await setDoc(doc(db, "userLikedDetails", userid), {
@@ -130,10 +125,12 @@ const PlaylistItems = ({ items = [], loading }) => {
   };
 
   const likedSongs = () => {
-    setArtistId(items[selectSong]?.track?.id);
+    // setArtistId(items[selectSong]?.track?.id);
     setLike(true);
     add();
   };
+  console.log(items[selectSong]?.track?.id);
+  console.log(artistId);
 
   return (
     <div className="flex flex-col  gap-3 bg-black p-4">
@@ -243,10 +240,7 @@ const PlaylistItems = ({ items = [], loading }) => {
                     artistId?.filter(
                       (e) => items[selectSong]?.track?.id == e
                     ) ? (
-                    <GoHeartFill
-                      className="text-red-800 cursor-pointer"
-                      onClick={() => setLike(false)}
-                    />
+                    <GoHeartFill className="text-red-800 cursor-pointer" />
                   ) : (
                     <GoHeart className="cursor-pointer" onClick={likedSongs} />
                   )}
@@ -268,7 +262,12 @@ const PlaylistItems = ({ items = [], loading }) => {
                   ? "0" + Math.floor(currentSong.currentDuration)
                   : Math.floor(currentSong.currentDuration)}
               </h1>
-              <h1>0.{Math.floor(currentSong.Length)}</h1>
+              <h1>
+                0.
+                {currentSong.Length == 0 || isNaN(currentSong.Length)
+                  ? "29"
+                  : Math.floor(currentSong.Length)}
+              </h1>
             </div>
           )}
           {loading ? (
@@ -320,14 +319,6 @@ const PlaylistItems = ({ items = [], loading }) => {
             let hour = d.getUTCHours();
             let min = d.getUTCMinutes();
             let sec = d.getUTCSeconds();
-            let days = d.getUTCDay();
-            let month = d.getMonth();
-            let year = d.getFullYear();
-            // console.log("year: " + year);
-            // console.log("hours" + d.getUTCHours()); // Hours
-            // console.log("min" + d.getUTCMinutes());
-            // console.log("sec" + d.getUTCSeconds());
-            // console.log("days" + days);
 
             return (
               <div className="w-full h-full " key={index}>
@@ -348,7 +339,6 @@ const PlaylistItems = ({ items = [], loading }) => {
                             alt=""
                             className=" h-[50px] w-[50px]"
                             loading="lazy"
-                            onError={fallbackImage}
                           />
                           <div className="w-1/2 flex flex-col gap-2">
                             <div className="p-4 h-[40px] text-white bg-red-500 flex justify-center items-center ">
@@ -396,7 +386,6 @@ const PlaylistItems = ({ items = [], loading }) => {
                             alt=""
                             className=" h-[50px] w-[50px]"
                             loading="lazy"
-                            onError={fallbackImage}
                           />
                           <div className="w-full flex flex-col gap-2">
                             <h1 className="text-yellow-200">

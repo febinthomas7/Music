@@ -191,10 +191,7 @@ const SearchPlayListItems = ({ items = [], loading }) => {
                 </div>
                 <div className="text-white text-[20px] flex flex-col sm:flex-row   sm:items-center gap-3 ">
                   {like ? (
-                    <GoHeartFill
-                      className="text-red-800 cursor-pointer"
-                      onClick={() => setLike(!like)}
-                    />
+                    <GoHeartFill className="text-red-800 cursor-pointer" />
                   ) : (
                     <GoHeart
                       className="cursor-pointer"
@@ -221,7 +218,12 @@ const SearchPlayListItems = ({ items = [], loading }) => {
                   ? "0" + Math.floor(currentSong.currentDuration)
                   : Math.floor(currentSong.currentDuration)}
               </h1>
-              <h1>0.{Math.floor(currentSong.Length)}</h1>
+              <h1>
+                0.
+                {currentSong.Length == 0 || isNaN(currentSong.Length)
+                  ? "29"
+                  : Math.floor(currentSong.Length)}
+              </h1>
             </div>
           )}
           {loading ? (

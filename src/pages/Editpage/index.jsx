@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 const db = getFirestore(app);
 const Edit = () => {
   const [userid, setUserid] = useState(null);
-  const [txt, setTxt] = useState("");
   const [img, setImg] = useState("");
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const Edit = () => {
   };
 
   return (
-    <div className="bg-black w-full h-screen flex flex-col  relative">
+    <div className="bg-black w-full h-svh flex flex-col  relative">
       <h1 className="text-white text-center py-4">Edit Profile</h1>
       <div className="flex flex-col w-full h-[300px] bg-black p-5 shadow-sm shadow-white">
         <div className="w-full h-full flex items-center justify-center gap-4 rounded-full  ">
@@ -55,7 +54,7 @@ const Edit = () => {
             </div>
           </>
 
-          <input onChange={(e) => setTxt(e.target.value)} className="hidden" />
+          {/* <input onChange={(e) => setTxt(e.target.value)} className="hidden" /> */}
           <input
             onChange={(e) => handleUpload(e)}
             className="w-[100px] hidden"

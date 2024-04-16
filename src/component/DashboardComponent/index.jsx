@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../Loader";
-import Debouncing from "../../Hooks/Debouncing";
+import Debouncing from "../../utils/Debouncing";
 import { app } from "../../Database/firebase";
 import { signOut, getAuth } from "firebase/auth";
 const auth = getAuth(app);

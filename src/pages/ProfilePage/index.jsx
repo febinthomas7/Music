@@ -8,6 +8,7 @@ import { MdAccessTime } from "react-icons/md";
 import PlaylistLoader from "../../component/PlaylistLoader";
 import { GoHeart, GoHeartFill } from "react-icons/go";
 import { FaPause } from "react-icons/fa6";
+import { IoIosRefresh } from "react-icons/io";
 
 import { FaForward, FaBackward, FaPlay } from "react-icons/fa";
 
@@ -19,11 +20,12 @@ const Profile = () => {
   const [active, setActive] = useState(null);
   const [like, setLike] = useState(false);
   const [artistId, setArtistId] = useState([]);
-
   const [username, setUsername] = useState("");
   const [userImage, setUserImage] = useState("");
   const [items, SetItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(true);
+  const [profileLoading, setProfileLoading] = useState(true);
   let [selectSong, setSelectSong] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   let [currentSong, setCurrentSong] = useState({
@@ -117,6 +119,7 @@ const Profile = () => {
       if (active == "true") {
         setUsername(data.name);
         setUserImage(data.avatar);
+        setProfileLoading(false);
       }
 
       if (data.name == "") {
@@ -124,24 +127,30 @@ const Profile = () => {
       }
     }
   };
+  useEffect(() => {
+    get();
+  });
   const docReff = doc(db, "userLikedDetails", userid);
   const getUserLiked = async () => {
+    setRefresh(true);
+
     const docSnap = await getDoc(docReff);
 
     let data = docSnap.data();
 
     setArtistId(data?.artistId);
+    setRefresh(false);
   };
   useEffect(() => {
-    setTimeout(() => {
-      get();
-      getUserLiked();
-    }, 500);
+    getUserLiked();
   }, []);
-
   const track = async () => {
     const result = await fetch(
-      `https://api.spotify.com/v1/tracks?ids=7ouMYWpwJ422jRcDASZB7P%2C4VqPOruhp5EdPBeR92t6lQ%2C2takcwOaAZWiXQijPHIx7B`,
+      `https://api.spotify.com/v1/tracks?ids=${
+        artistId == undefined || artistId == ""
+          ? "7ouMYWpwJ422jRcDASZB7P"
+          : artistId?.toString()
+      }`,
       {
         method: "GET",
         headers: {
@@ -155,7 +164,7 @@ const Profile = () => {
   };
   useEffect(() => {
     track();
-  }, []);
+  }, [artistId]);
 
   const add = async () => {
     await setDoc(doc(db, "userLikedDetails", userid), {
@@ -170,7 +179,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col bg-black h-screen w-full relative">
+    <div className="flex flex-col bg-black h-svh w-full relative">
       <div className=" bg-[#141414c2] flex flex-col-reverse w-full gap-2 bottom-0 p-4 z-10 absolute">
         <audio
           className="hidden"
@@ -275,10 +284,7 @@ const Profile = () => {
                   {like ||
                   items[selectSong]?.id ==
                     artistId?.filter((e) => items[selectSong]?.id == e) ? (
-                    <GoHeartFill
-                      className="text-red-800 cursor-pointer"
-                      onClick={() => setLike(false)}
-                    />
+                    <GoHeartFill className="text-red-800 cursor-pointer" />
                   ) : (
                     <GoHeart className="cursor-pointer" onClick={likedSongs} />
                   )}
@@ -296,7 +302,12 @@ const Profile = () => {
                   ? "0" + Math.floor(currentSong.currentDuration)
                   : Math.floor(currentSong.currentDuration)}
               </h1>
-              <h1>0.{Math.floor(currentSong.Length)}</h1>
+              <h1>
+                0.
+                {currentSong.Length == 0 || isNaN(currentSong.Length)
+                  ? "29"
+                  : Math.floor(currentSong.Length)}
+              </h1>
             </div>
           )}
           {loading ? (
@@ -322,32 +333,52 @@ const Profile = () => {
       <Link to="/" className="absolute">
         <SlArrowLeft className="text-gray-300 absolute text-[20px] top-6 left-4" />
       </Link>
+
+      <IoIosRefresh
+        className={`text-gray-300 absolute text-[20px] top-[40%] right-7 ${
+          refresh ? "animate-spin" : "animate-none"
+        }`}
+        onClick={getUserLiked}
+      />
       <div className="flex flex-col w-full h-[350px] bg-black px-8  py-5 bg-gradient-to-b from-[#ee3050] from-10% via-[#881327] via-40% to-black to-90% shadow-sm shadow-white">
         <div className="h-full flex gap-5">
           <Link to="/edit">
             <div className="w-full h-full flex items-center justify-center  overflow-hidden">
-              <img
-                src={
-                  active == "true"
-                    ? userImage == ""
-                      ? "/avatar.webp"
-                      : userImage
-                    : "/avatar.webp"
-                }
-                alt=""
-                className=" w-[150px] object-cover  rounded-full"
-              />
+              {profileLoading && (
+                <div className="animate-pulse w-[150px] h-[150px] rounded-full bg-slate-700">
+                  {" "}
+                </div>
+              )}
+              {!profileLoading && (
+                <img
+                  src={
+                    active == "true"
+                      ? userImage == ""
+                        ? "/avatar.webp"
+                        : userImage
+                      : "/avatar.webp"
+                  }
+                  alt=""
+                  className=" w-[150px] object-cover  rounded-full"
+                />
+              )}
             </div>
           </Link>
 
           <div className="  h-full flex justify-center items-center w-[150px]">
-            <h1 className="text-[20px] w-full p-4 text-white">
-              {active == "true"
-                ? username == ""
-                  ? "Your name"
-                  : username
-                : "User"}
-            </h1>
+            {profileLoading && (
+              <div className="h-[60px] w-full bg-slate-700 animate-pulse"></div>
+            )}
+
+            {!profileLoading && (
+              <h1 className="text-[20px] w-full p-4 text-white">
+                {active == "true"
+                  ? username == ""
+                    ? "Your name"
+                    : username
+                  : "User"}
+              </h1>
+            )}
           </div>
         </div>
         <Link to="/edit">
@@ -359,134 +390,140 @@ const Profile = () => {
       <div className="flex flex-col  gap-3 bg-black p-4 text-white">
         <h1 className="px-4">Liked songs</h1>
       </div>
-
       <div className="h-full fixed mt-[420px] w-full">
-        {loading && <PlaylistLoader />}
-        <div className="md:flex items-center hidden  w-full   text-white  p-[12px]">
-          <div className="  flex-[1/2] p-4 ">
-            <h1>#</h1>
+        <div className="pb-[550px] h-screen overflow-auto">
+          {loading && <PlaylistLoader />}
+          <div className="md:flex items-center hidden  w-full   text-white  p-[12px]">
+            <div className="  flex-[1/2] p-4 ">
+              <h1>#</h1>
+            </div>
+            <div className=" flex-[2] ">
+              <h1>Title</h1>
+            </div>
+            <div className="flex-1 ">
+              <h1>Album</h1>
+            </div>
+            <div className="flex-1">
+              <h1 className="ml-[50%]">Date</h1>
+            </div>
+            <div className="flex-1 ">
+              <h1 className="ml-[75%]">
+                <MdAccessTime />
+              </h1>
+            </div>
           </div>
-          <div className=" flex-[2] ">
-            <h1>Title</h1>
-          </div>
-          <div className="flex-1 ">
-            <h1>Album</h1>
-          </div>
-          <div className="flex-1">
-            <h1 className="ml-[50%]">Date</h1>
-          </div>
-          <div className="flex-1 ">
-            <h1 className="ml-[75%]">
-              <MdAccessTime />
-            </h1>
-          </div>
-        </div>
 
-        {!loading &&
-          items?.map((item, index) => {
-            let d = new Date(item?.album?.release_date);
+          {!loading &&
+            items?.map((item, index) => {
+              let d = new Date(item?.album?.release_date);
 
-            let year = d.getFullYear();
+              let year = d.getFullYear();
 
-            return (
-              <div className="w-full  " key={index}>
-                <div className="w-full ">
-                  <div>
-                    {item?.preview_url === null ? (
-                      <div
-                        className={`flex items-center p-3 cursor-pointer hover:bg-[#292929] rounded-md ${
-                          index === selectSong ? "bg-[#323232] " : null
-                        }`}
-                      >
-                        <div className="flex-[1/2] p-4">
-                          <h1 className="text-white">{index + 1}</h1>
-                        </div>
-                        <div className="flex-[2] flex gap-[26px] items-center">
-                          <img
-                            src={item?.album?.images[2]?.url}
-                            alt=""
-                            className=" h-[50px] w-[50px]"
-                            loading="lazy"
-                          />
-                          <div className="w-1/2 flex flex-col gap-2">
-                            <div className="p-4 h-[40px] text-white bg-red-500 flex justify-center items-center ">
-                              <>Not Available</>
+              return (
+                <div className="w-full  " key={index}>
+                  <div className="w-full ">
+                    <div>
+                      {item?.preview_url === null ? (
+                        <div
+                          className={`flex items-center p-3 cursor-pointer hover:bg-[#292929] rounded-md ${
+                            index === selectSong ? "bg-[#323232] " : null
+                          }`}
+                        >
+                          <div className="flex-[1/2] p-4">
+                            <h1 className="text-white">{index + 1}</h1>
+                          </div>
+                          <div className="flex-[2] flex gap-[26px] items-center">
+                            <img
+                              src={item?.album?.images[2]?.url}
+                              alt=""
+                              className=" h-[50px] w-[50px]"
+                              loading="lazy"
+                            />
+                            <div className="w-1/2 flex flex-col gap-2">
+                              <div className="p-4 h-[40px] text-white bg-red-500 flex justify-center items-center ">
+                                <>Not Available</>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className="flex-1 hidden sm:flex">
-                          <h1 className="text-white">{item.name}</h1>
-                        </div>
-                        <div className="flex-1 hidden sm:flex">
-                          <h1 className="text-white ml-[50%]">{`${year}`}</h1>
-                        </div>
-                        <div className="flex-1 hidden sm:flex">
-                          <h1 className="text-white ml-[75%]">
-                            {Math.floor(
-                              (item.duration_ms % (1000 * 60 * 60)) /
-                                (1000 * 60)
-                            )}
-                            :
-                            {Math.floor(
-                              (item.duration_ms % (1000 * 60)) / (1000 * 60)
-                            )}
-                          </h1>
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        className={`flex items-center p-3 cursor-pointer hover:bg-[#292929] rounded-md `}
-                      >
-                        <div className="flex-[1/2] p-4">
-                          <h1 className="text-white">{index + 1}</h1>
-                        </div>
-                        <div className="flex-[2] flex gap-[26px] items-center">
-                          <img
-                            src={item?.album.images[2]?.url}
-                            alt=""
-                            className=" h-[50px] w-[50px]"
-                            loading="lazy"
-                          />
-                          <div className="w-full flex flex-col gap-2">
-                            <h1 className="text-yellow-200">{item?.name}</h1>
-                            <div className="flex flex-wrap ">
-                              {item?.artists.map((e, index) => {
-                                return (
-                                  <h1 className="text-white comma" key={index}>
-                                    {e.name}
-                                  </h1>
-                                );
-                              })}
-                            </div>
+                          <div className="flex-1 hidden sm:flex">
+                            <h1 className="text-white">{item.name}</h1>
+                          </div>
+                          <div className="flex-1 hidden sm:flex">
+                            <h1 className="text-white ml-[50%]">{`${year}`}</h1>
+                          </div>
+                          <div className="flex-1 hidden sm:flex">
+                            <h1 className="text-white ml-[75%]">
+                              {Math.floor(
+                                (item.duration_ms % (1000 * 60 * 60)) /
+                                  (1000 * 60)
+                              )}
+                              :
+                              {Math.floor(
+                                (item.duration_ms % (1000 * 60)) / (1000 * 60)
+                              )}
+                            </h1>
                           </div>
                         </div>
+                      ) : (
+                        <div
+                          className={`flex items-center p-3 cursor-pointer hover:bg-[#292929] rounded-md ${
+                            index === selectSong ? " bg-[#323232]" : null
+                          }`}
+                        >
+                          <div className="flex-[1/2] p-4">
+                            <h1 className="text-white">{index + 1}</h1>
+                          </div>
+                          <div className="flex-[2] flex gap-[26px] items-center">
+                            <img
+                              src={item?.album.images[2]?.url}
+                              alt=""
+                              className=" h-[50px] w-[50px]"
+                              loading="lazy"
+                            />
+                            <div className="w-full flex flex-col gap-2">
+                              <h1 className="text-yellow-200">{item?.name}</h1>
+                              <div className="flex flex-wrap ">
+                                {item?.artists.map((e, index) => {
+                                  return (
+                                    <h1
+                                      className="text-white comma"
+                                      key={index}
+                                    >
+                                      {e.name}
+                                    </h1>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </div>
 
-                        <div className="flex-1 hidden sm:flex">
-                          <h1 className="text-white">{item?.name}</h1>
+                          <div className="flex-1 hidden sm:flex">
+                            <h1 className="text-white">{item?.name}</h1>
+                          </div>
+                          <div className="flex-1 hidden sm:flex">
+                            <h1 className="text-white ml-[50%]">{`${year}`}</h1>
+                          </div>
+                          <div className="flex-1 hidden sm:flex">
+                            <h1 className="text-white ml-[75%]">
+                              {Math.floor(
+                                (item?.duration_ms % (1000 * 60 * 60)) /
+                                  (1000 * 60)
+                              )}
+                              :
+                              {Math.floor(
+                                (item?.duration_ms % (1000 * 60)) / (1000 * 60)
+                              )}
+                            </h1>
+                          </div>
                         </div>
-                        <div className="flex-1 hidden sm:flex">
-                          <h1 className="text-white ml-[50%]">{`${year}`}</h1>
-                        </div>
-                        <div className="flex-1 hidden sm:flex">
-                          <h1 className="text-white ml-[75%]">
-                            {Math.floor(
-                              (item?.duration_ms % (1000 * 60 * 60)) /
-                                (1000 * 60)
-                            )}
-                            :
-                            {Math.floor(
-                              (item?.duration_ms % (1000 * 60)) / (1000 * 60)
-                            )}
-                          </h1>
-                        </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+        </div>
       </div>
     </div>
   );

@@ -26,4 +26,6 @@ onAuthStateChanged(auth, (user) => {
   } else {
     localStorage.setItem("user", "false");
   }
+
+  console.log("load");
 });
