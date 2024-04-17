@@ -6,6 +6,7 @@ import { app } from "../../Database/firebase";
 import { IoMdMic } from "react-icons/io";
 import { GiTireIronCross } from "react-icons/gi";
 import { signOut, getAuth } from "firebase/auth";
+import { RiSpeakLine } from "react-icons/ri";
 const auth = getAuth(app);
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -109,6 +110,26 @@ const DashboardComponent = () => {
 
   return (
     <div className="w-full sm:w-[80%] sm:ml-[20%] md:wide bg-[#101010] ">
+      {listening && (
+        <div className="fixed h-[250px] w-[250px] ring-1  md:w-[400px] md:h-[400px] bg-[#161616] top-[25%] sm:top-[20%] rounded-full left-[20%] md:left-[45%] justify-center flex items-center">
+          <div className="w-full flex justify-center gap-2  items-center absolute top-10">
+            <h1 className="text-white text-[30px]">talk</h1>
+            <RiSpeakLine className="text-white text-[30px] animate-pulse" />
+          </div>
+
+          {transcript ? (
+            <h1 className="text-[25px]">{transcript}</h1>
+          ) : (
+            <div className="flex justify-center items-center gap-2">
+              <div className="h-[50px] w-[20px] bg-slate-500 animate-bounce"></div>
+              <div className="h-[40px] w-[20px] bg-slate-500 animate-bounce"></div>
+              <div className="h-[40px] w-[20px] bg-slate-500 animate-bounce"></div>
+              <div className="h-[50px] w-[20px] bg-slate-500 animate-bounce"></div>
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="pt-5 bg-black w-full sm:w-[80%] fixed py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center ">
         <div className="flex items-center sm:hidden justify-start  gap-2 p-4 w-full">
           <img src="/logo.png" alt="logo" className="w-[40px] sm:w-[60px]" />
