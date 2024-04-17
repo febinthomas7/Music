@@ -114,7 +114,7 @@ const DashboardComponent = () => {
               onChange={(e) => setSongs(e.target.value)}
               value={songs}
               placeholder="Browse"
-              className="h-[40px] w-[70%] sm:w-[80%]  bg-black rounded-lg outline-none border-2 focus:border-blue-900 focus:text-white text-black   p-2"
+              className="h-[40px] w-[70%] sm:w-[80%]  bg-black rounded-lg outline-none border-2 text-white focus:border-blue-900 focus:text-white   p-2"
             />
             {!listening ? (
               <div
@@ -151,11 +151,6 @@ const DashboardComponent = () => {
           </div>
           {active == "true" && (
             <Link to="/profile" state={{ token: _token }}>
-              {/* <img
-                src="/avatar.webp"
-                alt=""
-                className="w-[45px]  flex justify-center items-center bg-[#5a5a5a5d] rounded-full cursor-pointer hover:bg-[#8080805d]"
-              /> */}
               <div className="w-[45px] h-[45px] flex justify-center items-center bg-[#5a5a5a5d] rounded-full cursor-pointer hover:bg-[#8080805d] text-[30px]">
                 <CiSettings />
               </div>
@@ -168,13 +163,9 @@ const DashboardComponent = () => {
         <div className="flex  gap-4 overflow-scroll HideScrollbar mt-[150px] sm:mt-[105px] ">
           {search.albums?.items.map((e, index) => {
             return (
-              <>
+              <div key={index}>
                 {e.images.length <= 0 ? null : (
-                  <Link
-                    to="/search"
-                    state={{ data: search?.tracks }}
-                    key={index}
-                  >
+                  <Link to="/search" state={{ data: search?.tracks }}>
                     <div
                       className="flex flex-col gap-2 items-center justify-center w-[200px] sm:w-[250px] h-[250px] "
                       key={index}
@@ -192,7 +183,7 @@ const DashboardComponent = () => {
                     </div>
                   </Link>
                 )}
-              </>
+              </div>
             );
           })}
         </div>
@@ -208,16 +199,14 @@ const DashboardComponent = () => {
         ) : (
           genreId?.map((e, index) => {
             return (
-              <Link
-                to="/music"
-                state={{ data: e.id, token: _token }}
-                key={index}
-              >
-                <div key={index} className="w-[140px] sm:w-[250px]">
-                  <img loading="lazy" src={e.icons[0].url} alt="" />
-                  <h1>{e.name}</h1>
-                </div>
-              </Link>
+              <div key={index}>
+                <Link to="/music" state={{ data: e.id, token: _token }}>
+                  <div key={index} className="w-[140px] sm:w-[250px]">
+                    <img loading="lazy" src={e.icons[0].url} alt="" />
+                    <h1>{e.name}</h1>
+                  </div>
+                </Link>
+              </div>
             );
           })
         )}
