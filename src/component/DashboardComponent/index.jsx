@@ -3,18 +3,45 @@ import { Link } from "react-router-dom";
 import Loader from "../Loader";
 import Debouncing from "../../utils/Debouncing";
 import { app } from "../../Database/firebase";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { IoMdMic } from "react-icons/io";
+import { GiTireIronCross } from "react-icons/gi";
 import { signOut, getAuth } from "firebase/auth";
 const auth = getAuth(app);
+const db = getFirestore(app);
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 import { CiSettings } from "react-icons/ci";
+const clientId = "5c09b41300224c0392112b2df26e0e35";
+const clientSecret = "e6ecbab94c6d48389f8a3dcaae020e8d";
+
 const DashboardComponent = () => {
   const [genreId, setGenreId] = useState();
+  // const [userid, setUserid] = useState("0UJRMeU6npgYZVEKnOT");
   const [loader, setLoader] = useState(true);
   const [_token, _setToken] = useState();
   const [search, setSearch] = useState([]);
   const [active, setActive] = useState(null);
+  // const [userImage, setUserImage] = useState("");
+  // const docRef = doc(db, "UserDetails", userid);
 
-  const clientId = "5c09b41300224c0392112b2df26e0e35";
-  const clientSecret = "e6ecbab94c6d48389f8a3dcaae020e8d";
+  // const get = async () => {
+  //   const docSnap = await getDoc(docRef);
+  //   if (docSnap.exists()) {
+  //     let data = docSnap.data();
+  //     if (active == "true") {
+  //       setUserImage(data.avatar);
+  //     }
+
+  //     if (data.name == "") {
+  //       console.log("No such document!");
+  //     }
+  //   }
+  // };
+  // useEffect(() => {
+  //   get();
+  // });
 
   const [songs, setSongs] = useState("");
   const getToken = async () => {
@@ -35,6 +62,7 @@ const DashboardComponent = () => {
   useEffect(() => {
     getToken();
     setActive(localStorage.getItem("user"));
+    // setUserid(localStorage.getItem("userId"));
   }, []);
 
   const debounceSearch = Debouncing(songs, 500);
@@ -80,28 +108,57 @@ const DashboardComponent = () => {
         console.log(error);
       });
   };
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true, language: "en-IN" });
+  const { transcript, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
+  // console.log(transcript);
+
+  if (!browserSupportsSpeechRecognition) {
+    return null;
+  }
+  // let speak = (e) => {
+  // sprec.start();
+  // };
 
   return (
     <div className="w-full sm:w-[80%] sm:ml-[20%] md:wide bg-[#101010] ">
-      <div className="mt-5 w-full py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center ">
+      <div className="pt-5 bg-black w-full sm:w-[80%] fixed py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center ">
         <div className="flex items-center sm:hidden justify-start  gap-2 p-4 w-full">
           <img src="/logo.png" alt="logo" className="w-[40px] sm:w-[60px]" />
           <h1 className="text-[30px] md:text-[30px]">GanaBajao</h1>
         </div>
         <div className="flex justify-between items-center w-full gap-4 flex-row-reverse sm:flex-row relative">
-          <input
-            type="text"
-            onChange={(e) => setSongs(e.target.value)}
-            value={songs}
-            placeholder="Browse"
-            className="h-[40px] w-full sm:w-[70%] bg-black rounded-lg outline-none border-2 focus:border-blue-900 focus:text-white text-black   p-2"
-          />
+          <div className="w-full flex gap-2 items-center">
+            <input
+              type="text"
+              onChange={(e) => setSongs(e.target.value)}
+              value={songs}
+              placeholder="Browse"
+              className="h-[40px] w-[90%]  bg-black rounded-lg outline-none border-2 focus:border-blue-900 focus:text-white text-black   p-2"
+            />
+            {/* <div
+              onClick={startListening}
+              className="w-[45px] h-[45px] flex justify-center items-center bg-[#5a5a5a5d] rounded-full cursor-pointer hover:bg-[#8080805d]"
+            >
+              <IoMdMic />
+            </div> */}
+            <Link to="/test">
+              <div className="w-[45px] h-[45px] flex justify-center items-center bg-[#5a5a5a5d] rounded-full cursor-pointer hover:bg-[#8080805d]"></div>
+            </Link>
+            <div
+              onClick={SpeechRecognition.stopListening}
+              className="w-[45px] h-[45px] flex justify-center items-center bg-[#5a5a5a5d] rounded-full cursor-pointer hover:bg-[#8080805d]"
+            >
+              <GiTireIronCross />
+            </div>
+          </div>
 
-          <div className="absolute sm:static top-[-85px] right-[-10px] sm:flex rounded-full sm:rounded-xl overflow-hidden">
+          <div className="absolute sm:static top-[-85px] right-[-10px] sm:flex w-[87px] sm:rounded-xl overflow-hidden">
             {active == "true" ? (
               <div
                 onClick={userSignOut}
-                className="bg-blue-950 text-white p-4 rounded-xl text-[15px] cursor-pointer"
+                className="bg-blue-950 text-white p-3  rounded-xl text-[15px] cursor-pointer"
               >
                 signOut
               </div>
@@ -113,16 +170,26 @@ const DashboardComponent = () => {
               </Link>
             )}
           </div>
-          {active == "true" ? (
+          {/* {active == "true" ? (
             <Link to="/profile" state={{ token: _token }}>
-              <CiSettings className="text-[30px]" />
+              <img
+                src={
+                  active == "true"
+                    ? userImage == ""
+                      ? "/avatar.webp"
+                      : userImage
+                    : "/avatar.webp"
+                }
+                alt=""
+                className="w-[60px]  rounded-full"
+              />
             </Link>
-          ) : null}
+          ) : null} */}
         </div>
       </div>
 
       {debounceSearch && (
-        <div className="flex  gap-4 overflow-scroll HideScrollbar  sm:my-10 ">
+        <div className="flex  gap-4 overflow-scroll HideScrollbar mt-[150px] sm:mt-[105px] ">
           {search.albums?.items.map((e, index) => {
             return (
               <>
@@ -155,7 +222,11 @@ const DashboardComponent = () => {
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2 sm:gap-5 justify-center py-7  items-center">
+      <div
+        className={`flex flex-wrap gap-2 sm:gap-5 ${
+          !debounceSearch ? "mt-[200px] sm:mt-[100px]" : null
+        } justify-center py-7  items-center`}
+      >
         {loader ? (
           <Loader />
         ) : (

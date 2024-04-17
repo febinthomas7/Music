@@ -179,7 +179,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col bg-black h-svh w-full relative">
+    <div className="flex flex-col bg-black h-dvh w-full relative">
       <div className=" bg-[#141414c2] flex flex-col-reverse w-full gap-2 bottom-0 p-4 z-10 absolute">
         <audio
           className="hidden"
@@ -190,7 +190,7 @@ const Profile = () => {
           onTimeUpdate={onPlaying}
         ></audio>
 
-        <div className="flex  items-center flex-row sm:justify-between  gap-6  ">
+        <div className="flex  items-center flex-row justify-evenly  gap-6  ">
           <div className="flex  gap-6  ">
             <div className="">
               {loading ? (
@@ -230,7 +230,7 @@ const Profile = () => {
               ) : (
                 <>
                   <div
-                    className="w-[40px] h-[40px] text-white bg-[#7f7171] hover:text-black rounded-full flex justify-center items-center cursor-pointer"
+                    className="w-[40px] h-[40px]  text-white bg-[#7f7171] hover:text-black hover:bg-white rounded-full flex justify-center items-center cursor-pointer"
                     title="prev"
                     onClick={() => setSelectSong(prevSong)}
                   >
@@ -248,7 +248,7 @@ const Profile = () => {
                     {isPlaying ? <FaPause /> : <FaPlay />}
                   </div>
                   <div
-                    className="w-[40px] h-[40px] text-white bg-[#7f7171] hover:text-black rounded-full flex justify-center items-center cursor-pointer"
+                    className="w-[40px] h-[40px] text-white bg-[#7f7171] hover:text-black hover:bg-white rounded-full flex justify-center items-center cursor-pointer"
                     title="next"
                     onClick={() => setSelectSong(nextSong)}
                   >
@@ -334,13 +334,7 @@ const Profile = () => {
         <SlArrowLeft className="text-gray-300 absolute text-[20px] top-6 left-4" />
       </Link>
 
-      <IoIosRefresh
-        className={`text-gray-300 absolute text-[20px] top-[40%] right-7 ${
-          refresh ? "animate-spin" : "animate-none"
-        }`}
-        onClick={getUserLiked}
-      />
-      <div className="flex flex-col w-full h-[350px] bg-black px-8  py-5 bg-gradient-to-b from-[#ee3050] from-10% via-[#881327] via-40% to-black to-90% shadow-sm shadow-white">
+      <div className="flex flex-col w-full h-[270px] bg-black px-8  py-5 bg-gradient-to-b from-[#ee3050] from-10% via-[#881327] via-40% to-black to-90% shadow-sm shadow-white">
         <div className="h-full flex gap-5">
           <Link to="/edit">
             <div className="w-full h-full flex items-center justify-center  overflow-hidden">
@@ -381,16 +375,25 @@ const Profile = () => {
             )}
           </div>
         </div>
-        <Link to="/edit">
-          <button className="px-[10px] py-[4px] text-[15px] bg-transparent border-[1px] w-[70px] font-thin text-white rounded-3xl">
-            Edit
-          </button>
-        </Link>
+        <div className="flex justify-between items-center">
+          <Link to="/edit">
+            <button className="px-[10px] py-[4px] text-[15px] bg-transparent border-[1px] w-[70px] font-thin text-white rounded-3xl">
+              Edit
+            </button>
+          </Link>
+
+          <IoIosRefresh
+            className={`text-gray-300  text-[20px]  ${
+              refresh ? "animate-spin" : "animate-none"
+            }`}
+            onClick={getUserLiked}
+          />
+        </div>
       </div>
       <div className="flex flex-col  gap-3 bg-black p-4 text-white">
         <h1 className="px-4">Liked songs</h1>
       </div>
-      <div className="h-full fixed mt-[420px] w-full">
+      <div className="h-full fixed mt-[324px] w-full">
         <div className="pb-[550px] h-screen overflow-auto">
           {loading && <PlaylistLoader />}
           <div className="md:flex items-center hidden  w-full   text-white  p-[12px]">

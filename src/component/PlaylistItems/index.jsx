@@ -184,7 +184,7 @@ const PlaylistItems = ({ items = [], loading }) => {
               ) : (
                 <>
                   <div
-                    className="w-[50px] h-[50px] text-white bg-[#7f7171] hover:text-black rounded-full flex justify-center items-center cursor-pointer"
+                    className="w-[50px] h-[50px]  text-white bg-[#7f7171] hover:text-black hover:bg-white rounded-full flex justify-center items-center cursor-pointer"
                     title="prev"
                     onClick={() => setSelectSong(prevSong)}
                   >
@@ -202,7 +202,7 @@ const PlaylistItems = ({ items = [], loading }) => {
                     {isPlaying ? <FaPause /> : <FaPlay />}
                   </div>
                   <div
-                    className="w-[50px] h-[50px] text-white bg-[#7f7171] hover:text-black rounded-full flex justify-center items-center cursor-pointer"
+                    className="w-[50px] h-[50px]  text-white bg-[#7f7171] hover:text-black hover:bg-white rounded-full flex justify-center items-center cursor-pointer"
                     title="next"
                     onClick={() => setSelectSong(nextSong)}
                   >
