@@ -6,14 +6,7 @@ import PlaylistLoader from "../PlaylistLoader";
 import { MdAccessTime } from "react-icons/md";
 import Downloader from "../DownloadBtn";
 import { app } from "../../Database/firebase";
-import {
-  doc,
-  getDoc,
-  onSnapshot,
-  setDoc,
-  getFirestore,
-  collection,
-} from "firebase/firestore";
+import { doc, onSnapshot, setDoc, getFirestore } from "firebase/firestore";
 
 const db = getFirestore(app);
 
@@ -103,7 +96,6 @@ const PlaylistItems = ({ items = [], loading }) => {
 
     const divProgress = (offset / width) * 100;
     audioElem.current.currentTime = (divProgress / 100) * currentSong.Length;
-    console.log(divProgress);
   };
   const getUserLiked = () => {
     onSnapshot(doc(db, "userLikedDetails", userid), (doc) => {
@@ -129,8 +121,6 @@ const PlaylistItems = ({ items = [], loading }) => {
     setLike(true);
     add();
   };
-  console.log(items[selectSong]?.track?.id);
-  console.log(artistId);
 
   return (
     <div className="flex flex-col  gap-3 bg-black p-4">

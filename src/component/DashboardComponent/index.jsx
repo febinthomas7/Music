@@ -86,15 +86,22 @@ const DashboardComponent = () => {
       });
   };
 
-  const startListening = () =>
-    SpeechRecognition.startListening({ continuous: true, language: "en-IN" });
-  const { listening, transcript, browserSupportsSpeechRecognition } =
-    useSpeechRecognition();
-  useEffect(() => {
-    listening ? setSongs(transcript) : null;
-  }, [listening]);
+  const {
+    listening,
+    transcript,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
 
-  console.log(transcript);
+  const startListening = () => {
+    SpeechRecognition.startListening({ continuous: true, language: "en-IN" });
+    setSongs(transcript);
+  };
+
+  useEffect(() => {
+    setSongs(transcript);
+    resetTranscript();
+  }, [listening]);
 
   if (!browserSupportsSpeechRecognition) {
     return null;
