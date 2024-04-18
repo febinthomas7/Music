@@ -95,13 +95,16 @@ const DashboardComponent = () => {
   } = useSpeechRecognition();
 
   const startListening = () => {
-    SpeechRecognition.startListening({ continuous: true, language: "en-IN" });
+    resetTranscript();
+
+    SpeechRecognition.startListening({ language: "en-IN" });
     setSongs(transcript);
   };
-
+  const stopListening = () => {
+    SpeechRecognition.stopListening();
+  };
   useEffect(() => {
     setSongs(transcript);
-    resetTranscript();
   }, [listening]);
 
   if (!browserSupportsSpeechRecognition) {
@@ -111,7 +114,7 @@ const DashboardComponent = () => {
   return (
     <div className="w-full sm:w-[80%] sm:ml-[20%] md:wide bg-[#101010] ">
       {listening && (
-        <div className="fixed h-[250px] w-[250px] ring-1  md:w-[400px] md:h-[400px] bg-[#161616] top-[25%] sm:top-[20%] rounded-full left-[20%] md:left-[45%] justify-center flex items-center">
+        <div className="fixed h-[250px] w-[250px] ring-1 z-20 md:w-[400px] md:h-[400px] bg-[#161616] top-[35%] sm:top-[20%] rounded-full left-[18%] md:left-[45%] justify-center flex items-center">
           <div className="w-full flex justify-center gap-2  items-center absolute top-10">
             <h1 className="text-white text-[30px]">talk</h1>
             <RiSpeakLine className="text-white text-[30px] animate-pulse" />
@@ -137,13 +140,24 @@ const DashboardComponent = () => {
         </div>
         <div className="flex justify-between items-center w-full gap-4 flex-row-reverse sm:flex-row relative">
           <div className="w-full flex gap-2 items-center justify-end sm:justify-start">
-            <input
-              type="text"
-              onChange={(e) => setSongs(e.target.value)}
-              value={songs}
-              placeholder="Browse"
-              className="h-[40px] w-[70%] sm:w-[80%]  bg-black rounded-lg outline-none border-2 text-white focus:border-blue-900 focus:text-white   p-2"
-            />
+            <div
+              className={`w-[80%] ${active ? "w-[70%]" : "w-[80%]"} relative`}
+            >
+              <input
+                type="text"
+                onChange={(e) => setSongs(e.target.value)}
+                value={songs}
+                placeholder="Browse"
+                className={`h-[40px] w-full  bg-black rounded-lg outline-none border-2 text-white focus:border-blue-900 focus:text-white   p-2`}
+              />
+              {songs && (
+                <GiTireIronCross
+                  onClick={() => setSongs("")}
+                  className="absolute right-3 top-[12px] cursor-pointer"
+                />
+              )}
+            </div>
+
             {!listening ? (
               <div
                 onClick={startListening}
@@ -153,10 +167,13 @@ const DashboardComponent = () => {
               </div>
             ) : (
               <div
-                onClick={SpeechRecognition.stopListening}
-                className="w-[45px] h-[45px] flex justify-center items-center bg-[#5a5a5a5d] rounded-full cursor-pointer hover:bg-[#8080805d]"
+                onClick={stopListening}
+                className="w-[45px] h-[45px] relative  flex justify-center items-center  rounded-full cursor-pointer"
               >
-                <GiTireIronCross />
+                <span className="animate-ping absolute  h-[20px] w-[20px] rounded-full bg-sky-400 opacity-75"></span>
+                <span className="  rounded-full h-3 w-3 bg-sky-500"></span>
+
+                {/* <GiTireIronCross /> */}
               </div>
             )}
           </div>
