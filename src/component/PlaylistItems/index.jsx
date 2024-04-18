@@ -6,7 +6,7 @@ import PlaylistLoader from "../PlaylistLoader";
 import { MdAccessTime } from "react-icons/md";
 import Downloader from "../DownloadBtn";
 import { app } from "../../Database/firebase";
-import { doc, onSnapshot, setDoc, getFirestore } from "firebase/firestore";
+import { doc, setDoc, getFirestore } from "firebase/firestore";
 
 const db = getFirestore(app);
 
@@ -103,10 +103,7 @@ const PlaylistItems = ({ items = [], loading }) => {
     await setDoc(doc(db, "userLikedDetails", userid), {
       artistId: [items[selectSong]?.track?.id, ...artistId],
     });
-    // setArtistId(items[selectSong]?.track?.id, ...artistId);
   };
-  console.log(artistId);
-  // console.log(items[selectSong]?.track?.id);
 
   const likedSongs = () => {
     setLike(true);

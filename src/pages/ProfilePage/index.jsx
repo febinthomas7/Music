@@ -23,6 +23,7 @@ const Profile = () => {
   const [username, setUsername] = useState("");
   const [userImage, setUserImage] = useState("");
   const [items, SetItems] = useState([]);
+  const [recommendations, setRecommendations] = useState(false);
   const [loading, setLoading] = useState(true);
   const [profileLoading, setProfileLoading] = useState(true);
   let [selectSong, setSelectSong] = useState(0);
@@ -138,10 +139,29 @@ const Profile = () => {
     const data = await result.json();
     SetItems(data.tracks);
     setLoading(false);
+    setRecommendations(false);
   };
   useEffect(() => {
     track();
   }, [artistId]);
+
+  const recommendation = async () => {
+    const result = await fetch(
+      `https://api.spotify.com/v1/recommendations?limit=50&seed_tracks=${artistId.filter(
+        (e, index) => index <= 4
+      )}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token.token,
+        },
+      }
+    );
+
+    const data = await result.json();
+    SetItems(data.tracks);
+    setRecommendations(true);
+  };
 
   const add = async () => {
     await setDoc(doc(db, "userLikedDetails", userid), {
@@ -336,7 +356,7 @@ const Profile = () => {
             </div>
           </Link>
 
-          <div className="  h-full flex justify-center items-center w-[150px]">
+          <div className="  h-full flex justify-center items-center w-[120px]">
             {profileLoading && (
               <div className="h-[60px] w-full bg-slate-700 animate-pulse"></div>
             )}
@@ -358,17 +378,29 @@ const Profile = () => {
               Edit
             </button>
           </Link>
-
-          {/* <IoIosRefresh
-            className={`text-gray-300  text-[20px]  ${
-              refresh ? "animate-spin" : "animate-none"
-            }`}
-            onClick={getUserLiked}
-          /> */}
         </div>
       </div>
-      <div className="flex flex-col  gap-3 bg-black p-4 text-white">
-        <h1 className="px-4">Liked songs</h1>
+      <div className="flex   gap-3 bg-black p-4 text-white">
+        <h1
+          onClick={track}
+          className={`px-4 py-1 rounded-md  ${
+            recommendations == false
+              ? "outline outline-offset-2 outline-blue-950"
+              : null
+          }  cursor-pointer`}
+        >
+          Liked songs
+        </h1>
+        <h1
+          onClick={recommendation}
+          className={`px-4 py-1 rounded-md  ${
+            recommendations == true
+              ? "outline outline-offset-2  outline-blue-950"
+              : null
+          }  cursor-pointer`}
+        >
+          Recommended songs
+        </h1>
       </div>
       <div className="h-full fixed mt-[324px] w-full">
         <div className="pb-[550px] h-screen overflow-auto">
@@ -450,6 +482,10 @@ const Profile = () => {
                           className={`flex items-center p-3 cursor-pointer hover:bg-[#292929] rounded-md ${
                             index === selectSong ? " bg-[#323232]" : null
                           }`}
+                          onClick={() => {
+                            setSelectSong(index);
+                            setIsPlaying(!isPlaying);
+                          }}
                         >
                           <div className="flex-[1/2] p-4">
                             <h1 className="text-white">{index + 1}</h1>

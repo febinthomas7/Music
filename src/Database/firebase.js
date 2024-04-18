@@ -50,8 +50,6 @@ const get = async () => {
       localStorage.setItem("userImage", JSON.stringify("/avatar.webp"));
       localStorage.setItem("username", "your Name");
     }
-
-    console.log(data);
   }
 };
 get();
