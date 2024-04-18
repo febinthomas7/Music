@@ -62,7 +62,10 @@ const getUserLiked = () => {
       if (doc.data()?.artistId) {
         localStorage.setItem("artistId", JSON.stringify(doc.data()?.artistId));
       } else {
-        localStorage.setItem("artistId", JSON.stringify(["11324566"]));
+        localStorage.setItem(
+          "artistId",
+          JSON.stringify(["7ouMYWpwJ422jRcDASZB7P"])
+        );
       }
     }
   });

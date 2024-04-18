@@ -124,7 +124,7 @@ const Profile = () => {
   const track = async () => {
     const result = await fetch(
       `https://api.spotify.com/v1/tracks?ids=${
-        artistId == undefined || artistId == "" || artistId == "11324566"
+        artistId == undefined || artistId == ""
           ? "7ouMYWpwJ422jRcDASZB7P"
           : artistId?.toString()
       }`,
