@@ -28,7 +28,7 @@ onAuthStateChanged(auth, (user) => {
     localStorage.setItem("userId", "");
     localStorage.setItem("userImage", "");
     localStorage.setItem("username", "");
-    localStorage.setItem("artistId", "");
+    localStorage.setItem("artistId", "[249531616,2495656]");
   }
 
   console.log("load");
@@ -41,16 +41,17 @@ const docRef = doc(db, "UserDetails", user ? user : "122324234");
 const get = async () => {
   const docSnap = await getDoc(docRef);
 
-  if (docSnap.exists()) {
-    let data = docSnap.data();
-    if (active == "true") {
+  let data = docSnap.data();
+  if (active == "true") {
+    if (data) {
       localStorage.setItem("userImage", JSON.stringify(data.avatar));
       localStorage.setItem("username", data.name);
+    } else {
+      localStorage.setItem("userImage", JSON.stringify("/avatar.webp"));
+      localStorage.setItem("username", "your Name");
     }
 
-    if (data.name == "") {
-      console.log("No such document!");
-    }
+    console.log(data);
   }
 };
 get();
@@ -58,7 +59,11 @@ get();
 const getUserLiked = () => {
   onSnapshot(doc(db, "userLikedDetails", user ? user : "122324234"), (doc) => {
     if (active == "true") {
-      localStorage.setItem("artistId", JSON.stringify(doc.data()?.artistId));
+      if (doc.data()?.artistId) {
+        localStorage.setItem("artistId", JSON.stringify(doc.data()?.artistId));
+      } else {
+        localStorage.setItem("artistId", JSON.stringify(["11324566"]));
+      }
     }
   });
 };

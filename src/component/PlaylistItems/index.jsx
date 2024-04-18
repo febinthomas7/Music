@@ -14,7 +14,7 @@ const PlaylistItems = ({ items = [], loading }) => {
   const [like, setLike] = useState(false);
   const [userid, setUserid] = useState("0UJRMeU6npgYZVEKnOT");
   const [active, setActive] = useState(null);
-  const [artistId, setArtistId] = useState([]);
+  const [artistId, setArtistId] = useState([""]);
   const [isPlaying, setIsPlaying] = useState(false);
   let [selectSong, setSelectSong] = useState(0);
   let [currentSong, setCurrentSong] = useState({
