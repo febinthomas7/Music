@@ -10,9 +10,7 @@ import {
 } from "firebase/auth";
 import { app } from "../../Database/firebase";
 const auth = getAuth(app);
-onAuthStateChanged(auth, (user) => {
-  if (user) localStorage.setItem("userId", JSON.stringify(user.uid));
-});
+
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

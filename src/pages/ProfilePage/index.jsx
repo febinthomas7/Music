@@ -24,7 +24,6 @@ const Profile = () => {
   const [userImage, setUserImage] = useState("");
   const [items, SetItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refresh, setRefresh] = useState(true);
   const [profileLoading, setProfileLoading] = useState(true);
   let [selectSong, setSelectSong] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -50,6 +49,12 @@ const Profile = () => {
       currentDuration: currentDuration,
     });
   };
+
+  window.addEventListener("load", () => {
+    if (active == "false") {
+      window.location.href = "/";
+    }
+  });
 
   useEffect(() => {
     if (isPlaying) {
@@ -109,41 +114,13 @@ const Profile = () => {
   useEffect(() => {
     setUserid(localStorage.getItem("userId"));
     setActive(localStorage.getItem("user"));
+    setUsername(localStorage.getItem("username"));
+    setUserImage(JSON.parse(localStorage.getItem("userImage")));
+    setArtistId(JSON.parse(localStorage.getItem("artistId")));
+
+    setProfileLoading(false);
   }, []);
 
-  const docRef = doc(db, "UserDetails", userid);
-  const get = async () => {
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      let data = docSnap.data();
-      if (active == "true") {
-        setUsername(data.name);
-        setUserImage(data.avatar);
-        setProfileLoading(false);
-      }
-
-      if (data.name == "") {
-        console.log("No such document!");
-      }
-    }
-  };
-  useEffect(() => {
-    get();
-  });
-  const docReff = doc(db, "userLikedDetails", userid);
-  const getUserLiked = async () => {
-    setRefresh(true);
-
-    const docSnap = await getDoc(docReff);
-
-    let data = docSnap.data();
-
-    setArtistId(data?.artistId);
-    setRefresh(false);
-  };
-  useEffect(() => {
-    getUserLiked();
-  }, []);
   const track = async () => {
     const result = await fetch(
       `https://api.spotify.com/v1/tracks?ids=${
@@ -353,7 +330,7 @@ const Profile = () => {
                       : "/avatar.webp"
                   }
                   alt=""
-                  className=" w-[150px] object-cover  rounded-full"
+                  className=" w-[150px] h-[150px] object-cover  rounded-full"
                 />
               )}
             </div>
@@ -382,12 +359,12 @@ const Profile = () => {
             </button>
           </Link>
 
-          <IoIosRefresh
+          {/* <IoIosRefresh
             className={`text-gray-300  text-[20px]  ${
               refresh ? "animate-spin" : "animate-none"
             }`}
             onClick={getUserLiked}
-          />
+          /> */}
         </div>
       </div>
       <div className="flex flex-col  gap-3 bg-black p-4 text-white">

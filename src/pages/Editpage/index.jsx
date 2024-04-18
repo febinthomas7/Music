@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { app, ImageDataBase, TextDataBase } from "../../Database/firebase";
+import { app, ImageDataBase } from "../../Database/firebase";
 import { doc, setDoc, getFirestore } from "firebase/firestore";
+import { LiaSpinnerSolid } from "react-icons/lia";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { SlArrowLeft } from "react-icons/sl";
 import { MdEdit } from "react-icons/md";
@@ -8,19 +9,38 @@ import { Link } from "react-router-dom";
 
 const db = getFirestore(app);
 const Edit = () => {
-  const [userid, setUserid] = useState(null);
-  const [img, setImg] = useState("");
+  const [userid, setUserid] = useState("0UJRMeU6npgYZVEKnOT");
+  const [userImage, setUserImage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [img, setImg] = useState(JSON.parse(localStorage.getItem("userImage")));
+  const [active, setActive] = useState(null);
+  const [name, setName] = useState(localStorage.getItem("username"));
 
   useEffect(() => {
     setUserid(localStorage.getItem("userId"));
+    setActive(localStorage.getItem("user"));
+    setUsername(localStorage.getItem("username"));
+    setUserImage(JSON.parse(localStorage.getItem("userImage")));
   }, []);
 
-  const [name, setName] = useState("");
+  window.addEventListener("load", () => {
+    if (active == "false") {
+      window.location.href = "/";
+    }
+  });
+
   const add = async () => {
     await setDoc(doc(db, "UserDetails", userid), {
       name: name,
       avatar: img,
     });
+
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      window.location.href = "/profile";
+    }, 1000);
   };
 
   const handleUpload = (e) => {
@@ -40,7 +60,7 @@ const Edit = () => {
           <>
             <div className="relative">
               <img
-                src={img ? img : "/avatar.webp"}
+                src={userImage ? userImage : "/avatar.webp"}
                 alt="img"
                 htmlFor="file"
                 className=" w-[150px] h-[150px] object-cover bg-white rounded-full flex  "
@@ -54,7 +74,6 @@ const Edit = () => {
             </div>
           </>
 
-          {/* <input onChange={(e) => setTxt(e.target.value)} className="hidden" /> */}
           <input
             onChange={(e) => handleUpload(e)}
             className="w-[100px] hidden"
@@ -86,8 +105,11 @@ const Edit = () => {
         onClick={add}
         className="text-gray-300 absolute text-[15px] top-6 right-4"
       >
-        {" "}
-        Save
+        {loading ? (
+          <LiaSpinnerSolid className="animate-spin text-[20px]" />
+        ) : (
+          "Save"
+        )}
       </button>
     </div>
   );

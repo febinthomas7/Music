@@ -172,8 +172,6 @@ const DashboardComponent = () => {
               >
                 <span className="animate-ping absolute  h-[20px] w-[20px] rounded-full bg-sky-400 opacity-75"></span>
                 <span className="  rounded-full h-3 w-3 bg-sky-500"></span>
-
-                {/* <GiTireIronCross /> */}
               </div>
             )}
           </div>
@@ -188,7 +186,7 @@ const DashboardComponent = () => {
               </div>
             ) : (
               <Link to="/signin">
-                <div className="bg-blue-950 text-white p-4 rounded-xl text-[15px]">
+                <div className="bg-blue-950 text-white p-4 rounded-xl text-[15px] cursor-pointer text-center">
                   SignIn
                 </div>
               </Link>

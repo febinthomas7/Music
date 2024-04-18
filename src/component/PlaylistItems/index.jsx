@@ -46,6 +46,7 @@ const PlaylistItems = ({ items = [], loading }) => {
   useEffect(() => {
     setUserid(localStorage.getItem("userId"));
     setActive(localStorage.getItem("user"));
+    setArtistId(JSON.parse(localStorage.getItem("artistId")));
   }, []);
 
   const onPlaying = () => {
@@ -97,28 +98,19 @@ const PlaylistItems = ({ items = [], loading }) => {
     const divProgress = (offset / width) * 100;
     audioElem.current.currentTime = (divProgress / 100) * currentSong.Length;
   };
-  const getUserLiked = () => {
-    onSnapshot(doc(db, "userLikedDetails", userid), (doc) => {
-      if (active == "true") {
-        setArtistId(doc.data()?.artistId);
-      }
-      console.log(doc);
-    });
-  };
-
-  useEffect(() => {
-    getUserLiked();
-  }, []);
 
   const add = async () => {
     await setDoc(doc(db, "userLikedDetails", userid), {
       artistId: [items[selectSong]?.track?.id, ...artistId],
     });
+    // setArtistId(items[selectSong]?.track?.id, ...artistId);
   };
+  console.log(artistId);
+  // console.log(items[selectSong]?.track?.id);
 
   const likedSongs = () => {
-    // setArtistId(items[selectSong]?.track?.id);
     setLike(true);
+
     add();
   };
 
