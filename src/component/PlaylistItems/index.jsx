@@ -125,11 +125,17 @@ const PlaylistItems = ({ items = [], loading }) => {
   };
 
   const likedSongs = () => {
-    add();
+    if (active == "true") {
+      add();
+    } else {
+      alert("sign in to like");
+    }
   };
 
   const removeSongs = () => {
-    remove();
+    if (active == "true") {
+      remove();
+    }
   };
 
   return (
