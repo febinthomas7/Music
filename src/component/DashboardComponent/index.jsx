@@ -124,11 +124,7 @@ const DashboardComponent = () => {
   });
 
   useEffect(() => {
-    if (userImage == "/avatar.webp") {
-      setUserImage(JSON?.parse(localStorage.getItem("userImage")));
-    } else {
-      setUserImage(JSON?.parse(localStorage.getItem("userImage")));
-    }
+    setUserImage(JSON?.parse(localStorage.getItem("userImage")));
   }, []);
 
   return (
