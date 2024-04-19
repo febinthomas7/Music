@@ -26,13 +26,17 @@ onAuthStateChanged(auth, (user) => {
   } else {
     localStorage.setItem("user", "false");
     localStorage.setItem("userId", "");
-    localStorage.setItem("userImage", "");
+    localStorage.setItem("userImage", JSON.stringify("/avatar.webp"));
     localStorage.setItem("username", "");
     localStorage.setItem("artistId", "[249531616,2495656]");
   }
 
   console.log("load");
 });
+
+// window.addEventListener("load", () => {
+
+// });
 
 let user = localStorage.getItem("userId");
 let active = localStorage.getItem("user");
@@ -47,7 +51,7 @@ const get = async () => {
       localStorage.setItem("userImage", JSON.stringify(data.avatar));
       localStorage.setItem("username", data.name);
     } else {
-      localStorage.setItem("userImage", "/avatar.webp");
+      localStorage.setItem("userImage", JSON.stringify("/avatar.webp"));
       localStorage.setItem("username", "your Name");
     }
   }
