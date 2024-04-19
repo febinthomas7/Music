@@ -21,7 +21,8 @@ const DashboardComponent = () => {
   const [_token, _setToken] = useState();
   const [search, setSearch] = useState([]);
   const [active, setActive] = useState(null);
-
+  const [navColor, setNavColor] = useState(false);
+  const [userImage, setUserImage] = useState(null);
   const [songs, setSongs] = useState("");
   const getToken = async () => {
     const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -111,12 +112,34 @@ const DashboardComponent = () => {
     return null;
   }
 
+  window.onscroll = function () {
+    myFunction();
+  };
+
+  function myFunction() {
+    if (
+      document.body.scrollTop > 50 ||
+      document.documentElement.scrollTop > 50
+    ) {
+      setNavColor(true);
+    } else {
+      setNavColor(false);
+    }
+  }
+
+  useEffect(() => {
+    setUserImage(localStorage.getItem("userImage"));
+  }, []);
+
+  console.log(userImage);
+
   return (
-    <div className="w-full sm:w-[80%] sm:ml-[20%] md:wide bg-[#101010] ">
+    <div className="w-full  sm:w-[80%] sm:ml-[20%] md:wide  ">
+      <div className="fixed w-full h-svh top-0 bg-gradient-to-b  from-[#242424] via-[#0e0e0e] to-[#000000f9] bg-black z-0"></div>
       {listening && (
-        <div className="fixed h-[250px] w-[250px] ring-1 z-20 md:w-[400px] md:h-[400px] bg-[#161616] top-[35%] sm:top-[20%] rounded-full left-[18%] md:left-[45%] justify-center flex items-center">
+        <div className="fixed h-[250px] w-[250px] ring-1 z-20 md:w-[400px] md:h-[400px]  top-[35%] sm:top-[20%] rounded-full left-[18%] md:left-[45%] justify-center flex items-center">
           <div className="w-full flex justify-center gap-2  items-center absolute top-10">
-            <h1 className="text-white text-[30px]">talk</h1>
+            <h1 className="text-white text-[30px] select-none">talk</h1>
             <RiSpeakLine className="text-white text-[30px] animate-pulse" />
           </div>
 
@@ -133,10 +156,14 @@ const DashboardComponent = () => {
         </div>
       )}
 
-      <div className="pt-5 bg-black w-full sm:w-[80%] fixed py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center ">
-        <div className="flex items-center sm:hidden justify-start  gap-2 p-4 w-full">
+      <div
+        className={`pt-5 bg-black ${
+          navColor ? "bg-black" : "bg-[#00000054]"
+        } transition-all w-full sm:w-[80%] fixed py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center z-10 `}
+      >
+        <div className="flex items-center sm:hidden justify-start  gap-2 p-4 w-full select-none">
           <img src="/logo.png" alt="logo" className="w-[40px] sm:w-[60px]" />
-          <h1 className="text-[30px] md:text-[30px]">GanaBajao</h1>
+          <h1 className="text-[30px] md:text-[30px] ">GanaBajao</h1>
         </div>
         <div className="flex justify-between items-center w-full gap-4 flex-row-reverse sm:flex-row relative">
           <div className="w-full flex gap-2 items-center justify-end sm:justify-start">
@@ -180,13 +207,13 @@ const DashboardComponent = () => {
             {active == "true" ? (
               <div
                 onClick={userSignOut}
-                className="bg-blue-950 text-white p-3  rounded-xl text-[15px] cursor-pointer text-center"
+                className="bg-blue-950 text-white p-3  rounded-xl text-[15px] cursor-pointer text-center select-none"
               >
                 signOut
               </div>
             ) : (
               <Link to="/signin">
-                <div className="bg-blue-950 text-white p-4 rounded-xl text-[15px] cursor-pointer text-center">
+                <div className="bg-blue-950 text-white p-4 rounded-xl text-[15px] cursor-pointer text-center select-none">
                   SignIn
                 </div>
               </Link>
@@ -194,8 +221,12 @@ const DashboardComponent = () => {
           </div>
           {active == "true" && (
             <Link to="/profile" state={{ token: _token }}>
-              <div className="w-[45px] h-[45px] flex justify-center items-center bg-[#5a5a5a5d] rounded-full cursor-pointer hover:bg-[#8080805d] text-[30px]">
-                <CiSettings />
+              <div className="w-[45px] h-[45px] flex justify-center items-center bg-[#5a5a5a5d] rounded-full cursor-pointer hover:bg-[#8080805d] text-[30px] overflow-hidden">
+                <img
+                  src={userImage ? userImage : "/avatar.webp"}
+                  className="w-full h-full object-cover"
+                  alt="profile"
+                />
               </div>
             </Link>
           )}
@@ -203,7 +234,7 @@ const DashboardComponent = () => {
       </div>
 
       {debounceSearch && (
-        <div className="flex  gap-4 overflow-scroll HideScrollbar mt-[150px] sm:mt-[105px] ">
+        <div className="flex  gap-4 overflow-scroll HideScrollbar mt-[150px] sm:mt-[105px] sticky z-[1]">
           {search.albums?.items.map((e, index) => {
             return (
               <div key={index}>
@@ -235,7 +266,7 @@ const DashboardComponent = () => {
       <div
         className={`flex flex-wrap gap-2 sm:gap-5 ${
           !debounceSearch ? "mt-[200px] sm:mt-[100px]" : null
-        } justify-center py-7  items-center`}
+        } justify-center py-7  items-center z-[1] sticky`}
       >
         {loader ? (
           <Loader />

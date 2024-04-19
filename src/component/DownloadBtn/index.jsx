@@ -30,13 +30,13 @@ const Downloader = ({ fileInput, fileName }) => {
       {downloading == "true" ? (
         <button
           onClick={download}
-          className="shadow-[#6b2828] py-[2px] px-4 bg-black text-white rounded-md shadow-lg sm:shadow-[#6b2828] sm:shadow-2xl"
+          className="shadow-[#6b2828] py-[2px] px-4 bg-black text-white rounded-md shadow-lg sm:shadow-[#6b2828] sm:shadow-2xl select-none"
         >
           Download
         </button>
       ) : (
         <a
-          className="shadow-[#6b2828] py-[2px] px-4 bg-black text-white rounded-md shadow-lg sm:shadow-[#6b2828] sm:shadow-2xl"
+          className="shadow-[#6b2828] py-[2px] px-4 bg-black text-white rounded-md shadow-lg sm:shadow-[#6b2828] sm:shadow-2xl select-none"
           href="/signin"
         >
           sign in

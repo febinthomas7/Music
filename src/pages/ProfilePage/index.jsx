@@ -406,7 +406,7 @@ const Profile = () => {
           <MdRefresh className="text-white" onClick={track} />
         </div>
       </div>
-      <div className="flex   gap-3 bg-black p-4 text-white">
+      <div className="flex   gap-3 bg-black p-4 text-white select-none">
         <h1
           onClick={track}
           className={`px-4 py-1 rounded-md  ${

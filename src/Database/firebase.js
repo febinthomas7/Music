@@ -47,7 +47,7 @@ const get = async () => {
       localStorage.setItem("userImage", JSON.stringify(data.avatar));
       localStorage.setItem("username", data.name);
     } else {
-      localStorage.setItem("userImage", JSON.stringify("/avatar.webp"));
+      localStorage.setItem("userImage", "/avatar.webp");
       localStorage.setItem("username", "your Name");
     }
   }
