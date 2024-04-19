@@ -12,8 +12,8 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { CiSettings } from "react-icons/ci";
-const clientId = "5c09b41300224c0392112b2df26e0e35";
-const clientSecret = "e6ecbab94c6d48389f8a3dcaae020e8d";
+const clientId = import.meta.env.VITE_CLIENT_ID;
+const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
 
 const DashboardComponent = () => {
   const [genreId, setGenreId] = useState();
