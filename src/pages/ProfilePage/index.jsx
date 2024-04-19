@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { app } from "../../Database/firebase";
-import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
+import { doc, setDoc, onSnapshot, getFirestore } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import { SlArrowLeft } from "react-icons/sl";
 import { useLocation } from "react-router-dom";
-import { MdAccessTime } from "react-icons/md";
+import { MdAccessTime, MdRefresh } from "react-icons/md";
 import PlaylistLoader from "../../component/PlaylistLoader";
 import { GoHeart, GoHeartFill } from "react-icons/go";
 import { FaPause } from "react-icons/fa6";
@@ -117,7 +117,7 @@ const Profile = () => {
     setActive(localStorage.getItem("user"));
     setUsername(localStorage.getItem("username"));
     setUserImage(JSON.parse(localStorage.getItem("userImage")));
-    setArtistId(JSON.parse(localStorage.getItem("artistId")));
+    // setArtistId(JSON.parse(localStorage.getItem("artistId")));
 
     setProfileLoading(false);
   }, []);
@@ -143,11 +143,11 @@ const Profile = () => {
   };
   useEffect(() => {
     track();
-  }, [artistId]);
+  }, [loading]);
 
   const recommendation = async () => {
     const result = await fetch(
-      `https://api.spotify.com/v1/recommendations?limit=50&seed_tracks=${artistId.filter(
+      `https://api.spotify.com/v1/recommendations?limit=20&seed_tracks=${artistId.filter(
         (e, index) => index <= 4
       )}`,
       {
@@ -163,16 +163,38 @@ const Profile = () => {
     setRecommendations(true);
   };
 
+  const getUserLiked = () => {
+    onSnapshot(
+      doc(db, "userLikedDetails", userid ? userid : "122324234"),
+      (doc) => {
+        if (active == "true") {
+          if (doc.data()?.artistId) {
+            setArtistId(doc.data()?.artistId);
+          }
+        }
+      }
+    );
+  };
+
+  getUserLiked();
+
   const add = async () => {
     await setDoc(doc(db, "userLikedDetails", userid), {
       artistId: [items[selectSong]?.id, ...artistId],
     });
   };
+  const remove = async () => {
+    await setDoc(doc(db, "userLikedDetails", userid), {
+      artistId: artistId.filter((e) => e !== items[selectSong]?.id),
+    });
+  };
 
   const likedSongs = () => {
-    setArtistId(items[selectSong]?.id);
-    setLike(true);
     add();
+  };
+
+  const removeSongs = () => {
+    remove();
   };
 
   return (
@@ -278,10 +300,12 @@ const Profile = () => {
                   })}
                 </div>
                 <div className="text-white text-[20px] flex   justify-center items-center gap-3 ">
-                  {like ||
-                  items[selectSong]?.id ==
-                    artistId?.filter((e) => items[selectSong]?.id == e) ? (
-                    <GoHeartFill className="text-red-800 cursor-pointer" />
+                  {items[selectSong]?.id ==
+                  artistId?.filter((e) => items[selectSong]?.id == e) ? (
+                    <GoHeartFill
+                      className="text-red-800 cursor-pointer"
+                      onClick={removeSongs}
+                    />
                   ) : (
                     <GoHeart className="cursor-pointer" onClick={likedSongs} />
                   )}
@@ -378,6 +402,8 @@ const Profile = () => {
               Edit
             </button>
           </Link>
+
+          <MdRefresh className="text-white" onClick={track} />
         </div>
       </div>
       <div className="flex   gap-3 bg-black p-4 text-white">

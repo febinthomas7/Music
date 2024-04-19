@@ -5,8 +5,16 @@ import { FaPause } from "react-icons/fa6";
 import PlaylistLoader from "../PlaylistLoader";
 import { MdAccessTime } from "react-icons/md";
 import Downloader from "../DownloadBtn";
+import { app } from "../../Database/firebase";
+
+import { doc, setDoc, getFirestore, onSnapshot } from "firebase/firestore";
+const db = getFirestore(app);
+
 const SearchPlayListItems = ({ items = [], loading }) => {
   const [like, setLike] = useState(false);
+  const [userid, setUserid] = useState("0UJRMeU6npgYZVEKnOT");
+  const [active, setActive] = useState(null);
+  const [artistId, setArtistId] = useState([""]);
   const [isPlaying, setIsPlaying] = useState(false);
   let [selectSong, setSelectSong] = useState(0);
   let [currentSong, setCurrentSong] = useState({
@@ -39,6 +47,24 @@ const SearchPlayListItems = ({ items = [], loading }) => {
     }
   }, [currentSong.progress]);
 
+  const getUserLiked = () => {
+    onSnapshot(
+      doc(db, "userLikedDetails", userid ? userid : "122324234"),
+      (doc) => {
+        if (active == "true") {
+          if (doc.data()?.artistId) {
+            setArtistId(doc.data()?.artistId);
+          }
+        }
+      }
+    );
+  };
+  getUserLiked();
+  useEffect(() => {
+    setUserid(localStorage.getItem("userId"));
+    setActive(localStorage.getItem("user"));
+    // setArtistId(JSON.parse(localStorage.getItem("artistId")));
+  }, []);
   const onPlaying = () => {
     const duration = audioElem.current.duration;
 
@@ -88,6 +114,26 @@ const SearchPlayListItems = ({ items = [], loading }) => {
     const divProgress = (offset / width) * 100;
     audioElem.current.currentTime = (divProgress / 100) * currentSong.Length;
   };
+
+  const add = async () => {
+    await setDoc(doc(db, "userLikedDetails", userid), {
+      artistId: [items[selectSong]?.id, ...artistId],
+    });
+  };
+  const remove = async () => {
+    await setDoc(doc(db, "userLikedDetails", userid), {
+      artistId: artistId.filter((e) => e !== items[selectSong]?.id),
+    });
+  };
+
+  const likedSongs = () => {
+    add();
+  };
+
+  const removeSongs = () => {
+    remove();
+  };
+
   return (
     <div className="flex flex-col  gap-3 bg-black p-4">
       <div className="fixed bg-black w-full top-0 left-0 p-4 bg-gradient-to-b from-[#ee3050] from-10% via-[#881327] via-40% to-black to-90% ">
@@ -190,19 +236,19 @@ const SearchPlayListItems = ({ items = [], loading }) => {
                   })}
                 </div>
                 <div className="text-white text-[20px] flex flex-col sm:flex-row   sm:items-center gap-3 ">
-                  {like ? (
-                    <GoHeartFill className="text-red-800 cursor-pointer" />
-                  ) : (
-                    <GoHeart
-                      className="cursor-pointer"
-                      onClick={() => setLike(!like)}
+                  {items[selectSong]?.id ==
+                  artistId?.filter((e) => items[selectSong]?.id == e) ? (
+                    <GoHeartFill
+                      className="text-red-800 cursor-pointer"
+                      onClick={removeSongs}
                     />
+                  ) : (
+                    <GoHeart className="cursor-pointer" onClick={likedSongs} />
                   )}
 
                   <Downloader
                     fileInput={items[selectSong]?.preview_url}
-                    fileN
-                    ame={items[selectSong]?.name}
+                    fileName={items[selectSong]?.name}
                   />
                 </div>
               </>

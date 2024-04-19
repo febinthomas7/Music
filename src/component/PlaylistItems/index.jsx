@@ -6,7 +6,7 @@ import PlaylistLoader from "../PlaylistLoader";
 import { MdAccessTime } from "react-icons/md";
 import Downloader from "../DownloadBtn";
 import { app } from "../../Database/firebase";
-import { doc, setDoc, getFirestore } from "firebase/firestore";
+import { doc, setDoc, getFirestore, onSnapshot } from "firebase/firestore";
 
 const db = getFirestore(app);
 
@@ -14,7 +14,7 @@ const PlaylistItems = ({ items = [], loading }) => {
   const [like, setLike] = useState(false);
   const [userid, setUserid] = useState("0UJRMeU6npgYZVEKnOT");
   const [active, setActive] = useState(null);
-  const [artistId, setArtistId] = useState([""]);
+  const [artistId, setArtistId] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   let [selectSong, setSelectSong] = useState(0);
   let [currentSong, setCurrentSong] = useState({
@@ -43,10 +43,24 @@ const PlaylistItems = ({ items = [], loading }) => {
     }
   }, [currentSong.progress]);
 
+  const getUserLiked = () => {
+    onSnapshot(
+      doc(db, "userLikedDetails", userid ? userid : "122324234"),
+      (doc) => {
+        if (active == "true") {
+          if (doc.data()?.artistId) {
+            setArtistId(doc.data()?.artistId);
+          }
+        }
+      }
+    );
+  };
+  getUserLiked();
+
   useEffect(() => {
     setUserid(localStorage.getItem("userId"));
     setActive(localStorage.getItem("user"));
-    setArtistId(JSON.parse(localStorage.getItem("artistId")));
+    // setArtistId(JSON.parse(localStorage.getItem("artistId")));
   }, []);
 
   const onPlaying = () => {
@@ -104,11 +118,18 @@ const PlaylistItems = ({ items = [], loading }) => {
       artistId: [items[selectSong]?.track?.id, ...artistId],
     });
   };
+  const remove = async () => {
+    await setDoc(doc(db, "userLikedDetails", userid), {
+      artistId: artistId.filter((e) => e !== items[selectSong]?.track?.id),
+    });
+  };
 
   const likedSongs = () => {
-    setLike(true);
-
     add();
+  };
+
+  const removeSongs = () => {
+    remove();
   };
 
   return (
@@ -214,12 +235,12 @@ const PlaylistItems = ({ items = [], loading }) => {
                   })}
                 </div>
                 <div className="text-white text-[20px] flex flex-col sm:flex-row  justify-start sm:items-center gap-3 ">
-                  {like ||
-                  items[selectSong]?.track?.id ==
-                    artistId?.filter(
-                      (e) => items[selectSong]?.track?.id == e
-                    ) ? (
-                    <GoHeartFill className="text-red-800 cursor-pointer" />
+                  {items[selectSong]?.track?.id ==
+                  artistId?.filter((e) => items[selectSong]?.track?.id == e) ? (
+                    <GoHeartFill
+                      className="text-red-800 cursor-pointer"
+                      onClick={removeSongs}
+                    />
                   ) : (
                     <GoHeart className="cursor-pointer" onClick={likedSongs} />
                   )}
