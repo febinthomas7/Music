@@ -112,11 +112,7 @@ const DashboardComponent = () => {
     return null;
   }
 
-  window.onscroll = function () {
-    myFunction();
-  };
-
-  function myFunction() {
+  window.addEventListener("scroll", () => {
     if (
       document.body.scrollTop > 50 ||
       document.documentElement.scrollTop > 50
@@ -125,13 +121,11 @@ const DashboardComponent = () => {
     } else {
       setNavColor(false);
     }
-  }
+  });
 
   useEffect(() => {
     setUserImage(localStorage.getItem("userImage"));
   }, []);
-
-  console.log(userImage);
 
   return (
     <div className="w-full  sm:w-[80%] sm:ml-[20%] md:wide  ">
@@ -158,7 +152,7 @@ const DashboardComponent = () => {
 
       <div
         className={`pt-5 bg-black ${
-          navColor ? "bg-black" : "bg-[#00000054]"
+          navColor ? "bg-black" : "bg-transparent"
         } transition-all w-full sm:w-[80%] fixed py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center z-10 `}
       >
         <div className="flex items-center sm:hidden justify-start  gap-2 p-4 w-full select-none">
@@ -175,7 +169,7 @@ const DashboardComponent = () => {
                 onChange={(e) => setSongs(e.target.value)}
                 value={songs}
                 placeholder="Browse"
-                className={`h-[40px] w-full  bg-black rounded-lg outline-none border-2 text-white focus:border-blue-900 focus:text-white   p-2`}
+                className={`h-[40px] w-full  bg-transparent rounded-lg outline-none border-2 text-white focus:border-blue-900 focus:text-white   p-2`}
               />
               {songs && (
                 <GiTireIronCross
