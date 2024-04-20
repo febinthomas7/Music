@@ -129,7 +129,7 @@ const DashboardComponent = () => {
 
   return (
     <div className="w-full h-svh sm:w-[80%] sm:ml-[20%] md:wide  ">
-      <div className="fixed w-full h-svh top-0 bg-gradient-to-b  from-[#242424] via-[#0e0e0e] to-[#000000f9] bg-black z-0"></div>
+      <div className="fixed w-full h-screen top-0 bg-gradient-to-b  from-[#242424] via-[#0e0e0e] to-[#000000f9] bg-black z-0"></div>
       {listening && (
         <div className="fixed h-[250px] w-[250px] ring-1 z-20 md:w-[400px] md:h-[400px]  top-[35%] sm:top-[20%] rounded-full left-[18%] md:left-[45%] justify-center flex items-center">
           <div className="w-full flex justify-center gap-2  items-center absolute top-10">
