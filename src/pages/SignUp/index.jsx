@@ -24,7 +24,7 @@ const SignUp = () => {
         <div className="w-full bg-[#a6a6a6a5] backdrop:blur-sm rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 ">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight  md:text-2xl text-white">
-              Create Your Account Now
+              Create Your Account
             </h1>
             <form className="space-y-4 md:space-y-6" method="POST">
               <div>
@@ -40,7 +40,7 @@ const SignUp = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   id="email"
-                  className="bg-[#e5e5e5a5] border border-gray-300 text-gray-900 sm:text-sm rounded-lg   block w-full p-2.5 outline-none "
+                  className="bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg placeholder:text-gray-700  block w-full p-2.5 outline-none "
                   placeholder="Email"
                   required=""
                 />
@@ -70,11 +70,11 @@ const SignUp = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   id="password"
                   placeholder="password"
-                  className="bg-[#e5e5e5a5] border border-gray-300 text-gray-900 sm:text-sm rounded-lg   block w-full p-2.5 outline-none "
+                  className="bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg placeholder:text-gray-700  block w-full p-2.5 outline-none "
                   required=""
                 />
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-4">
                 <div className="flex items-start">
                   <div className="flex items-center h-5">
                     <input

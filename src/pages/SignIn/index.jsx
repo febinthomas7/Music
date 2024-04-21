@@ -45,7 +45,7 @@ const SignIn = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   id="email"
-                  className="bg-[#e5e5e5a5] border border-gray-300 text-gray-900 sm:text-sm rounded-lg   block w-full p-2.5 outline-none "
+                  className="bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg placeholder:text-gray-700  block w-full p-2.5 outline-none "
                   placeholder="Email"
                   required=""
                 />
@@ -75,11 +75,11 @@ const SignIn = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   id="password"
                   placeholder="password"
-                  className="bg-[#e5e5e5a5] border border-gray-300 text-gray-900 sm:text-sm rounded-lg   block w-full p-2.5 outline-none "
+                  className="bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg placeholder:text-gray-700  block w-full p-2.5 outline-none "
                   required=""
                 />
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-4">
                 <div className="flex items-start">
                   <div className="flex items-center h-5">
                     <input
