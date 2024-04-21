@@ -147,9 +147,11 @@ const Profile = () => {
 
   const recommendation = async () => {
     const result = await fetch(
-      `https://api.spotify.com/v1/recommendations?limit=20&seed_tracks=${artistId.filter(
-        (e, index) => index <= 4
-      )}`,
+      `https://api.spotify.com/v1/recommendations?limit=20&seed_tracks=${
+        artistId == undefined || artistId == ""
+          ? "7ouMYWpwJ422jRcDASZB7P"
+          : artistId.filter((e, index) => index <= 4)
+      }`,
       {
         method: "GET",
         headers: {

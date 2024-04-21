@@ -36,7 +36,7 @@ const Music = () => {
   }, []);
 
   return (
-    <div className="fixed h-screen w-full bg-slate-950">
+    <div className="fixed h-screen w-full radial_bg">
       <Link
         to="/"
         className="rounded-md bg-slate-800 text-white p-2 fixed mt-4 ml-4"

@@ -34,3 +34,16 @@
 .HideScrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.radial_bg {
+  background-color: #292998;
+  background-image: radial-gradient(circle at center center, #ff0a0a, #161682),
+    repeating-radial-gradient(
+      circle at center center,
+      #ff0a0a,
+      #ff0a0a,
+      25px,
+      transparent 50px,
+      transparent 25px
+    );
+}
