@@ -11,7 +11,6 @@ const auth = getAuth(app);
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { CiSettings } from "react-icons/ci";
 const clientId = import.meta.env.VITE_CLIENT_ID;
 const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
 
@@ -47,6 +46,7 @@ const DashboardComponent = () => {
   const debounceSearch = Debouncing(songs, 500);
 
   useEffect(() => {
+    const controller = new AbortController();
     const Search = async () => {
       const result = await fetch(
         `https://api.spotify.com/v1/search?q=${debounceSearch}&type=album%2Ctrack%2Cartist%2Cshow%2Cepisode`,
@@ -55,6 +55,7 @@ const DashboardComponent = () => {
           headers: {
             Authorization: "Bearer " + _token,
           },
+          signal: controller.signal,
         }
       );
       const data = await result.json();
@@ -62,7 +63,12 @@ const DashboardComponent = () => {
     };
 
     if (debounceSearch) Search();
+
+    return () => {
+      controller.abort();
+    };
   }, [debounceSearch]);
+
   const _getGenres = async (token) => {
     const result = await fetch(
       "https://api.spotify.com/v1/browse/categories?limit=50",
@@ -81,7 +87,7 @@ const DashboardComponent = () => {
   const userSignOut = () => {
     signOut(auth)
       .then((e) => {
-        setActive(false);
+        setActive("false");
       })
       .catch((error) => {
         console.log(error);
@@ -125,7 +131,7 @@ const DashboardComponent = () => {
 
   useEffect(() => {
     setUserImage(JSON?.parse(localStorage.getItem("userImage")));
-  }, []);
+  }, [active]);
 
   return (
     <div className="w-full h-svh sm:w-[80%] sm:ml-[20%] md:wide  ">
@@ -209,13 +215,13 @@ const DashboardComponent = () => {
               </div>
             ) : (
               <Link to="/signin">
-                <div className="bg-blue-950 text-white p-4 rounded-xl text-[15px] cursor-pointer text-center select-none">
+                <div className="bg-blue-950 text-white p-3 rounded-xl text-[15px] cursor-pointer text-center select-none">
                   SignIn
                 </div>
               </Link>
             )}
           </div>
-          {active == "true" && (
+          {active == "true" ? (
             <Link to="/profile" state={{ token: _token }}>
               <div className="w-[45px] h-[45px] flex justify-center items-center bg-[#5a5a5a5d] rounded-full cursor-pointer hover:bg-[#8080805d] text-[30px] overflow-hidden">
                 <img
@@ -225,6 +231,15 @@ const DashboardComponent = () => {
                 />
               </div>
             </Link>
+          ) : (
+            <img
+              src={userImage ? userImage : "/avatar.webp"}
+              onClick={() => {
+                alert("sign in to view profile");
+              }}
+              className="cursor-pointer w-[45px] h-[45px] object-cover rounded-full text-[30px]"
+              alt="profile"
+            />
           )}
         </div>
       </div>

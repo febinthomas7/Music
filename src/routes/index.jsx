@@ -8,7 +8,6 @@ import SignUp from "../pages/SignUp";
 import SignIn from "../pages/SignIn";
 import Profile from "../pages/ProfilePage";
 import Edit from "../pages/Editpage";
-import Test from "../pages/test";
 const routes = createBrowserRouter([
   { path: "/", element: <Dashboard /> },
   {
@@ -39,10 +38,6 @@ const routes = createBrowserRouter([
   {
     path: "/edit",
     element: <Edit />,
-  },
-  {
-    path: "/test",
-    element: <Test />,
   },
 ]);
 export default routes;

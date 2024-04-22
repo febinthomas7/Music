@@ -25,18 +25,12 @@ onAuthStateChanged(auth, (user) => {
     localStorage.setItem("userId", JSON.stringify(user.uid));
   } else {
     localStorage.setItem("user", "false");
-    localStorage.setItem("userId", "");
+    localStorage.removeItem("userId");
     localStorage.setItem("userImage", JSON.stringify("/avatar.webp"));
-    localStorage.setItem("username", "");
+    localStorage.removeItem("username");
     localStorage.setItem("artistId", "[249531616,2495656]");
   }
-
-  console.log("load");
 });
-
-// window.addEventListener("load", () => {
-
-// });
 
 let user = localStorage.getItem("userId");
 let active = localStorage.getItem("user");
