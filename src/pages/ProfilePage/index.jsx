@@ -8,7 +8,10 @@ import { MdAccessTime, MdRefresh } from "react-icons/md";
 import PlaylistLoader from "../../component/PlaylistLoader";
 import { GoHeart, GoHeartFill } from "react-icons/go";
 import { FaPause } from "react-icons/fa6";
-import { IoIosRefresh } from "react-icons/io";
+import { GiTireIronCross } from "react-icons/gi";
+import { MdOutlineLyrics } from "react-icons/md";
+
+import Lyrics from "../../utils/Lyrics";
 
 import { FaForward, FaBackward, FaPlay } from "react-icons/fa";
 
@@ -24,6 +27,8 @@ const Profile = () => {
   const [userImage, setUserImage] = useState("");
   const [items, SetItems] = useState([]);
   const [recommendations, setRecommendations] = useState(false);
+  const [isLyricsOpen, setIsLyricsOpen] = useState(false);
+
   const [loading, setLoading] = useState(true);
   const [profileLoading, setProfileLoading] = useState(true);
   let [selectSong, setSelectSong] = useState(0);
@@ -50,6 +55,10 @@ const Profile = () => {
       currentDuration: currentDuration,
     });
   };
+
+  const songName = items[selectSong]?.name;
+  const artistName = items[selectSong]?.artists[0]?.name;
+  const lyrics = Lyrics(artistName, songName);
 
   window.addEventListener("load", () => {
     if (active == "false") {
@@ -304,12 +313,27 @@ const Profile = () => {
                 <div className="text-white text-[20px] flex   justify-center items-center gap-3 ">
                   {items[selectSong]?.id ==
                   artistId?.filter((e) => items[selectSong]?.id == e) ? (
-                    <GoHeartFill
-                      className="text-red-800 cursor-pointer"
-                      onClick={removeSongs}
-                    />
+                    <div className="flex gap-4">
+                      <GoHeartFill
+                        className="text-red-800 cursor-pointer"
+                        onClick={removeSongs}
+                      />
+                      <MdOutlineLyrics
+                        className="cursor-pointer"
+                        onClick={() => setIsLyricsOpen(!isLyricsOpen)}
+                      />
+                    </div>
                   ) : (
-                    <GoHeart className="cursor-pointer" onClick={likedSongs} />
+                    <div className="flex gap-4">
+                      <GoHeart
+                        className="cursor-pointer"
+                        onClick={likedSongs}
+                      />
+                      <MdOutlineLyrics
+                        className="cursor-pointer"
+                        onClick={() => setIsLyricsOpen(!isLyricsOpen)}
+                      />
+                    </div>
                   )}
                 </div>
               </>
@@ -433,6 +457,17 @@ const Profile = () => {
       <div className="h-full fixed mt-[324px] w-full">
         <div className="pb-[550px] h-screen overflow-auto">
           {loading && <PlaylistLoader />}
+          {isLyricsOpen && (
+            <div className="text-white w-full fixed left-0 top-0 h-full bg-gray-500  flex justify-center">
+              <div className="w-[80%] sm:w-[30%] overflow-y-auto flex justify-center sm:items-center my-6">
+                <p>{lyrics ? lyrics : "not found"}</p>
+              </div>
+              <GiTireIronCross
+                className="absolute top-5 right-5 cursor-pointer"
+                onClick={() => setIsLyricsOpen(!isLyricsOpen)}
+              />
+            </div>
+          )}
           <div className="md:flex items-center hidden  w-full   text-white  p-[12px]">
             <div className="  flex-[1/2] p-4 ">
               <h1>#</h1>

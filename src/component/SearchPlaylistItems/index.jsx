@@ -6,6 +6,10 @@ import PlaylistLoader from "../PlaylistLoader";
 import { MdAccessTime } from "react-icons/md";
 import Downloader from "../DownloadBtn";
 import { app } from "../../Database/firebase";
+import { GiTireIronCross } from "react-icons/gi";
+import { MdOutlineLyrics } from "react-icons/md";
+
+import Lyrics from "../../utils/Lyrics";
 
 import { doc, setDoc, getFirestore, onSnapshot } from "firebase/firestore";
 const db = getFirestore(app);
@@ -16,6 +20,8 @@ const SearchPlayListItems = ({ items = [], loading }) => {
   const [active, setActive] = useState(null);
   const [artistId, setArtistId] = useState([""]);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLyricsOpen, setIsLyricsOpen] = useState(false);
+
   let [selectSong, setSelectSong] = useState(0);
   let [currentSong, setCurrentSong] = useState({
     ...items[selectSong]?.preview_url,
@@ -27,6 +33,10 @@ const SearchPlayListItems = ({ items = [], loading }) => {
     e.src =
       "https://imgs.search.brave.com/iyRPT1-Ryk4AK_UqBbU4AQPJbJBvDcw-gQ98m622OYM/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9yZXMu/Y2xvdWRpbmFyeS5j/b20vcHJhY3RpY2Fs/ZGV2L2ltYWdlL2Zl/dGNoL3MtLUpRSkhq/N0c0LS0vY19saW1p/dCxmX2F1dG8sZmxf/cHJvZ3Jlc3NpdmUs/cV9hdXRvLHdfODAw/L2h0dHBzOi8vZGV2/LXRvLXVwbG9hZHMu/czMuYW1hem9uYXdz/LmNvbS91cGxvYWRz/L2FydGljbGVzLzdj/eHRxZTdyNWJ4aWs4/cHk1czd0LnBuZw";
   };
+
+  const songName = items[selectSong]?.name;
+  const artistName = items[selectSong]?.artists[0]?.name;
+  const lyrics = Lyrics(artistName, songName);
 
   const audioElem = useRef();
   const clickRef = useRef();
@@ -139,7 +149,7 @@ const SearchPlayListItems = ({ items = [], loading }) => {
 
   return (
     <div className="flex flex-col  gap-3 bg-black p-4">
-      <div className="fixed bg-black w-full top-0 left-0 p-4 bg-gradient-to-b from-[#ee3050] from-10% via-[#881327] via-40% to-black to-90% ">
+      <div className="fixed bg-black w-full top-0 left-0 p-4 bg-[url('guitar-1.jpg')] bg-no-repeat bg-cover">
         <audio
           className="hidden"
           controls
@@ -241,12 +251,27 @@ const SearchPlayListItems = ({ items = [], loading }) => {
                 <div className="text-white text-[20px] flex flex-col sm:flex-row   sm:items-center gap-3 ">
                   {items[selectSong]?.id ==
                   artistId?.filter((e) => items[selectSong]?.id == e) ? (
-                    <GoHeartFill
-                      className="text-red-800 cursor-pointer"
-                      onClick={removeSongs}
-                    />
+                    <div className="flex gap-4">
+                      <GoHeartFill
+                        className="text-red-800 cursor-pointer"
+                        onClick={removeSongs}
+                      />
+                      <MdOutlineLyrics
+                        className="cursor-pointer"
+                        onClick={() => setIsLyricsOpen(!isLyricsOpen)}
+                      />
+                    </div>
                   ) : (
-                    <GoHeart className="cursor-pointer" onClick={likedSongs} />
+                    <div className="flex gap-4">
+                      <GoHeart
+                        className="cursor-pointer"
+                        onClick={likedSongs}
+                      />
+                      <MdOutlineLyrics
+                        className="cursor-pointer"
+                        onClick={() => setIsLyricsOpen(!isLyricsOpen)}
+                      />
+                    </div>
                   )}
 
                   <Downloader
@@ -298,6 +323,17 @@ const SearchPlayListItems = ({ items = [], loading }) => {
 
       <div className="mt-[230px] sm:mt-[464px]">
         {loading && <PlaylistLoader />}
+        {isLyricsOpen && (
+          <div className="text-white w-full fixed left-0 top-0 h-full bg-gray-500  flex justify-center">
+            <div className="w-[80%] sm:w-[30%] overflow-y-auto flex justify-center sm:items-center my-6">
+              <p>{lyrics ? lyrics : "not found"}</p>
+            </div>
+            <GiTireIronCross
+              className="absolute top-5 right-5 cursor-pointer"
+              onClick={() => setIsLyricsOpen(!isLyricsOpen)}
+            />
+          </div>
+        )}
         <div className="md:flex items-center hidden  w-full h-full  text-white  p-[12px]">
           <div className="  flex-[1/2] p-4 ">
             <h1>#</h1>
