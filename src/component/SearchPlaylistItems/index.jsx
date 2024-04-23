@@ -63,7 +63,6 @@ const SearchPlayListItems = ({ items = [], loading }) => {
   useEffect(() => {
     setUserid(localStorage.getItem("userId"));
     setActive(localStorage.getItem("user"));
-    // setArtistId(JSON.parse(localStorage.getItem("artistId")));
   }, []);
   const onPlaying = () => {
     const duration = audioElem.current.duration;
@@ -127,7 +126,11 @@ const SearchPlayListItems = ({ items = [], loading }) => {
   };
 
   const likedSongs = () => {
-    add();
+    if (active == "true") {
+      add();
+    } else {
+      alert("sign in to like");
+    }
   };
 
   const removeSongs = () => {
