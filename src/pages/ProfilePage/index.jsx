@@ -21,7 +21,6 @@ const Profile = () => {
   const location = useLocation();
   const [userid, setUserid] = useState("0UJRMeU6npgYZVEKnOT");
   const [active, setActive] = useState(null);
-  const [like, setLike] = useState(false);
   const [artistId, setArtistId] = useState([]);
   const [username, setUsername] = useState("");
   const [userImage, setUserImage] = useState("");
@@ -315,30 +314,24 @@ const Profile = () => {
                   })}
                 </div>
                 <div className="text-white text-[20px] flex   justify-center items-center gap-3 ">
-                  {items[selectSong]?.id ==
-                  artistId?.filter((e) => items[selectSong]?.id == e) ? (
-                    <div className="flex gap-4">
+                  <div className="flex gap-4">
+                    {items[selectSong]?.id ==
+                    artistId?.filter((e) => items[selectSong]?.id == e) ? (
                       <GoHeartFill
                         className="text-red-800 cursor-pointer"
                         onClick={removeSongs}
                       />
-                      <MdOutlineLyrics
-                        className="cursor-pointer"
-                        onClick={() => setIsLyricsOpen(!isLyricsOpen)}
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex gap-4">
+                    ) : (
                       <GoHeart
                         className="cursor-pointer"
                         onClick={likedSongs}
                       />
-                      <MdOutlineLyrics
-                        className="cursor-pointer"
-                        onClick={() => setIsLyricsOpen(!isLyricsOpen)}
-                      />
-                    </div>
-                  )}
+                    )}
+                    <MdOutlineLyrics
+                      className="cursor-pointer"
+                      onClick={() => setIsLyricsOpen(!isLyricsOpen)}
+                    />{" "}
+                  </div>
                 </div>
               </>
             )}
@@ -464,7 +457,7 @@ const Profile = () => {
           {isLyricsOpen && (
             <div className="text-white w-full fixed left-0 top-0 h-full bg-gray-500  flex justify-center">
               <div className="w-[80%] sm:w-[30%] overflow-y-auto flex justify-center sm:items-center my-6">
-                <p>{lyrics ? lyrics : "not found"}</p>
+                <p>{songLyrics ? songLyrics : "not found"}</p>
               </div>
               <GiTireIronCross
                 className="absolute top-5 right-5 cursor-pointer"

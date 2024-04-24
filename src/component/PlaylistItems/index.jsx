@@ -13,7 +13,6 @@ import Lyrics from "../../utils/Lyrics";
 const db = getFirestore(app);
 
 const PlaylistItems = ({ items = [], loading }) => {
-  const [like, setLike] = useState(false);
   const [userid, setUserid] = useState("0UJRMeU6npgYZVEKnOT");
   const [active, setActive] = useState(null);
   const [artistId, setArtistId] = useState([]);

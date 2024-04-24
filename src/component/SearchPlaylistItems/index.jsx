@@ -15,7 +15,6 @@ import { doc, setDoc, getFirestore, onSnapshot } from "firebase/firestore";
 const db = getFirestore(app);
 
 const SearchPlayListItems = ({ items = [], loading }) => {
-  const [like, setLike] = useState(false);
   const [userid, setUserid] = useState("0UJRMeU6npgYZVEKnOT");
   const [active, setActive] = useState(null);
   const [artistId, setArtistId] = useState([""]);
