@@ -148,7 +148,7 @@ const PlaylistItems = ({ items = [], loading }) => {
 
   return (
     <div className="flex flex-col  gap-3 bg-black p-4">
-      <div className="fixed bg-black w-full top-0 left-0 p-4   bg-[url('guitar.jpg')] bg-no-repeat bg-cover ">
+      <div className="fixed bg-black w-full top-0 left-0 p-4   bg-gradient-to-b from-[#ee3050] from-10% via-[#881327] via-40% to-black to-90% ">
         <audio
           className="hidden"
           controlsList="nodownload"
