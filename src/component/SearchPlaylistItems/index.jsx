@@ -149,7 +149,7 @@ const SearchPlayListItems = ({ items = [], loading }) => {
 
   return (
     <div className="flex flex-col  gap-3 bg-black p-4">
-      <div className="fixed bg-black w-full top-0 left-0 p-4 bg-[url('guitar-1.jpg')] bg-no-repeat bg-cover">
+      <div className="fixed bg-black w-full top-0 left-0 p-4 bg-[url('guitar.jpg')] bg-no-repeat bg-cover">
         <audio
           className="hidden"
           controls
