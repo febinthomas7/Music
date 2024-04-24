@@ -28,7 +28,7 @@ const Profile = () => {
   const [items, SetItems] = useState([]);
   const [recommendations, setRecommendations] = useState(false);
   const [isLyricsOpen, setIsLyricsOpen] = useState(false);
-
+  const [songLyrics, setSongLyrics] = useState("");
   const [loading, setLoading] = useState(true);
   const [profileLoading, setProfileLoading] = useState(true);
   let [selectSong, setSelectSong] = useState(0);
@@ -59,6 +59,10 @@ const Profile = () => {
   const songName = items[selectSong]?.name;
   const artistName = items[selectSong]?.artists[0]?.name;
   const lyrics = Lyrics(artistName, songName);
+
+  useEffect(() => {
+    setSongLyrics(lyrics);
+  }, [songName, artistName]);
 
   window.addEventListener("load", () => {
     if (active == "false") {

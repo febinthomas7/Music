@@ -46,7 +46,6 @@ const DashboardComponent = () => {
   const debounceSearch = Debouncing(songs, 500);
 
   useEffect(() => {
-    const controller = new AbortController();
     const Search = async () => {
       const result = await fetch(
         `https://api.spotify.com/v1/search?q=${debounceSearch}&type=album%2Ctrack%2Cartist%2Cshow%2Cepisode`,
@@ -55,7 +54,6 @@ const DashboardComponent = () => {
           headers: {
             Authorization: "Bearer " + _token,
           },
-          signal: controller.signal,
         }
       );
       const data = await result.json();
@@ -63,10 +61,6 @@ const DashboardComponent = () => {
     };
 
     if (debounceSearch) Search();
-
-    return () => {
-      controller.abort();
-    };
   }, [debounceSearch]);
 
   const _getGenres = async (token) => {

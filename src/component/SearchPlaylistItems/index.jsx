@@ -21,7 +21,7 @@ const SearchPlayListItems = ({ items = [], loading }) => {
   const [artistId, setArtistId] = useState([""]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLyricsOpen, setIsLyricsOpen] = useState(false);
-
+  const [songLyrics, setSongLyrics] = useState("");
   let [selectSong, setSelectSong] = useState(0);
   let [currentSong, setCurrentSong] = useState({
     ...items[selectSong]?.preview_url,
@@ -37,6 +37,10 @@ const SearchPlayListItems = ({ items = [], loading }) => {
   const songName = items[selectSong]?.name;
   const artistName = items[selectSong]?.artists[0]?.name;
   const lyrics = Lyrics(artistName, songName);
+
+  useEffect(() => {
+    setSongLyrics(lyrics);
+  }, [songName, artistName]);
 
   const audioElem = useRef();
   const clickRef = useRef();
@@ -326,7 +330,7 @@ const SearchPlayListItems = ({ items = [], loading }) => {
         {isLyricsOpen && (
           <div className="text-white w-full fixed left-0 top-0 h-full bg-gray-500  flex justify-center">
             <div className="w-[80%] sm:w-[30%] overflow-y-auto flex justify-center sm:items-center my-6">
-              <p>{lyrics ? lyrics : "not found"}</p>
+              <p>{songLyrics ? songLyrics : "not found"}</p>
             </div>
             <GiTireIronCross
               className="absolute top-5 right-5 cursor-pointer"

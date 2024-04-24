@@ -19,6 +19,7 @@ const PlaylistItems = ({ items = [], loading }) => {
   const [artistId, setArtistId] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLyricsOpen, setIsLyricsOpen] = useState(false);
+  const [songLyrics, setSongLyrics] = useState("");
   let [selectSong, setSelectSong] = useState(0);
   let [currentSong, setCurrentSong] = useState({
     ...items[selectSong]?.track?.preview_url,
@@ -30,10 +31,24 @@ const PlaylistItems = ({ items = [], loading }) => {
   const songName = items[selectSong]?.track?.name;
   const artistName = items[selectSong]?.track?.artists[0]?.name;
   const lyrics = Lyrics(artistName, songName);
+  useEffect(() => {
+    setSongLyrics(lyrics);
+  }, [songName, artistName]);
+
+  useEffect(() => {
+    const getlyrics = async () => {
+      const result = await fetch(
+        `https://api.lyrics.ovh/v1/${artistName}/${songName}`
+      );
+      const data = await result.json();
+      setSongLyrics(data.lyrics);
+      //   console.log(data.lyrics);
+    };
+    getlyrics();
+  }, [artistName, songName]);
 
   const audioElem = useRef();
   const clickRef = useRef();
-  console.log(lyrics);
 
   useEffect(() => {
     if (isPlaying) {
@@ -323,7 +338,7 @@ const PlaylistItems = ({ items = [], loading }) => {
         {isLyricsOpen && (
           <div className="text-white w-full fixed left-0 top-0 h-full bg-gray-500  flex justify-center">
             <div className="w-[80%] sm:w-[30%] overflow-y-auto flex justify-center sm:items-center my-6">
-              <p>{lyrics ? lyrics : "not found"}</p>
+              <p>{songLyrics ? songLyrics : "not found"}</p>
             </div>
             <GiTireIronCross
               className="absolute top-5 right-5 cursor-pointer"
