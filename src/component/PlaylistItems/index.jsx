@@ -249,30 +249,27 @@ const PlaylistItems = ({ items = [], loading }) => {
                   })}
                 </div>
                 <div className="text-white text-[20px] flex flex-col sm:flex-row  justify-start sm:items-center gap-3 ">
-                  {items[selectSong]?.track?.id ==
-                  artistId?.filter((e) => items[selectSong]?.track?.id == e) ? (
-                    <div className="flex gap-4">
+                  <div className="flex gap-4">
+                    {items[selectSong]?.track?.id ==
+                    artistId?.filter(
+                      (e) => items[selectSong]?.track?.id == e
+                    ) ? (
                       <GoHeartFill
                         className="text-red-800 cursor-pointer"
                         onClick={removeSongs}
                       />
-                      <MdOutlineLyrics
-                        className="cursor-pointer"
-                        onClick={() => setIsLyricsOpen(!isLyricsOpen)}
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex gap-4">
+                    ) : (
                       <GoHeart
                         className="cursor-pointer"
                         onClick={likedSongs}
                       />
-                      <MdOutlineLyrics
-                        className="cursor-pointer"
-                        onClick={() => setIsLyricsOpen(!isLyricsOpen)}
-                      />
-                    </div>
-                  )}
+                    )}
+                    <MdOutlineLyrics
+                      className="cursor-pointer"
+                      onClick={() => setIsLyricsOpen(!isLyricsOpen)}
+                    />
+                  </div>
+
                   <Downloader
                     fileInput={items[selectSong]?.track?.preview_url}
                     fileName={items[selectSong]?.track?.name}
