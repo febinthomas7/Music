@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { PiDownloadSimpleDuotone } from "react-icons/pi";
 const Downloader = ({ fileInput, fileName }) => {
   const [downloading, setDownloading] = useState(null);
   useEffect(() => {
@@ -28,19 +29,17 @@ const Downloader = ({ fileInput, fileName }) => {
   return (
     <>
       {downloading == "true" ? (
-        <button
+        <PiDownloadSimpleDuotone
+          className=" text-white cursor-pointer"
           onClick={download}
-          className="shadow-[#6b2828] py-[2px] px-4 w-[120px] bg-black text-white rounded-md shadow-lg sm:shadow-[#6b2828] sm:shadow-2xl select-none"
-        >
-          Download
-        </button>
+        />
       ) : (
-        <a
-          className="shadow-[#6b2828] py-[2px] px-4 w-[91px] bg-black text-white rounded-md shadow-lg sm:shadow-[#6b2828] sm:shadow-2xl select-none"
-          href="/signin"
-        >
-          sign in
-        </a>
+        <PiDownloadSimpleDuotone
+          className=" text-white cursor-pointer"
+          onClick={() => {
+            alert("sign in to download");
+          }}
+        />
       )}
     </>
   );

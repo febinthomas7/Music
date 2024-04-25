@@ -212,7 +212,7 @@ const PlaylistItems = ({ items = [], loading }) => {
               ) : (
                 <>
                   <div
-                    className="w-[50px] h-[50px]  text-white bg-[#7f7171] hover:text-black hover:bg-white rounded-full flex justify-center items-center cursor-pointer"
+                    className="w-[50px] h-[50px]  text-white bg-[#676767] hover:text-black hover:bg-white rounded-full flex justify-center items-center cursor-pointer"
                     title="prev"
                     onClick={() => setSelectSong(prevSong)}
                   >
@@ -221,16 +221,16 @@ const PlaylistItems = ({ items = [], loading }) => {
                   <div
                     className={`w-[50px] h-[50px] sm:w-[70px] sm:h-[70px] text-${
                       isPlaying ? "black" : "white"
-                    }   bg-[${
-                      isPlaying ? "#fbfbfb" : "#7f7171"
-                    }] rounded-full flex justify-center items-center cursor-pointer`}
+                    }  ${
+                      isPlaying ? "bg-white" : "bg-[#2d2d2d]"
+                    } rounded-full flex justify-center items-center cursor-pointer`}
                     title={isPlaying ? "pause" : "play"}
                     onClick={() => setIsPlaying(!isPlaying)}
                   >
                     {isPlaying ? <FaPause /> : <FaPlay />}
                   </div>
                   <div
-                    className="w-[50px] h-[50px]  text-white bg-[#7f7171] hover:text-black hover:bg-white rounded-full flex justify-center items-center cursor-pointer"
+                    className="w-[50px] h-[50px]  text-white bg-[#676767] hover:text-black hover:bg-white rounded-full flex justify-center items-center cursor-pointer"
                     title="next"
                     onClick={() => setSelectSong(nextSong)}
                   >
@@ -282,12 +282,11 @@ const PlaylistItems = ({ items = [], loading }) => {
                       className="cursor-pointer"
                       onClick={() => setIsLyricsOpen(!isLyricsOpen)}
                     />
+                    <Downloader
+                      fileInput={items[selectSong]?.track?.preview_url}
+                      fileName={items[selectSong]?.track?.name}
+                    />
                   </div>
-
-                  <Downloader
-                    fileInput={items[selectSong]?.track?.preview_url}
-                    fileName={items[selectSong]?.track?.name}
-                  />
                 </div>
               </>
             )}

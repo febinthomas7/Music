@@ -10,7 +10,7 @@ import { GoHeart, GoHeartFill } from "react-icons/go";
 import { FaPause } from "react-icons/fa6";
 import { GiTireIronCross } from "react-icons/gi";
 import { MdOutlineLyrics } from "react-icons/md";
-
+import Downloader from "../../component/DownloadBtn";
 import Lyrics from "../../utils/Lyrics";
 
 import { FaForward, FaBackward, FaPlay } from "react-icons/fa";
@@ -223,9 +223,9 @@ const Profile = () => {
           onTimeUpdate={onPlaying}
         ></audio>
 
-        <div className="flex  items-center flex-row justify-evenly  gap-6  ">
-          <div className="flex  gap-6  ">
-            <div className="">
+        <div className="flex  items-center flex-row justify-evenly  gap-1  ">
+          <div className="flex  gap-2  ">
+            <div className=" w-[60px] h-[60px] ">
               {loading ? (
                 <div className="flex flex-col  animate-pulse sm:w-full h-full gap-4 rounded-full overflow-hidden">
                   <div
@@ -263,7 +263,7 @@ const Profile = () => {
               ) : (
                 <>
                   <div
-                    className="w-[40px] h-[40px]  text-white bg-[#7f7171] hover:text-black hover:bg-white rounded-full flex justify-center items-center cursor-pointer"
+                    className="w-[40px] h-[40px]  text-white bg-[#676767] hover:text-black hover:bg-white rounded-full flex justify-center items-center cursor-pointer"
                     title="prev"
                     onClick={() => setSelectSong(prevSong)}
                   >
@@ -272,16 +272,16 @@ const Profile = () => {
                   <div
                     className={`w-[40px] h-[40px]  text-${
                       isPlaying ? "black" : "white"
-                    }   bg-[${
-                      isPlaying ? "#fbfbfb" : "#7f7171"
-                    }] rounded-full flex justify-center items-center cursor-pointer`}
+                    } ${
+                      isPlaying ? "bg-white" : "bg-[#2d2d2d]"
+                    }   rounded-full flex justify-center items-center cursor-pointer`}
                     title={isPlaying ? "pause" : "play"}
                     onClick={() => setIsPlaying(!isPlaying)}
                   >
                     {isPlaying ? <FaPause /> : <FaPlay />}
                   </div>
                   <div
-                    className="w-[40px] h-[40px] text-white bg-[#7f7171] hover:text-black hover:bg-white rounded-full flex justify-center items-center cursor-pointer"
+                    className="w-[40px] h-[40px] text-white bg-[#676767] hover:text-black hover:bg-white rounded-full flex justify-center items-center cursor-pointer"
                     title="next"
                     onClick={() => setSelectSong(nextSong)}
                   >
@@ -331,6 +331,10 @@ const Profile = () => {
                       className="cursor-pointer"
                       onClick={() => setIsLyricsOpen(!isLyricsOpen)}
                     />{" "}
+                    <Downloader
+                      fileInput={items[selectSong]?.preview_url}
+                      fileName={items[selectSong]?.name}
+                    />
                   </div>
                 </div>
               </>

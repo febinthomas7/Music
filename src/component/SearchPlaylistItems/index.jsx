@@ -201,7 +201,7 @@ const SearchPlayListItems = ({ items = [], loading }) => {
               ) : (
                 <>
                   <div
-                    className="w-[50px] h-[50px] text-white bg-[#7f7171] hover:text-black rounded-full flex justify-center items-center cursor-pointer"
+                    className="w-[50px] h-[50px] text-white bg-[#676767] hover:text-black rounded-full flex justify-center items-center cursor-pointer"
                     title="prev"
                     onClick={() => setSelectSong(prevSong)}
                   >
@@ -210,16 +210,16 @@ const SearchPlayListItems = ({ items = [], loading }) => {
                   <div
                     className={`w-[50px] h-[50px] sm:w-[70px] sm:h-[70px] text-${
                       isPlaying ? "black" : "white"
-                    }   bg-[${
-                      isPlaying ? "#fbfbfb" : "#7f7171"
-                    }] rounded-full flex justify-center items-center cursor-pointer`}
+                    }   ${
+                      isPlaying ? "bg-white" : "bg-[#2d2d2d]"
+                    }  rounded-full flex justify-center items-center cursor-pointer`}
                     title={isPlaying ? "pause" : "play"}
                     onClick={() => setIsPlaying(!isPlaying)}
                   >
                     {isPlaying ? <FaPause /> : <FaPlay />}
                   </div>
                   <div
-                    className="w-[50px] h-[50px] text-white bg-[#7f7171] hover:text-black rounded-full flex justify-center items-center cursor-pointer"
+                    className="w-[50px] h-[50px] text-white bg-[#676767] hover:text-black rounded-full flex justify-center items-center cursor-pointer"
                     title="next"
                     onClick={() => setSelectSong(nextSong)}
                   >
@@ -252,35 +252,28 @@ const SearchPlayListItems = ({ items = [], loading }) => {
                   })}
                 </div>
                 <div className="text-white text-[20px] flex flex-col sm:flex-row   sm:items-center gap-3 ">
-                  {items[selectSong]?.id ==
-                  artistId?.filter((e) => items[selectSong]?.id == e) ? (
-                    <div className="flex gap-4">
+                  <div className="flex gap-4">
+                    {items[selectSong]?.id ==
+                    artistId?.filter((e) => items[selectSong]?.id == e) ? (
                       <GoHeartFill
                         className="text-red-800 cursor-pointer"
                         onClick={removeSongs}
                       />
-                      <MdOutlineLyrics
-                        className="cursor-pointer"
-                        onClick={() => setIsLyricsOpen(!isLyricsOpen)}
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex gap-4">
+                    ) : (
                       <GoHeart
                         className="cursor-pointer"
                         onClick={likedSongs}
                       />
-                      <MdOutlineLyrics
-                        className="cursor-pointer"
-                        onClick={() => setIsLyricsOpen(!isLyricsOpen)}
-                      />
-                    </div>
-                  )}
-
-                  <Downloader
-                    fileInput={items[selectSong]?.preview_url}
-                    fileName={items[selectSong]?.name}
-                  />
+                    )}
+                    <MdOutlineLyrics
+                      className="cursor-pointer"
+                      onClick={() => setIsLyricsOpen(!isLyricsOpen)}
+                    />
+                    <Downloader
+                      fileInput={items[selectSong]?.preview_url}
+                      fileName={items[selectSong]?.name}
+                    />
+                  </div>
                 </div>
               </>
             )}
