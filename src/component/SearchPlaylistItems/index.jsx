@@ -59,7 +59,9 @@ const SearchPlayListItems = ({ items = [], loading }) => {
       null;
     }
   }, [currentSong.progress]);
-  Title(`${items[selectSong]?.name} - Ganabajao`);
+  const trackName = `${items[selectSong]?.name} - Ganabajao`;
+  const trackImage = items[selectSong]?.album?.images[0]?.url;
+  Title(trackName, trackImage);
   const getUserLiked = () => {
     onSnapshot(
       doc(db, "userLikedDetails", userid ? userid : "122324234"),

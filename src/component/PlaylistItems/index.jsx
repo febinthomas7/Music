@@ -47,7 +47,7 @@ const PlaylistItems = ({ items = [], loading }) => {
     getlyrics();
   }, [artistName, songName]);
   const trackName = `${items[selectSong]?.track?.name} - Ganabajao`;
-  const trackImage = items[selectSong]?.track?.album?.images[1]?.url;
+  const trackImage = items[selectSong]?.track?.album?.images[0]?.url;
   Title(trackName, trackImage);
   const audioElem = useRef();
   const clickRef = useRef();

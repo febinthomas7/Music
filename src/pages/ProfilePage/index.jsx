@@ -124,14 +124,14 @@ const Profile = () => {
     audioElem.current.currentTime = (divProgress / 100) * currentSong.Length;
     console.log(divProgress);
   };
-  Title(`${items[selectSong]?.name} - Ganabajao`);
+  const trackName = `${items[selectSong]?.name} - Ganabajao`;
+  const trackImage = items[selectSong]?.album?.images[0]?.url;
+  Title(trackName, trackImage);
   useEffect(() => {
     setUserid(localStorage.getItem("userId"));
     setActive(localStorage.getItem("user"));
     setUsername(localStorage.getItem("username"));
     setUserImage(JSON.parse(localStorage.getItem("userImage")));
-    // setArtistId(JSON.parse(localStorage.getItem("artistId")));
-
     setProfileLoading(false);
   }, []);
 
