@@ -8,6 +8,7 @@ import Downloader from "../DownloadBtn";
 import { app } from "../../Database/firebase";
 import { MdOutlineLyrics } from "react-icons/md";
 import { GiTireIronCross } from "react-icons/gi";
+import Title from "../../utils/Title";
 import { doc, setDoc, getFirestore, onSnapshot } from "firebase/firestore";
 import Lyrics from "../../utils/Lyrics";
 const db = getFirestore(app);
@@ -45,7 +46,9 @@ const PlaylistItems = ({ items = [], loading }) => {
     };
     getlyrics();
   }, [artistName, songName]);
-
+  const trackName = `${items[selectSong]?.track?.name} - Ganabajao`;
+  const trackImage = items[selectSong]?.track?.album?.images[1]?.url;
+  Title(trackName, trackImage);
   const audioElem = useRef();
   const clickRef = useRef();
 
@@ -82,7 +85,6 @@ const PlaylistItems = ({ items = [], loading }) => {
   useEffect(() => {
     setUserid(localStorage.getItem("userId"));
     setActive(localStorage.getItem("user"));
-    // setArtistId(JSON.parse(localStorage.getItem("artistId")));
   }, []);
 
   const onPlaying = () => {

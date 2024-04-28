@@ -8,7 +8,7 @@ import Downloader from "../DownloadBtn";
 import { app } from "../../Database/firebase";
 import { GiTireIronCross } from "react-icons/gi";
 import { MdOutlineLyrics } from "react-icons/md";
-
+import Title from "../../utils/Title";
 import Lyrics from "../../utils/Lyrics";
 
 import { doc, setDoc, getFirestore, onSnapshot } from "firebase/firestore";
@@ -59,7 +59,7 @@ const SearchPlayListItems = ({ items = [], loading }) => {
       null;
     }
   }, [currentSong.progress]);
-
+  Title(`${items[selectSong]?.name} - Ganabajao`);
   const getUserLiked = () => {
     onSnapshot(
       doc(db, "userLikedDetails", userid ? userid : "122324234"),

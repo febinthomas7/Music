@@ -12,6 +12,7 @@ import { GiTireIronCross } from "react-icons/gi";
 import { MdOutlineLyrics } from "react-icons/md";
 import Downloader from "../../component/DownloadBtn";
 import Lyrics from "../../utils/Lyrics";
+import Title from "../../utils/Title";
 
 import { FaForward, FaBackward, FaPlay } from "react-icons/fa";
 
@@ -123,7 +124,7 @@ const Profile = () => {
     audioElem.current.currentTime = (divProgress / 100) * currentSong.Length;
     console.log(divProgress);
   };
-
+  Title(`${items[selectSong]?.name} - Ganabajao`);
   useEffect(() => {
     setUserid(localStorage.getItem("userId"));
     setActive(localStorage.getItem("user"));

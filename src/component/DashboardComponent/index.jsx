@@ -65,7 +65,7 @@ const DashboardComponent = () => {
 
   const _getGenres = async (token) => {
     const result = await fetch(
-      "https://api.spotify.com/v1/browse/categories?limit=50",
+      "https://api.spotify.com/v1/browse/categories?limit=20",
       {
         method: "GET",
         headers: {
