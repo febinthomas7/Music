@@ -55,7 +55,7 @@ const Edit = () => {
   return (
     <div className="bg-black w-full h-svh flex flex-col  relative">
       <h1 className="text-white text-center py-4">Edit Profile</h1>
-      <div className="flex flex-col w-full h-[300px] bg-black p-5 shadow-sm shadow-white">
+      <div className="flex flex-col w-full h-[300px] bg-gradient-to-b  from-[#10132a] via-[#00061a] to-[#000000f9] bg-black p-5 shadow-sm shadow-white">
         <div className="w-full h-full flex items-center justify-center gap-4 rounded-full  ">
           <>
             <div className="relative">

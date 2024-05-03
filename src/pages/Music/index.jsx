@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Loader from "../../component/Loader";
+import Title from "../../utils/Title";
 const Music = () => {
   const location = useLocation();
   const [playlist, setPlaylist] = useState();
@@ -14,6 +15,9 @@ const Music = () => {
     id: location.state?.data,
   });
 
+  const trackName = `Ganabajao`;
+  const trackImage = "/logo192.png";
+  Title(trackName, trackImage);
   const _getPlaylist = async () => {
     const limit = 50;
     const result = await fetch(
@@ -28,15 +32,13 @@ const Music = () => {
     const data = await result.json();
     setPlaylist(data);
     setLoader(false);
-
-    // console.log(data);
   };
   useEffect(() => {
     _getPlaylist();
   }, []);
 
   return (
-    <div className="fixed h-screen w-full radial_bg">
+    <div className="fixed h-screen w-full bg-gradient-to-b  from-[#10132a] via-[#00061a] to-[#000000f9] bg-black">
       <Link
         to="/"
         className="rounded-md bg-slate-800 text-white p-2 fixed mt-4 ml-4"

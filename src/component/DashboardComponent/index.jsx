@@ -5,8 +5,10 @@ import Debouncing from "../../utils/Debouncing";
 import { app } from "../../Database/firebase";
 import { IoMdMic } from "react-icons/io";
 import { GiTireIronCross } from "react-icons/gi";
+import { getLyrics, getSong } from "genius-lyrics-api";
 import { signOut, getAuth } from "firebase/auth";
 import { RiSpeakLine } from "react-icons/ri";
+import Title from "../../utils/Title";
 const auth = getAuth(app);
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -38,6 +40,17 @@ const DashboardComponent = () => {
     _getGenres(data?.access_token);
   };
 
+  // const options = {
+  //   apiKey: "JRfoTOxPKrdzt3ut0p90o6Z-CAcjVRfeGzMpHFN5cwcIneA5uWdOagZseTxACDaX",
+  //   title: "Posthumous Forgiveness",
+  //   artist: "Tame Impala",
+  //   optimizeQuery: true,
+  // };
+
+  // useEffect(() => {
+  //   getLyrics(options).then((lyrics) => console.log(lyrics));
+  // }, []);
+
   useEffect(() => {
     getToken();
     setActive(localStorage.getItem("user"));
@@ -45,6 +58,9 @@ const DashboardComponent = () => {
 
   const debounceSearch = Debouncing(songs, 500);
 
+  const trackName = `Ganabajao`;
+  const trackImage = "/logo192.png";
+  Title(trackName, trackImage);
   useEffect(() => {
     const Search = async () => {
       const result = await fetch(
@@ -128,7 +144,7 @@ const DashboardComponent = () => {
   }, [active]);
 
   return (
-    <div className="w-full h-svh sm:w-[80%] sm:ml-[20%] md:wide  ">
+    <div className="w-full h-svh   md:wide  ">
       <div className="fixed w-full h-screen top-0 bg-gradient-to-b  from-[#10132a] via-[#00061a] to-[#000000f9] bg-black z-0"></div>
       {listening && (
         <div className="fixed h-[250px] w-[250px] ring-1 z-20 md:w-[400px] md:h-[400px]  top-[35%] sm:top-[20%] rounded-full left-[18%] md:left-[45%] justify-center flex items-center bg-[#9898985d] backdrop:blur-xl">
@@ -155,7 +171,7 @@ const DashboardComponent = () => {
       <div
         className={`pt-5 bg-black ${
           navColor ? "bg-black" : "bg-transparent"
-        } transition-all w-full sm:w-[80%] fixed py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center z-10 `}
+        } transition-all w-full  fixed py-4 px-4 md:px-11 gap-5 flex flex-col sm:flex-row justify-between items-center z-10 `}
       >
         <div className="flex items-center sm:hidden justify-start  gap-2 p-4 w-full select-none">
           <img src="/logo.png" alt="logo" className="w-[40px] sm:w-[60px]" />
@@ -242,7 +258,7 @@ const DashboardComponent = () => {
         <div className="flex  gap-4 overflow-scroll HideScrollbar mt-[150px] sm:mt-[105px] sticky z-[1]">
           {search.albums?.items.map((e, index) => {
             return (
-              <div key={index}>
+              <div key={index} className="w-[200px] sm:w-[250px] h-[250px]">
                 {e.images.length <= 0 ? null : (
                   <Link to="/search" state={{ data: search?.tracks }}>
                     <div
@@ -278,10 +294,10 @@ const DashboardComponent = () => {
         ) : (
           genreId?.map((e, index) => {
             return (
-              <div key={index}>
+              <div key={index} className="w-[140px] sm:w-[250px]">
                 <Link to="/music" state={{ data: e.id, token: _token }}>
                   <div key={index} className="w-[140px] sm:w-[250px]">
-                    <img loading="lazy" src={e.icons[0].url} alt="" />
+                    <img loading="lazy" src={e.icons[0].url} alt="music" />
                     <h1>{e.name}</h1>
                   </div>
                 </Link>

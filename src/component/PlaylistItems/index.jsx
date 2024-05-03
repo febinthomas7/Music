@@ -11,6 +11,7 @@ import { GiTireIronCross } from "react-icons/gi";
 import Title from "../../utils/Title";
 import { doc, setDoc, getFirestore, onSnapshot } from "firebase/firestore";
 import Lyrics from "../../utils/Lyrics";
+import Fallback from "../Fallback";
 const db = getFirestore(app);
 
 const PlaylistItems = ({ items = [], loading }) => {
@@ -35,18 +36,7 @@ const PlaylistItems = ({ items = [], loading }) => {
     setSongLyrics(lyrics);
   }, [songName, artistName]);
 
-  useEffect(() => {
-    const getlyrics = async () => {
-      const result = await fetch(
-        `https://api.lyrics.ovh/v1/${artistName}/${songName}`
-      );
-      const data = await result.json();
-      setSongLyrics(data.lyrics);
-      //   console.log(data.lyrics);
-    };
-    getlyrics();
-  }, [artistName, songName]);
-  const trackName = `${items[selectSong]?.track?.name} - Ganabajao`;
+  const trackName = `${items[selectSong]?.track?.name}`;
   const trackImage = items[selectSong]?.track?.album?.images[0]?.url;
   Title(trackName, trackImage);
   const audioElem = useRef();
@@ -164,7 +154,7 @@ const PlaylistItems = ({ items = [], loading }) => {
 
   return (
     <div className="flex flex-col  gap-3 bg-black p-4">
-      <div className="fixed bg-black w-full top-0 left-0 p-4   bg-gradient-to-b from-[#ee3050] from-10% via-[#881327] via-40% to-black to-90% ">
+      <div className="fixed  w-full top-0 left-0 p-4  bg-gradient-to-b  from-[#10132a] via-[#00061a] to-[#000000f9] bg-black ">
         <audio
           className="hidden"
           controlsList="nodownload"

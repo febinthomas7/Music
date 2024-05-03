@@ -383,7 +383,7 @@ const Profile = () => {
         <SlArrowLeft className="text-gray-300 absolute text-[20px] top-6 left-4" />
       </Link>
 
-      <div className="flex flex-col w-full h-[270px] bg-black px-8  py-5 bg-gradient-to-b from-[#ee3050] from-10% via-[#881327] via-40% to-black to-90% shadow-sm shadow-white">
+      <div className="flex flex-col w-full h-[270px] px-8  py-5 bg-gradient-to-b  from-[#10132a] via-[#00061a] to-[#000000f9] bg-black shadow-sm shadow-white">
         <div className="h-full flex gap-5">
           <Link to="/edit">
             <div className="w-full h-full flex items-center justify-center  overflow-hidden">

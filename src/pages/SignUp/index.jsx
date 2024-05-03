@@ -8,29 +8,35 @@ const auth = getAuth(app);
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const signUp = (e) => {
+    setLoading(true);
     e.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password).then(
-      (e) =>
-        // console.log(e)
-        (window.location.href = "/signin")
-    );
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((e) => {
+        setLoading(false);
+        window.location.href = "/signin";
+      })
+      .catch((e) => {
+        alert(e.message);
+      });
   };
 
   const [open, setOpen] = useState(true);
   return (
-    <section className=" radial_bg h-svh flex">
+    <section className=" h-svh flex bg-gradient-to-b  from-[#10132a] via-[#00061a] to-[#000000f9] bg-black ">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-[#a6a6a6a5] backdrop:blur-sm rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 ">
+        <div className="w-full bg-white backdrop:blur-sm rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 ">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight  md:text-2xl text-white">
+            <h1 className="text-xl font-bold leading-tight tracking-tight  md:text-2xl text-gray-800">
               Create Your Account
             </h1>
             <form className="space-y-4 md:space-y-6" method="POST">
               <div>
                 <label
                   htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-white"
+                  className="block mb-2 text-sm font-medium text-gray-800"
                 >
                   Your email
                 </label>
@@ -48,7 +54,7 @@ const SignUp = () => {
               <div>
                 <label
                   htmlFor="password"
-                  className=" relative block mb-2 text-sm font-medium text-white"
+                  className=" relative block mb-2 text-sm font-medium text-gray-800"
                 >
                   Password
                   {open ? (
@@ -101,11 +107,12 @@ const SignUp = () => {
               <button
                 type="submit"
                 onClick={signUp}
-                className="w-full text-white bg-blue-800 hover:bg-primary-700 focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+                className="w-full text-white bg-blue-800 hover:bg-primary-700 focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center  flex justify-center items-center gap-2"
               >
                 Sign Up
+                {loading && <RiLoader2Fill />}
               </button>
-              <p className="text-sm font-light text-white">
+              <p className="text-sm font-light text-gray-800">
                 Already have an account?{" "}
                 <Link
                   to="/signin"

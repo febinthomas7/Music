@@ -1,13 +1,15 @@
-import React from "react";
+import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import Dashboard from "../pages/DashboardPage";
-import Music from "../pages/Music";
-import Playlist from "../pages/Playlist";
-import Search from "../pages/Search";
-import SignUp from "../pages/SignUp";
-import SignIn from "../pages/SignIn";
-import Profile from "../pages/ProfilePage";
-import Edit from "../pages/Editpage";
+
+const Dashboard = lazy(() => import("../pages/DashboardPage"));
+const Music = lazy(() => import("../pages/Music"));
+const Playlist = lazy(() => import("../pages/Playlist"));
+const Search = lazy(() => import("../pages/Search"));
+const SignUp = lazy(() => import("../pages/SignUp"));
+const SignIn = lazy(() => import("../pages/SignIn"));
+const Profile = lazy(() => import("../pages/ProfilePage"));
+const Edit = lazy(() => import("../pages/Editpage"));
+
 const routes = createBrowserRouter([
   { path: "/", element: <Dashboard /> },
   {

@@ -2,7 +2,7 @@
   "name": "ganabajao",
   "short_name": "ganabajao",
   "theme_color": "#10132a",
-  "background_color": "#00061a",
+  "background_color": "black",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",

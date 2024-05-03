@@ -59,7 +59,7 @@ const SearchPlayListItems = ({ items = [], loading }) => {
       null;
     }
   }, [currentSong.progress]);
-  const trackName = `${items[selectSong]?.name} - Ganabajao`;
+  const trackName = `${items[selectSong]?.name}`;
   const trackImage = items[selectSong]?.album?.images[0]?.url;
   Title(trackName, trackImage);
   const getUserLiked = () => {
@@ -154,7 +154,7 @@ const SearchPlayListItems = ({ items = [], loading }) => {
 
   return (
     <div className="flex flex-col  gap-3 bg-black p-4">
-      <div className="fixed bg-black w-full top-0 left-0 p-4 bg-gradient-to-b from-[#ee3050] from-10% via-[#881327] via-40% to-black to-90%">
+      <div className="fixed  w-full top-0 left-0 p-4 bg-gradient-to-b  from-[#10132a] via-[#00061a] to-[#000000f9] bg-black">
         <audio
           className="hidden"
           controls
