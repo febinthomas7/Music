@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../Loader";
+import Fallback from "../Fallback";
 import Debouncing from "../../utils/Debouncing";
 import { app } from "../../Database/firebase";
 import { IoMdMic } from "react-icons/io";
