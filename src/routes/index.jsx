@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
+const Live = lazy(() => import("../pages/DashboardPage/Live"));
 const Dashboard = lazy(() => import("../pages/DashboardPage"));
 const Music = lazy(() => import("../pages/Music"));
 const Playlist = lazy(() => import("../pages/Playlist"));
@@ -40,6 +41,10 @@ const routes = createBrowserRouter([
   {
     path: "/edit",
     element: <Edit />,
+  },
+  {
+    path: "/live",
+    element: <Live />,
   },
 ]);
 export default routes;

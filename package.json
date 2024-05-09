@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@stream-io/video-react-sdk": "^1.0.1",
     "axios": "^1.6.7",
     "firebase": "^10.11.0",
     "genius-lyrics-api": "^3.2.1",

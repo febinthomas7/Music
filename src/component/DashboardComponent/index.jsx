@@ -1,7 +1,6 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../Loader";
-import Fallback from "../Fallback";
 import Debouncing from "../../utils/Debouncing";
 import { app } from "../../Database/firebase";
 import { IoMdMic } from "react-icons/io";
@@ -215,6 +214,10 @@ const DashboardComponent = () => {
               </div>
             )}
           </div>
+
+          <Link to="/live">
+            <div className="bg-white text-red-700 p-2 rounded-full">Live</div>
+          </Link>
 
           <div className="absolute sm:static top-[-85px] right-[-10px] sm:flex w-[87px] sm:rounded-xl overflow-hidden">
             {active == "true" ? (
