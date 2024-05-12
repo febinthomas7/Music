@@ -1,75 +1,53 @@
 import React from "react";
-import {
-  Call,
-  ParticipantView,
-  StreamCall,
-  StreamVideo,
-  StreamVideoClient,
-  useCall,
-  useCallStateHooks,
-  // User,
-} from "@stream-io/video-react-sdk";
-import "@stream-io/video-react-sdk/dist/css/styles.css";
-const apiKey = "mmhfdzb5evj2";
-const userId = "Zuckuss";
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiWnVja3VzcyIsImlzcyI6Imh0dHBzOi8vcHJvbnRvLmdldHN0cmVhbS5pbyIsInN1YiI6InVzZXIvWnVja3VzcyIsImlhdCI6MTcxNTI0MDM3NCwiZXhwIjoxNzE1ODQ1MTc5fQ.wA4mqB3KaY3_336MVn2OC7hD1AX8T-upvWahb99bE70";
-const callId = "DVT4au3cg6wi";
+import { useParams } from "react-router-dom";
+import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 
-// const user = {
-//   User: {
-//     id: "jack-guest",
-//     type: "guest",
-//   },
-// };
-// const user: User = { id: "jack-guest" };
-// const user: User = {
-//   id: "jack-guest",
-//   type: "guest",
-// };
+const Stream = ({ id, role }) => {
+  const { roomId } = useParams();
 
-const client = new StreamVideoClient({ apiKey, token });
-const call = client.call("livestream", callId);
-call.join({ create: true });
-const Stream = () => {
+  function randomID(len) {
+    let result = "";
+    if (result) return result;
+    var chars =
+        "12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP",
+      maxPos = chars.length,
+      i;
+    len = len || 5;
+    for (i = 0; i < len; i++) {
+      result += chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+    return result;
+  }
+  const appID = 810164430;
+  const serverSecret = "a8364c5f3aafc10526ab8b42ec89cbc4";
+  const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+    appID,
+    serverSecret,
+    roomId,
+    randomID(5),
+    randomID(5)
+  );
+
+  let myMeeting = async (element) => {
+    // Create instance object from Kit Token.
+    const zp = ZegoUIKitPrebuilt.create(kitToken);
+    // start the call
+    zp.joinRoom({
+      container: element,
+      scenario: {
+        mode: ZegoUIKitPrebuilt.LiveStreaming,
+        config: {
+          role: role,
+        },
+      },
+    });
+  };
   return (
-    <StreamVideo client={client}>
-      <StreamCall call={call}>
-        <MyVideoUI />
-      </StreamCall>
-    </StreamVideo>
+    <div
+      className="myCallContainer bg-black w-full h-svh flex justify-center items-center"
+      ref={myMeeting}
+    ></div>
   );
 };
 
 export default Stream;
-
-export const MyVideoUI = () => {
-  const call = useCall();
-  const { useIsCallLive, useLocalParticipant, useParticipantCount } =
-    useCallStateHooks();
-
-  const localParticipant = useLocalParticipant();
-  const IsCallLive = useIsCallLive();
-  const TotalLocalParticipant = useParticipantCount();
-
-  return (
-    <div className="w-full">
-      <div>Live:{TotalLocalParticipant}</div>
-      <div>
-        {localParticipant && (
-          <ParticipantView
-            participant={localParticipant}
-            ParticipantViewUI={null}
-          />
-        )}
-      </div>
-      <div>
-        {IsCallLive ? (
-          <button onClick={() => call?.stopLive()}>stop live</button>
-        ) : (
-          <button onClick={() => call?.goLive()}>start live</button>
-        )}
-      </div>
-    </div>
-  );
-};

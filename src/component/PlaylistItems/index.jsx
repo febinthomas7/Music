@@ -11,7 +11,6 @@ import { GiTireIronCross } from "react-icons/gi";
 import Title from "../../utils/Title";
 import { doc, setDoc, getFirestore, onSnapshot } from "firebase/firestore";
 import Lyrics from "../../utils/Lyrics";
-import Fallback from "../Fallback";
 const db = getFirestore(app);
 
 const PlaylistItems = ({ items = [], loading }) => {

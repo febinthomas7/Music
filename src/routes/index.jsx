@@ -1,7 +1,8 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
+import WatchStream from "../pages/WatchStream";
 
-const Live = lazy(() => import("../pages/DashboardPage/Live"));
+const Live = lazy(() => import("../pages/Live"));
 const Dashboard = lazy(() => import("../pages/DashboardPage"));
 const Music = lazy(() => import("../pages/Music"));
 const Playlist = lazy(() => import("../pages/Playlist"));
@@ -45,6 +46,10 @@ const routes = createBrowserRouter([
   {
     path: "/live",
     element: <Live />,
+  },
+  {
+    path: "/live/:roomId",
+    element: <WatchStream />,
   },
 ]);
 export default routes;

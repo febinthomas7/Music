@@ -12,6 +12,22 @@
   }
 }
 
+@media screen and (max-width: 490px) {
+  .BYpXSnOHfrC2td4QRijO {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .VdaXgamc4uLcVqxdjRnv {
+    margin: 0 !important;
+    width: 90% !important;
+  }
+  .jF_DhwXwBFswm5nphXHX {
+    margin: 0 !important;
+    padding-block: 20px;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 0px;
 }
