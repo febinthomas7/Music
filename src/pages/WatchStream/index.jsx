@@ -3,11 +3,12 @@ import { useLocation } from "react-router-dom";
 import Stream from "../../component/Stream";
 import { app } from "../../Database/firebase";
 
-import { doc, setDoc, getFirestore, onSnapshot } from "firebase/firestore";
+import { doc, setDoc, getFirestore } from "firebase/firestore";
 const db = getFirestore(app);
 
 const WatchStream = () => {
   const location = useLocation();
+  const [img, setImg] = useState(JSON.parse(localStorage.getItem("userImage")));
   const [id, setId] = useState({
     id: location.state?.id,
   });
@@ -19,6 +20,7 @@ const WatchStream = () => {
     const add = async () => {
       await setDoc(doc(db, "liveDetails", id.id), {
         artistId: id.id,
+        userImg: img == "" ? "/avatar.webp" : img,
       });
     };
     if (role.role == "Host") {

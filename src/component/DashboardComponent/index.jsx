@@ -298,10 +298,21 @@ const DashboardComponent = () => {
         ) : (
           genreId?.map((e, index) => {
             return (
-              <div key={index} className="w-[140px] sm:w-[250px]">
+              <div
+                key={index}
+                className="w-[140px] h-[140px] sm:w-[250px] sm:h-[250px]"
+              >
                 <Link to="/music" state={{ data: e.id, token: _token }}>
-                  <div key={index} className="w-[140px] sm:w-[250px]">
-                    <img loading="lazy" src={e.icons[0].url} alt="music" />
+                  <div
+                    key={index}
+                    className="w-[140px] sm:w-[250px] h-full p-2"
+                  >
+                    <img
+                      loading="lazy"
+                      src={e.icons[0].url}
+                      alt={e.name}
+                      className="bg-black h-full flex justify-center items-center text-center"
+                    />
                     <h1>{e.name}</h1>
                   </div>
                 </Link>
