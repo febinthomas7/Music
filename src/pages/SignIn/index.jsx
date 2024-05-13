@@ -4,7 +4,11 @@ import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { RiLoader2Fill } from "react-icons/ri";
 
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { app } from "../../Database/firebase";
 const auth = getAuth(app);
 
@@ -12,7 +16,7 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const signUp = (e) => {
+  const signIn = (e) => {
     setLoading(true);
     e.preventDefault();
 
@@ -23,6 +27,18 @@ const SignIn = () => {
       })
       .catch((e) => {
         alert(e.message);
+        setLoading(false);
+      });
+  };
+
+  const resetPassword = (e) => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert("check your email");
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        console.log(errorMessage);
       });
   };
 
@@ -103,16 +119,16 @@ const SignIn = () => {
                     </label>
                   </div>
                 </div>
-                <a
-                  href="#"
-                  className="text-sm font-medium  hover:underline text-blue-600"
+                <div
+                  className="text-sm font-medium  hover:underline text-blue-600 cursor-pointer"
+                  onClick={resetPassword}
                 >
                   Forgot password?
-                </a>
+                </div>
               </div>
               <button
                 type="submit"
-                onClick={signUp}
+                onClick={signIn}
                 className="w-full text-white bg-blue-800 hover:bg-primary-700 focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center flex justify-center items-center gap-2"
               >
                 Sign in

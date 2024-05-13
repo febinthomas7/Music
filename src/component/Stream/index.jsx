@@ -1,6 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
+const APPID = import.meta.env.VITE_CLIENT_APP_ID;
+const SECRETID = import.meta.env.VITE_CLIENT_SERVER_SECRET;
 
 const Stream = ({ id, role }) => {
   const { roomId } = useParams();
@@ -18,8 +20,8 @@ const Stream = ({ id, role }) => {
     }
     return result;
   }
-  const appID = 810164430;
-  const serverSecret = "a8364c5f3aafc10526ab8b42ec89cbc4";
+  const appID = +APPID;
+  const serverSecret = SECRETID;
   const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
     appID,
     serverSecret,

@@ -98,12 +98,6 @@ const SignUp = () => {
                     </label>
                   </div>
                 </div>
-                <a
-                  href="#"
-                  className="text-sm font-medium  hover:underline text-blue-600"
-                >
-                  Forgot password?
-                </a>
               </div>
               <button
                 type="submit"

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { CiStreamOn } from "react-icons/ci";
 import { Link } from "react-router-dom";
-import LiveSerachComponent from "../../component/LiveSearchComponent";
-import { LuArrowLeft } from "react-icons/lu";
 import { RiLoader2Fill } from "react-icons/ri";
+import { SlArrowLeft } from "react-icons/sl";
+
 import { app } from "../../Database/firebase";
 import {
   getFirestore,
@@ -24,7 +24,6 @@ const Live = () => {
     setUserId(JSON.parse(localStorage.getItem("userId")));
   }, [active]);
 
-  console.log(userId);
   const goLive = () => {
     alert("sign in to go live");
   };
@@ -49,8 +48,8 @@ const Live = () => {
   return (
     <div className="w-full h-screen bg-black text-white ">
       <div className="flex justify-between items-center gap-3 w-full fixed">
-        <Link to="/">
-          <LuArrowLeft className="text-[50px] p-2" />
+        <Link to="/" className="p-2">
+          <SlArrowLeft className="text-[20px] " />
         </Link>
 
         {active == "true" ? (

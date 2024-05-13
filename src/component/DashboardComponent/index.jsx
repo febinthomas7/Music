@@ -5,7 +5,6 @@ import Debouncing from "../../utils/Debouncing";
 import { app } from "../../Database/firebase";
 import { IoMdMic } from "react-icons/io";
 import { GiTireIronCross } from "react-icons/gi";
-import { getLyrics, getSong } from "genius-lyrics-api";
 import { signOut, getAuth } from "firebase/auth";
 import { RiSpeakLine } from "react-icons/ri";
 import Title from "../../utils/Title";

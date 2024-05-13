@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Loader from "../../component/Loader";
 import Title from "../../utils/Title";
+import { SlArrowLeft } from "react-icons/sl";
+
 const Music = () => {
   const location = useLocation();
   const [playlist, setPlaylist] = useState();
@@ -39,11 +41,8 @@ const Music = () => {
 
   return (
     <div className="fixed h-screen w-full bg-gradient-to-b  from-[#10132a] via-[#00061a] to-[#000000f9] bg-black">
-      <Link
-        to="/"
-        className="rounded-md bg-slate-800 text-white p-2 fixed mt-4 ml-4"
-      >
-        Back
+      <Link to="/" className="p-2">
+        <SlArrowLeft className="text-[20px] text-white  ml-2" />
       </Link>
       <div className="flex flex-wrap gap-5 justify-center pb-4  h-screen  overflow-y-auto">
         <h1 className="text-[25px] w-full text-white text-center py-4">
