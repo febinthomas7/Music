@@ -17,18 +17,26 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const signIn = (e) => {
-    setLoading(true);
     e.preventDefault();
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then((e) => {
-        setLoading(false);
-        window.location.href = "/";
-      })
-      .catch((e) => {
-        alert(e.message);
-        setLoading(false);
-      });
+    if (!email || !password) {
+      if (!email) {
+        alert("email is required");
+      }
+      if (!password) {
+        alert("password is required");
+      }
+    } else {
+      setLoading(true);
+      signInWithEmailAndPassword(auth, email, password)
+        .then((e) => {
+          window.location.href = "/";
+          setLoading(false);
+        })
+        .catch((e) => {
+          alert(e.message);
+          setLoading(false);
+        });
+    }
   };
 
   const resetPassword = (e) => {
@@ -70,10 +78,12 @@ const SignIn = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   id="email"
-                  className="bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg placeholder:text-gray-700  block w-full p-2.5 outline-none  "
+                  className="relative peer focus:invalid:text-red-500 bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg placeholder:text-gray-700  block w-full p-2.5 outline-none  "
                   placeholder="Email"
-                  required
                 />
+                <p class="absolute invisible peer-invalid:visible text-red-500 text-[12px]">
+                  Please provide a valid email address.
+                </p>
               </div>
               <div>
                 <label

@@ -41,13 +41,13 @@ const Music = () => {
 
   return (
     <div className="fixed h-screen w-full bg-gradient-to-b  from-[#10132a] via-[#00061a] to-[#000000f9] bg-black">
-      <Link to="/" className="p-2">
-        <SlArrowLeft className="text-[20px] text-white  ml-2" />
+      <Link to="/" className="p-6 absolute">
+        <SlArrowLeft className="text-[20px] text-white  " />
       </Link>
-      <div className="flex flex-wrap gap-5 justify-center pb-4  h-screen  overflow-y-auto">
-        <h1 className="text-[25px] w-full text-white text-center py-4">
-          {playlist?.message}
-        </h1>
+      <h1 className="text-[25px] w-full text-white text-center py-4">
+        {playlist?.message}
+      </h1>
+      <div className="flex flex-wrap gap-5 justify-center   h-screen pb-[90px] overflow-y-auto">
         {loader ? (
           <Loader />
         ) : playlist?.playlists.items.length <= 0 ? (

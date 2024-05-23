@@ -21,7 +21,7 @@ const db = getFirestore(app);
 const Profile = () => {
   const location = useLocation();
   const [userid, setUserid] = useState("0UJRMeU6npgYZVEKnOT");
-  const [active, setActive] = useState(null);
+  const [active, setActive] = useState(localStorage.getItem("user"));
   const [artistId, setArtistId] = useState([]);
   const [username, setUsername] = useState("");
   const [userImage, setUserImage] = useState("");
@@ -44,6 +44,12 @@ const Profile = () => {
   });
   const audioElem = useRef();
   const clickRef = useRef();
+  useEffect(() => {
+    if (active == "false") {
+      window.location.href = "/";
+    }
+  }, []);
+
   const onPlaying = () => {
     const duration = audioElem.current.duration;
 
@@ -63,12 +69,6 @@ const Profile = () => {
   useEffect(() => {
     setSongLyrics(lyrics);
   }, [songName, artistName]);
-
-  window.addEventListener("load", () => {
-    if (active == "false") {
-      window.location.href = "/";
-    }
-  });
 
   useEffect(() => {
     if (isPlaying) {
@@ -122,14 +122,26 @@ const Profile = () => {
 
     const divProgress = (offset / width) * 100;
     audioElem.current.currentTime = (divProgress / 100) * currentSong.Length;
-    console.log(divProgress);
+  };
+
+  const getUserLiked = () => {
+    onSnapshot(
+      doc(db, "userLikedDetails", userid ? userid : "122324234"),
+      (doc) => {
+        if (active == "true") {
+          if (doc.data()?.artistId) {
+            setArtistId(doc.data()?.artistId);
+          }
+        }
+      }
+    );
   };
   const trackName = `${items[selectSong]?.name} - Ganabajao`;
   const trackImage = items[selectSong]?.album?.images[0]?.url;
   Title(trackName, trackImage);
   useEffect(() => {
     setUserid(localStorage.getItem("userId"));
-    setActive(localStorage.getItem("user"));
+    // setActive(localStorage.getItem("user"));
     setUsername(localStorage.getItem("username"));
     setUserImage(JSON.parse(localStorage.getItem("userImage")));
     setProfileLoading(false);
@@ -154,6 +166,7 @@ const Profile = () => {
     setLoading(false);
     setRecommendations(false);
   };
+  getUserLiked();
   useEffect(() => {
     track();
   }, [loading]);
@@ -178,21 +191,6 @@ const Profile = () => {
     setRecommendations(true);
   };
 
-  const getUserLiked = () => {
-    onSnapshot(
-      doc(db, "userLikedDetails", userid ? userid : "122324234"),
-      (doc) => {
-        if (active == "true") {
-          if (doc.data()?.artistId) {
-            setArtistId(doc.data()?.artistId);
-          }
-        }
-      }
-    );
-  };
-
-  getUserLiked();
-
   const add = async () => {
     await setDoc(doc(db, "userLikedDetails", userid), {
       artistId: [items[selectSong]?.id, ...artistId],
@@ -202,14 +200,6 @@ const Profile = () => {
     await setDoc(doc(db, "userLikedDetails", userid), {
       artistId: artistId.filter((e) => e !== items[selectSong]?.id),
     });
-  };
-
-  const likedSongs = () => {
-    add();
-  };
-
-  const removeSongs = () => {
-    remove();
   };
 
   return (
@@ -320,13 +310,10 @@ const Profile = () => {
                     artistId?.filter((e) => items[selectSong]?.id == e) ? (
                       <GoHeartFill
                         className="text-red-800 cursor-pointer"
-                        onClick={removeSongs}
+                        onClick={remove}
                       />
                     ) : (
-                      <GoHeart
-                        className="cursor-pointer"
-                        onClick={likedSongs}
-                      />
+                      <GoHeart className="cursor-pointer" onClick={add} />
                     )}
                     <MdOutlineLyrics
                       className="cursor-pointer"
@@ -402,13 +389,13 @@ const Profile = () => {
                       : "/avatar.webp"
                   }
                   alt=""
-                  className=" w-[150px] h-[150px] object-cover  rounded-full"
+                  className=" w-[150px] h-[150px] object-cover  rounded-full bg-white"
                 />
               )}
             </div>
           </Link>
 
-          <div className="  h-full flex justify-center items-center w-[120px]">
+          <div className="  h-full flex justify-center items-center w-[150px]">
             {profileLoading && (
               <div className="h-[60px] w-full bg-slate-700 animate-pulse"></div>
             )}

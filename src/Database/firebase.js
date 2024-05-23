@@ -2,8 +2,10 @@ import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { doc, getFirestore, getDoc, onSnapshot } from "firebase/firestore";
+
+const firebaseApiKey = import.meta.env.VITE_CLIENT_FIREBASE_API_KEY;
 const firebaseConfig = {
-  apiKey: "AIzaSyCtjkpkL1oXUl9tEooe7jDQLbVJY_Vwcmw",
+  apiKey: firebaseApiKey,
   authDomain: "music-app-232ac.firebaseapp.com",
   projectId: "music-app-232ac",
   storageBucket: "music-app-232ac.appspot.com",

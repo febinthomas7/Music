@@ -14,21 +14,20 @@ const Edit = () => {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [img, setImg] = useState(JSON.parse(localStorage.getItem("userImage")));
-  const [active, setActive] = useState(null);
+  const [active, setActive] = useState(localStorage.getItem("user"));
   const [name, setName] = useState(localStorage.getItem("username"));
 
   useEffect(() => {
     setUserid(localStorage.getItem("userId"));
-    setActive(localStorage.getItem("user"));
     setUsername(localStorage.getItem("username"));
     setUserImage(JSON.parse(localStorage.getItem("userImage")));
   }, []);
 
-  window.addEventListener("load", () => {
+  useEffect(() => {
     if (active == "false") {
       window.location.href = "/";
     }
-  });
+  }, []);
 
   const add = async () => {
     await setDoc(doc(db, "UserDetails", userid), {
@@ -83,8 +82,8 @@ const Edit = () => {
           />
         </div>
 
-        <div className="   flex  w-full gap-2 pt-4">
-          <label htmlFor="name" className="text-white">
+        <div className="   flex  w-full gap-2 pt-4 justify-center items-center">
+          <label htmlFor="name" className="text-white m-0 text-[15px]">
             Name:
           </label>
           <input

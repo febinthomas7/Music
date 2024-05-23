@@ -4,24 +4,35 @@ import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from "../../Database/firebase";
 import { Link } from "react-router-dom";
+import { RiLoader2Fill } from "react-icons/ri";
+
 const auth = getAuth(app);
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const signUp = (e) => {
-    setLoading(true);
     e.preventDefault();
+    if (!email || !password) {
+      if (!email) {
+        alert("email is required");
+      }
+      if (!password) {
+        alert("password is required");
+      }
+    } else {
+      setLoading(true);
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((e) => {
-        setLoading(false);
-        window.location.href = "/signin";
-      })
-      .catch((e) => {
-        alert(e.message);
-        setLoading(false);
-      });
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((e) => {
+          setLoading(false);
+          window.location.href = "/signin";
+        })
+        .catch((e) => {
+          alert(e.message);
+          setLoading(false);
+        });
+    }
   };
 
   const [open, setOpen] = useState(true);
@@ -47,10 +58,13 @@ const SignUp = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   id="email"
-                  className="bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg placeholder:text-gray-700  block w-full p-2.5 outline-none "
+                  className=" relative peer focus:invalid:text-red-500 bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg placeholder:text-gray-700  block w-full p-2.5 outline-none "
                   placeholder="Email"
                   required=""
                 />
+                <p class="absolute invisible peer-invalid:visible text-red-500 text-[12px]">
+                  Please provide a valid email address.
+                </p>
               </div>
               <div>
                 <label

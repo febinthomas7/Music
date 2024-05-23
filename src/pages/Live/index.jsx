@@ -14,13 +14,12 @@ import {
 } from "firebase/firestore";
 const db = getFirestore(app);
 const Live = () => {
-  const [active, setActive] = useState(null);
+  const [active, setActive] = useState(localStorage.getItem("user"));
   const [userId, setUserId] = useState(null);
   const [liveData, setLiveData] = useState(null);
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    setActive(localStorage.getItem("user"));
     setUserId(JSON.parse(localStorage.getItem("userId")));
   }, [active]);
 
@@ -46,7 +45,7 @@ const Live = () => {
   }, []);
 
   return (
-    <div className="w-full h-screen bg-black text-white ">
+    <div className="w-full h-screen bg-gradient-to-b  from-[#10132a] via-[#00061a] to-[#000000f9] bg-black  text-white ">
       <div className="flex justify-between items-center gap-3 w-full fixed">
         <Link to="/" className="p-2">
           <SlArrowLeft className="text-[20px] " />
@@ -73,7 +72,7 @@ const Live = () => {
           </div>
         )}
       </div>
-      <div className=" flex justify-center items-center gap-5 flex-col w-full   py-[100px] bg-black">
+      <div className=" flex justify-center items-center gap-5 flex-col w-full   py-[100px] ">
         {active == "true"
           ? liveData?.map((e, index) => {
               return (

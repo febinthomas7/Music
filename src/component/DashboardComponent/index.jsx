@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../Loader";
 import Debouncing from "../../utils/Debouncing";
@@ -218,7 +218,7 @@ const DashboardComponent = () => {
             <div className="bg-white text-red-700 p-2 rounded-full">Live</div>
           </Link>
 
-          <div className="absolute sm:static top-[-85px] right-[-10px] sm:flex w-[87px] sm:rounded-xl overflow-hidden">
+          <div className="absolute sm:static top-[-85px] right-[-10px] sm:flex w-[87px] sm:rounded-xl overflow">
             {active == "true" ? (
               <div
                 onClick={userSignOut}

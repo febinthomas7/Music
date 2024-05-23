@@ -10,7 +10,7 @@ import { RouterProvider } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ErrorBoundary
-    FallbackComponent={ErrorFallback}
+    fallback={ErrorFallback}
     onReset={() => (window.location.href = "/")}
   >
     <Suspense fallback={<Fallback />}>

@@ -5,6 +5,9 @@
 .wide {
   width: calc(100% - 300px);
 }
+.overflow{
+  overflow: unset;
+}
 
 .comma:nth-of-type(n + 2):not(:last-child) {
   &::before {
