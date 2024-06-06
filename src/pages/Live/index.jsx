@@ -3,7 +3,8 @@ import { CiStreamOn } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { RiLoader2Fill } from "react-icons/ri";
 import { SlArrowLeft } from "react-icons/sl";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { app } from "../../Database/firebase";
 import {
   getFirestore,
@@ -24,11 +25,11 @@ const Live = () => {
   }, [active]);
 
   const goLive = () => {
-    alert("sign in to go live");
+    toast.warn("sign in to go live");
   };
 
   const watchLive = () => {
-    alert("sign in to watch live");
+    toast.warn("sign in to watch live");
   };
   const deleteLive = () => {
     deleteDoc(doc(db, "liveDetails", userId));
@@ -46,6 +47,9 @@ const Live = () => {
 
   return (
     <div className="w-full h-screen bg-gradient-to-b  from-[#10132a] via-[#00061a] to-[#000000f9] bg-black  text-white ">
+      <div>
+        <ToastContainer />
+      </div>
       <div className="flex justify-between items-center gap-3 w-full fixed">
         <Link to="/" className="p-2">
           <SlArrowLeft className="text-[20px] " />

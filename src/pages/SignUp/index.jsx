@@ -5,7 +5,8 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from "../../Database/firebase";
 import { Link } from "react-router-dom";
 import { RiLoader2Fill } from "react-icons/ri";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const auth = getAuth(app);
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -15,10 +16,10 @@ const SignUp = () => {
     e.preventDefault();
     if (!email || !password) {
       if (!email) {
-        alert("email is required");
+        toast.warn("email is required");
       }
       if (!password) {
-        alert("password is required");
+        toast.warn("password is required");
       }
     } else {
       setLoading(true);
@@ -29,7 +30,7 @@ const SignUp = () => {
           window.location.href = "/signin";
         })
         .catch((e) => {
-          alert(e.message);
+          toast.warn(e.message);
           setLoading(false);
         });
     }
@@ -133,6 +134,9 @@ const SignUp = () => {
             </form>
           </div>
         </div>
+      </div>
+      <div>
+        <ToastContainer />
       </div>
     </section>
   );

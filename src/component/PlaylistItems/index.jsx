@@ -9,6 +9,8 @@ import { app } from "../../Database/firebase";
 import { MdOutlineLyrics } from "react-icons/md";
 import { GiTireIronCross } from "react-icons/gi";
 import Title from "../../utils/Title";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { doc, setDoc, getFirestore, onSnapshot } from "firebase/firestore";
 import Lyrics from "../../utils/Lyrics";
 const db = getFirestore(app);
@@ -141,7 +143,8 @@ const PlaylistItems = ({ items = [], loading }) => {
     if (active == "true") {
       add();
     } else {
-      alert("sign in to like");
+      toast.warn("sign in to like");
+      // alert("sign in to like");
     }
   };
 
@@ -162,7 +165,9 @@ const PlaylistItems = ({ items = [], loading }) => {
           ref={audioElem}
           onTimeUpdate={onPlaying}
         ></audio>
-
+        <div>
+          <ToastContainer />
+        </div>
         <div className="flex  items-center flex-row sm:items-baseline gap-6 sm:p-7">
           <div className="flex flex-col gap-6">
             <div className="w-[100px] sm:w-[250px] sm:h-[250px]">
@@ -174,13 +179,15 @@ const PlaylistItems = ({ items = [], loading }) => {
                   ></div>
                 </div>
               ) : (
-                <img
-                  className={`h-full w-full object-cover rounded-full shadow-[#1a1a1a] shadow-2xl ${
-                    isPlaying ? "animate-spin-slow" : "animate-none"
-                  } `}
-                  src={items[selectSong]?.track?.album?.images[1]?.url}
-                  alt=""
-                />
+                <>
+                  <img
+                    className={`h-full w-full object-cover rounded-full shadow-[#1a1a1a] shadow-2xl ${
+                      isPlaying ? "animate-spin-slow" : "animate-none"
+                    } `}
+                    src={items[selectSong]?.track?.album?.images[1]?.url}
+                    alt=""
+                  />
+                </>
               )}
             </div>
 

@@ -10,7 +10,8 @@ import { GiTireIronCross } from "react-icons/gi";
 import { MdOutlineLyrics } from "react-icons/md";
 import Title from "../../utils/Title";
 import Lyrics from "../../utils/Lyrics";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { doc, setDoc, getFirestore, onSnapshot } from "firebase/firestore";
 const db = getFirestore(app);
 
@@ -144,7 +145,7 @@ const SearchPlayListItems = ({ items = [], loading }) => {
     if (active == "true") {
       add();
     } else {
-      alert("sign in to like");
+      toast.warn("sign in to like");
     }
   };
 
@@ -162,6 +163,9 @@ const SearchPlayListItems = ({ items = [], loading }) => {
           ref={audioElem}
           onTimeUpdate={onPlaying}
         ></audio>
+        <div>
+          <ToastContainer />
+        </div>
 
         <div className="flex  items-center flex-row sm:items-baseline gap-6 sm:p-7">
           <div className="flex flex-col gap-6">

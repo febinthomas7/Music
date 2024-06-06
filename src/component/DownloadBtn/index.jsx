@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PiDownloadSimpleDuotone } from "react-icons/pi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Downloader = ({ fileInput, fileName }) => {
   const [downloading, setDownloading] = useState(null);
   useEffect(() => {
@@ -37,7 +39,7 @@ const Downloader = ({ fileInput, fileName }) => {
         <PiDownloadSimpleDuotone
           className=" text-white cursor-pointer"
           onClick={() => {
-            alert("sign in to download");
+            toast.warn("sign in to download");
           }}
         />
       )}

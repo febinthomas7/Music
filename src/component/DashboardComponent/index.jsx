@@ -8,6 +8,8 @@ import { GiTireIronCross } from "react-icons/gi";
 import { signOut, getAuth } from "firebase/auth";
 import { RiSpeakLine } from "react-icons/ri";
 import Title from "../../utils/Title";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const auth = getAuth(app);
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -22,7 +24,7 @@ const DashboardComponent = () => {
   const [search, setSearch] = useState([]);
   const [active, setActive] = useState(null);
   const [navColor, setNavColor] = useState(false);
-  const [userImage, setUserImage] = useState(null);
+  const [userImage, setUserImage] = useState("");
   const [songs, setSongs] = useState("");
   const getToken = async () => {
     const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -142,8 +144,13 @@ const DashboardComponent = () => {
     setUserImage(JSON?.parse(localStorage.getItem("userImage")));
   }, [active]);
 
+  console.log(userImage, active);
+
   return (
     <div className="w-full h-svh   md:wide  ">
+      <div>
+        <ToastContainer />
+      </div>
       <div className="fixed w-full h-screen top-0 bg-gradient-to-b  from-[#10132a] via-[#00061a] to-[#000000f9] bg-black z-0"></div>
       {listening && (
         <div className="fixed h-[250px] w-[250px] ring-1 z-20 md:w-[400px] md:h-[400px]  top-[35%] sm:top-[20%] rounded-full left-[18%] md:left-[45%] justify-center flex items-center bg-[#9898985d] backdrop:blur-xl">
@@ -248,7 +255,7 @@ const DashboardComponent = () => {
             <img
               src={userImage ? userImage : "/avatar.webp"}
               onClick={() => {
-                alert("sign in to view profile");
+                toast.warn("sign in to view profile");
               }}
               className="cursor-pointer w-[45px] h-[45px] object-cover rounded-full text-[30px]"
               alt="profile"

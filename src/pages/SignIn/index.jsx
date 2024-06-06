@@ -3,7 +3,8 @@ import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { RiLoader2Fill } from "react-icons/ri";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -20,10 +21,10 @@ const SignIn = () => {
     e.preventDefault();
     if (!email || !password) {
       if (!email) {
-        alert("email is required");
+        toast.warn("email is required");
       }
       if (!password) {
-        alert("password is required");
+        toast.warn("password is required");
       }
     } else {
       setLoading(true);
@@ -33,7 +34,7 @@ const SignIn = () => {
           setLoading(false);
         })
         .catch((e) => {
-          alert(e.message);
+          toast.error("auth/invalid-credential");
           setLoading(false);
         });
     }
@@ -42,11 +43,11 @@ const SignIn = () => {
   const resetPassword = (e) => {
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        alert("check your email");
+        toast.success("check your email");
       })
       .catch((error) => {
         const errorMessage = error.message;
-        console.log(errorMessage);
+        toast.error(errorMessage);
       });
   };
 
@@ -156,6 +157,9 @@ const SignIn = () => {
             </form>
           </div>
         </div>
+      </div>
+      <div>
+        <ToastContainer />
       </div>
     </section>
   );
