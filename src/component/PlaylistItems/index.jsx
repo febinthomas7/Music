@@ -170,7 +170,7 @@ const PlaylistItems = ({ items = [], loading }) => {
         </div>
         <div className="flex  items-center flex-row sm:items-baseline gap-6 sm:p-7">
           <div className="flex flex-col gap-6">
-            <div className="w-[100px] sm:w-[250px] sm:h-[250px]">
+            <div className="w-[100px] h-[100px] sm:w-[250px] sm:h-[250px]">
               {loading ? (
                 <div className="flex flex-col  animate-pulse sm:w-full h-full gap-4  ">
                   <div
@@ -179,15 +179,23 @@ const PlaylistItems = ({ items = [], loading }) => {
                   ></div>
                 </div>
               ) : (
-                <>
+                <div className="relative h-full w-full justify-center flex items-center">
                   <img
-                    className={`h-full w-full object-cover rounded-full shadow-[#1a1a1a] shadow-2xl ${
-                      isPlaying ? "animate-spin-slow" : "animate-none"
-                    } `}
+                    className={`h-full w-full object-cover absolute rounded-full shadow-[#1a1a1a] shadow-2xl  `}
                     src={items[selectSong]?.track?.album?.images[1]?.url}
                     alt=""
                   />
-                </>
+                  <div
+                    className={`absolute w-full h-full  outline-dotted outline-4  outline-offset-8 outline-blue-500  ${
+                      isPlaying ? "animate-pulse" : "animate-none"
+                    } rounded-full`}
+                  ></div>
+                  <div
+                    className={`absolute w-full h-full  outline-dotted outline-4  outline-offset-4 outline-blue-500 ${
+                      isPlaying ? "animate-pulse" : "animate-none"
+                    }  rounded-full`}
+                  ></div>
+                </div>
               )}
             </div>
 
@@ -319,7 +327,7 @@ const PlaylistItems = ({ items = [], loading }) => {
             >
               <div
                 style={{ width: `${currentSong?.progress}%` }}
-                className={` h-2 bg-[#2f2828] rounded-[30px] hover:after:container flex justify-center items-center relative `}
+                className={` h-2 bg-[#1b1616] rounded-[30px] hover:after:container flex justify-center items-center relative `}
               >
                 <span className="bg-[gray] w-3 h-3 hidden rounded-full absolute right-0 group-hover:flex"></span>
               </div>

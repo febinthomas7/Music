@@ -204,7 +204,7 @@ const Profile = () => {
 
   return (
     <div className="flex flex-col bg-black h-dvh w-full relative">
-      <div className=" bg-[#141414c2] flex flex-col-reverse w-full gap-2 bottom-0 p-4 z-10 absolute">
+      <div className=" bg-[#141414c2] flex flex-col-reverse w-full gap-4 bottom-0 p-4 z-10 absolute">
         <audio
           className="hidden"
           controlsList="nodownload"
@@ -215,7 +215,7 @@ const Profile = () => {
         ></audio>
 
         <div className="flex  items-center flex-row justify-evenly  gap-1  ">
-          <div className="flex  gap-2  ">
+          <div className="flex  gap-4  ">
             <div className=" w-[60px] h-[60px] ">
               {loading ? (
                 <div className="flex flex-col  animate-pulse sm:w-full h-full gap-4 rounded-full overflow-hidden">
@@ -225,13 +225,23 @@ const Profile = () => {
                   ></div>
                 </div>
               ) : (
-                <img
-                  className={` w-[60px] h-[60px] object-cover rounded-full shadow-[#1a1a1a] shadow-2xl ${
-                    isPlaying ? "animate-spin-slow" : "animate-none"
-                  } `}
-                  src={items[selectSong]?.album?.images[1]?.url}
-                  alt=""
-                />
+                <div className="relative h-full w-full justify-center flex items-center">
+                  <img
+                    className={` w-[60px] h-[60px] object-cover rounded-full shadow-[#1a1a1a] shadow-2xl  `}
+                    src={items[selectSong]?.album?.images[1]?.url}
+                    alt=""
+                  />
+                  <div
+                    className={`absolute w-full h-full  outline-dotted outline-4  outline-offset-8 outline-blue-500  ${
+                      isPlaying ? "animate-pulse" : "animate-none"
+                    } rounded-full`}
+                  ></div>
+                  <div
+                    className={`absolute w-full h-full  outline-dotted outline-4  outline-offset-4 outline-blue-500 ${
+                      isPlaying ? "animate-pulse" : "animate-none"
+                    }  rounded-full`}
+                  ></div>
+                </div>
               )}
             </div>
 
@@ -358,7 +368,7 @@ const Profile = () => {
             >
               <div
                 style={{ width: `${currentSong?.progress}%` }}
-                className={` h-2 bg-[#2f2828] rounded-[30px] hover:after:container flex justify-center items-center relative `}
+                className={` h-2 bg-[#1b1616] rounded-[30px] hover:after:container flex justify-center items-center relative `}
               >
                 <span className="bg-[gray] w-3 h-3 hidden rounded-full absolute right-0 group-hover:flex"></span>
               </div>
