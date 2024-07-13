@@ -186,13 +186,17 @@ const PlaylistItems = ({ items = [], loading }) => {
                     alt=""
                   />
                   <div
-                    className={`absolute w-full h-full  outline-dotted outline-4  outline-offset-8 outline-blue-500  ${
-                      isPlaying ? "animate-pulse" : "animate-none"
+                    className={`absolute w-full h-full  outline-dotted outline-4  outline-offset-8  outline-blue-500 duration-300 ease-in ${
+                      isPlaying
+                        ? "animate-pulse visible"
+                        : "animate-none invisible"
                     } rounded-full`}
                   ></div>
                   <div
-                    className={`absolute w-full h-full  outline-dotted outline-4  outline-offset-4 outline-blue-500 ${
-                      isPlaying ? "animate-pulse" : "animate-none"
+                    className={`absolute w-full h-full  outline-dotted outline-4  outline-offset-4 outline-blue-500 duration-500 ease-in ${
+                      isPlaying
+                        ? "animate-pulse visible"
+                        : "animate-none invisible"
                     }  rounded-full`}
                   ></div>
                 </div>
