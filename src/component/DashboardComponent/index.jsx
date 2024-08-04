@@ -41,17 +41,6 @@ const DashboardComponent = () => {
     _getGenres(data?.access_token);
   };
 
-  // const options = {
-  //   apiKey: "JRfoTOxPKrdzt3ut0p90o6Z-CAcjVRfeGzMpHFN5cwcIneA5uWdOagZseTxACDaX",
-  //   title: "Posthumous Forgiveness",
-  //   artist: "Tame Impala",
-  //   optimizeQuery: true,
-  // };
-
-  // useEffect(() => {
-  //   getLyrics(options).then((lyrics) => console.log(lyrics));
-  // }, []);
-
   useEffect(() => {
     getToken();
     setActive(localStorage.getItem("user"));
@@ -143,8 +132,6 @@ const DashboardComponent = () => {
   useEffect(() => {
     setUserImage(JSON?.parse(localStorage.getItem("userImage")));
   }, [active]);
-
-  console.log(userImage, active);
 
   return (
     <div className="w-full h-svh   md:wide  ">

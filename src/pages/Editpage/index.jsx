@@ -23,12 +23,6 @@ const Edit = () => {
     setUserImage(JSON.parse(localStorage.getItem("userImage")));
   }, []);
 
-  useEffect(() => {
-    if (active == "false") {
-      window.location.href = "/";
-    }
-  }, []);
-
   const add = async () => {
     await setDoc(doc(db, "UserDetails", userid), {
       name: name,

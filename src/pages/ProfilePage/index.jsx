@@ -44,11 +44,6 @@ const Profile = () => {
   });
   const audioElem = useRef();
   const clickRef = useRef();
-  useEffect(() => {
-    if (active == "false") {
-      window.location.href = "/";
-    }
-  }, []);
 
   const onPlaying = () => {
     const duration = audioElem.current.duration;

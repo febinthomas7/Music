@@ -82,7 +82,7 @@ const SignIn = () => {
                   className="relative peer focus:invalid:text-red-500 bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg placeholder:text-gray-700  block w-full p-2.5 outline-none  "
                   placeholder="Email"
                 />
-                <p class="absolute invisible peer-invalid:visible text-red-500 text-[12px]">
+                <p className="absolute invisible peer-invalid:visible text-red-500 text-[12px]">
                   Please provide a valid email address.
                 </p>
               </div>

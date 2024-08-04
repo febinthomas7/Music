@@ -4,7 +4,6 @@ import Stream from "../../component/Stream";
 import { app } from "../../Database/firebase";
 
 import { doc, setDoc, getFirestore } from "firebase/firestore";
-import { act } from "react-dom/test-utils";
 const db = getFirestore(app);
 
 const WatchStream = () => {
@@ -17,11 +16,6 @@ const WatchStream = () => {
   const [role, setRole] = useState({
     role: location.state?.role,
   });
-  useEffect(() => {
-    if (active == "false") {
-      window.location.href = "/live";
-    }
-  }, []);
 
   useEffect(() => {
     const add = async () => {

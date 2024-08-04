@@ -1,5 +1,3 @@
-import React from "react";
-
 const Fallback = () => {
   return (
     <div className="bg-black fixed top-0 w-full h-svh left-0 z-30 justify-center flex items-center">

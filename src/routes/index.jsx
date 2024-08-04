@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import WatchStream from "../pages/WatchStream";
 
 const Live = lazy(() => import("../pages/Live"));
@@ -11,6 +11,15 @@ const SignUp = lazy(() => import("../pages/SignUp"));
 const SignIn = lazy(() => import("../pages/SignIn"));
 const Profile = lazy(() => import("../pages/ProfilePage"));
 const Edit = lazy(() => import("../pages/Editpage"));
+
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = localStorage.getItem("user");
+  return isAuthenticated == "false" || false || undefined ? (
+    <Navigate to="/signin" />
+  ) : (
+    children
+  );
+};
 
 const routes = createBrowserRouter([
   { path: "/", element: <Dashboard /> },
@@ -36,12 +45,21 @@ const routes = createBrowserRouter([
   },
   {
     path: "/profile",
-    element: <Profile />,
+    element: (
+      <ProtectedRoute>
+        {" "}
+        <Profile />{" "}
+      </ProtectedRoute>
+    ),
   },
 
   {
     path: "/edit",
-    element: <Edit />,
+    element: (
+      <ProtectedRoute>
+        <Edit />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/live",
@@ -49,7 +67,11 @@ const routes = createBrowserRouter([
   },
   {
     path: "/live/:roomId",
-    element: <WatchStream />,
+    element: (
+      <ProtectedRoute>
+        <WatchStream />
+      </ProtectedRoute>
+    ),
   },
 ]);
 export default routes;

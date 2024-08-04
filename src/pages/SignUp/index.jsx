@@ -63,7 +63,7 @@ const SignUp = () => {
                   placeholder="Email"
                   required=""
                 />
-                <p class="absolute invisible peer-invalid:visible text-red-500 text-[12px]">
+                <p className="absolute invisible peer-invalid:visible text-red-500 text-[12px]">
                   Please provide a valid email address.
                 </p>
               </div>
